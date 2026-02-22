@@ -319,6 +319,7 @@ canvas{width:100%!important;max-height:250px;}
     <span class="hbadge">DTAA</span>
     <span class="hbadge">FY 2025–26</span>
     <button class="email-btn" onclick="openMail()">📧 Email Summary</button>
+    <button class="email-btn" onclick="openFeedback()" style="background:var(--green);color:#fff">💬 Feedback</button>
   </div>
 </header>
 
@@ -1335,7 +1336,50 @@ canvas{width:100%!important;max-height:250px;}
 
 <div class="disclaimer">⚠️ <strong>Educational Tool Only.</strong> This calculator provides general financial awareness and does <strong>not</strong> constitute financial, tax or legal advice. It does not replace a qualified IFA, Chartered Accountant, CPA or SEBI-registered advisor. Tax rules and FEMA regulations change frequently — always verify with a professional before acting. All figures are estimates.</div>
 
-<!-- EMAIL MODAL -->
+<!-- FEEDBACK MODAL -->
+<div class="modal-bg" id="feedbackModal">
+  <div class="modal" style="max-width:520px">
+    <button class="modal-x" onclick="closeFeedback()">✕</button>
+    <h2>💬 Share Your Feedback</h2>
+    <p>We'd love to hear your thoughts — bugs, suggestions, praise, or anything else. Your feedback goes directly to the team.</p>
+
+    <div class="fg">
+      <label>Feedback Type</label>
+      <select id="fbType">
+        <option value="General">General feedback</option>
+        <option value="Bug report">Bug report</option>
+        <option value="Feature request">Feature request</option>
+        <option value="Calculation issue">Calculation issue</option>
+        <option value="Compliment">Compliment 😊</option>
+      </select>
+    </div>
+
+    <div class="fg">
+      <label>Your Name <span style="font-size:10px;font-weight:400;font-style:italic">(optional)</span></label>
+      <input type="text" id="fbName" placeholder="e.g. Sarah" style="font-family:'DM Sans',sans-serif">
+    </div>
+
+    <div class="fg">
+      <label>Your Email <span style="font-size:10px;font-weight:400;font-style:italic">(optional — so we can follow up)</span></label>
+      <input type="email" id="fbEmail" placeholder="e.g. sarah@email.com" style="font-family:'DM Sans',sans-serif">
+    </div>
+
+    <div class="fg">
+      <label>Your Feedback <span id="fbCount" style="float:right;font-size:10px;font-weight:400;color:rgba(15,14,13,.45)">0 / 5,000</span></label>
+      <textarea id="fbText" maxlength="5000" placeholder="Tell us what you think, what's broken, or what you'd like to see…"
+        style="width:100%;min-height:130px;padding:9px 12px;border:1.5px solid var(--bd);border-radius:7px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--ink);outline:none;resize:vertical;background:var(--cream);line-height:1.55"
+        oninput="updateFbCount(this)"></textarea>
+      <div style="font-size:9.5px;color:rgba(15,14,13,.42);margin-top:3px">Maximum 5,000 characters.</div>
+    </div>
+
+    <div id="fbError" style="display:none;background:#fdecea;border:1px solid #f5c6c6;border-radius:6px;padding:8px 11px;font-size:11px;color:#c0392b;margin-bottom:10px"></div>
+
+    <div class="modal-btns">
+      <button class="btn-sec" onclick="closeFeedback()">Cancel</button>
+      <button class="btn-pri" onclick="submitFeedback()">📨 Send Feedback</button>
+    </div>
+  </div>
+</div>
 <div class="modal-bg" id="emailModal">
   <div class="modal">
     <button class="modal-x" onclick="closeMail()">✕</button>
@@ -2003,7 +2047,61 @@ async function sendMsg(){
   sb.disabled=false;cw.scrollTop=cw.scrollHeight;
 }
 
-// ── INIT ──────────────────────────────────────────────
+// ── FEEDBACK ───────────────────────────────────────────
+function openFeedback(){
+  el('fbError').style.display='none';
+  el('feedbackModal').classList.add('open');
+}
+function closeFeedback(){el('feedbackModal').classList.remove('open');}
+function updateFbCount(ta){
+  const len=ta.value.length;
+  const ctr=el('fbCount');
+  ctr.textContent=len.toLocaleString()+' / 5,000';
+  ctr.style.color=len>4500?'#c0392b':len>4000?'#e67000':'rgba(15,14,13,.45)';
+}
+function submitFeedback(){
+  const type=sv('fbType')||'General';
+  const name=(el('fbName')?.value||'').trim();
+  const email=(el('fbEmail')?.value||'').trim();
+  const text=(el('fbText')?.value||'').trim();
+  const errBox=el('fbError');
+
+  if(!text){
+    errBox.textContent='Please enter some feedback before sending.';
+    errBox.style.display='block';
+    return;
+  }
+  if(text.length>5000){
+    errBox.textContent='Your feedback exceeds 5,000 characters. Please shorten it.';
+    errBox.style.display='block';
+    return;
+  }
+  if(email&&!email.includes('@')){
+    errBox.textContent='Please enter a valid email address, or leave it blank.';
+    errBox.style.display='block';
+    return;
+  }
+  errBox.style.display='none';
+
+  const to='chiasmasu@gmail.com';
+  const sub=`[NRI Optimizer Feedback] ${type}${name?' — '+name:''}`;
+  const body=`Feedback Type: ${type}
+From: ${name||'(anonymous)'}
+Reply-to: ${email||'(not provided)'}
+Date: ${new Date().toLocaleString('en-GB')}
+
+--- FEEDBACK ---
+${text}
+
+---
+Sent from Global NRI Savings Optimizer`;
+
+  window.location.href=`mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(sub)}&body=${encodeURIComponent(body)}`;
+  closeFeedback();
+}
+el('feedbackModal').addEventListener('click',e=>{if(e.target===el('feedbackModal'))closeFeedback();});
+
+
 window.onload=()=>{updTotals();calc();};
 </script>
 </body>
