@@ -2,1385 +2,1292 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>India ↔ UK Savings Optimizer</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Global NRI Savings Optimizer · India · UK · USA · Netherlands</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
-:root {
-  --ink:#0f0e0d; --cream:#f7f3ee; --parchment:#ede8e0;
-  --india:#e05c2a; --india-light:#f4a07a;
-  --uk:#1a3a6b; --uk-light:#4a6fa8;
-  --gold:#c9a84c; --green:#2d7a4f; --red:#c0392b;
-  --border:rgba(15,14,13,0.15); --shadow:0 4px 24px rgba(15,14,13,0.10);
+:root{
+  --ink:#0f0e0d;--cream:#f7f3ee;--parch:#ede8e0;
+  --india:#e05c2a;--uk:#1a3a6b;--usa:#b22234;--nl:#e67000;
+  --gold:#c9a84c;--green:#2d7a4f;--red:#c0392b;
+  --bd:rgba(15,14,13,0.14);--sh:0 4px 20px rgba(15,14,13,0.10);
+  --r:10px;--sw:310px;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
+html{-webkit-text-size-adjust:100%;}
 body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;}
-
-/* HEADER */
-header{background:var(--ink);color:var(--cream);padding:18px 32px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--gold);}
-.logo{display:flex;align-items:center;gap:14px;}
-.logo-flags{font-size:26px;letter-spacing:-4px;}
-.logo h1{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;}
-.logo p{font-size:11px;color:rgba(247,243,238,0.55);margin-top:2px;}
-.header-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
-.hbadge{font-size:10px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;padding:3px 8px;border-radius:20px;border:1px solid rgba(247,243,238,0.2);color:rgba(247,243,238,0.6);}
-.email-btn{padding:7px 14px;background:var(--gold);color:var(--ink);border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;}
-.email-btn:hover{background:#e0b93d;transform:translateY(-1px);}
-
-/* LAYOUT */
-.app{display:grid;grid-template-columns:340px 1fr;min-height:calc(100vh - 73px);}
-
-/* SIDEBAR */
-.sidebar{background:var(--parchment);border-right:1px solid var(--border);padding:20px 18px;overflow-y:auto;max-height:calc(100vh - 73px);position:sticky;top:0;}
-.privacy-banner{background:#fff8e6;border:1px solid #f0c040;border-left:4px solid var(--gold);border-radius:6px;padding:9px 12px;margin-bottom:14px;font-size:10.5px;line-height:1.5;color:#5a4a0a;display:flex;align-items:flex-start;gap:7px;}
-
-/* MODE TOGGLE */
-.mode-toggle-wrap{display:flex;gap:4px;background:#fff;border:1px solid var(--border);border-radius:8px;padding:3px;margin-bottom:14px;}
-.mode-btn{flex:1;padding:7px 6px;border:none;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;background:transparent;color:rgba(15,14,13,0.5);}
-.mode-btn.active{background:var(--ink);color:var(--cream);}
-.mode-btn.uk-btn.active{background:var(--uk);}
-.mode-btn.india-btn.active{background:var(--india);}
-
-/* SECTION TITLES */
-.sec-title{font-family:'Playfair Display',serif;font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--ink);margin-bottom:12px;padding-bottom:7px;border-bottom:2px solid var(--ink);display:flex;align-items:center;gap:6px;}
-.sec-title.uk-color{color:var(--uk);border-color:var(--uk);}
-.sec-title.india-color{color:var(--india);border-color:var(--india);}
-.sec-title.gold-color{color:#8a6a1a;border-color:var(--gold);}
-
-/* FIELDS */
-.fg{margin-bottom:14px;}
-.fg label{display:block;font-size:10px;font-weight:600;letter-spacing:0.6px;text-transform:uppercase;color:rgba(15,14,13,0.5);margin-bottom:5px;}
-.fg input,.fg select{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:7px;background:var(--cream);font-family:'DM Mono',monospace;font-size:13px;color:var(--ink);transition:border-color 0.2s;outline:none;}
+.hdr{background:var(--ink);color:var(--cream);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--gold);gap:8px;flex-wrap:wrap;position:sticky;top:0;z-index:50;}
+.hdr-l{display:flex;align-items:center;gap:10px;}
+.flags{font-size:18px;letter-spacing:-3px;line-height:1;}
+.htitle{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;line-height:1.2;}
+.hsub{font-size:9.5px;color:rgba(247,243,238,0.5);margin-top:2px;}
+.hdr-r{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.hbadge{font-size:9px;font-weight:600;letter-spacing:0.6px;text-transform:uppercase;padding:2px 7px;border-radius:20px;border:1px solid rgba(247,243,238,0.2);color:rgba(247,243,238,0.5);}
+.email-btn{padding:7px 13px;background:var(--gold);color:var(--ink);border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;}
+.menu-btn{display:none;background:none;border:none;color:var(--cream);font-size:22px;cursor:pointer;padding:2px 6px;line-height:1;}
+.app{display:flex;min-height:calc(100vh - 52px);}
+.sidebar{width:var(--sw);flex-shrink:0;background:var(--parch);border-right:1px solid var(--bd);overflow-y:auto;height:calc(100vh - 52px);position:sticky;top:52px;}
+.sb-inner{padding:14px 13px 24px;}
+.backdrop{display:none;position:fixed;inset:0;top:52px;background:rgba(15,14,13,0.45);z-index:39;}
+.backdrop.show{display:block;}
+.main{flex:1;overflow-x:hidden;min-width:0;}
+.main-inner{padding:18px 20px;}
+.priv{background:#fff8e6;border:1px solid #f0c040;border-left:4px solid var(--gold);border-radius:6px;padding:8px 10px;margin-bottom:12px;font-size:9.5px;line-height:1.5;color:#5a4a0a;display:flex;gap:6px;}
+.c-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:12px;}
+.cbtn{padding:7px 4px;border:1.5px solid var(--bd);border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;background:#fff;color:rgba(15,14,13,0.55);text-align:center;transition:all .18s;}
+.cbtn.on-india{border-color:var(--india);background:rgba(224,92,42,.07);color:var(--india);}
+.cbtn.on-uk{border-color:var(--uk);background:rgba(26,58,107,.07);color:var(--uk);}
+.cbtn.on-usa{border-color:var(--usa);background:rgba(178,34,52,.07);color:var(--usa);}
+.cbtn.on-nl{border-color:var(--nl);background:rgba(230,112,0,.07);color:var(--nl);}
+.stitle{font-family:'Playfair Display',serif;font-size:11px;font-weight:700;letter-spacing:.9px;text-transform:uppercase;margin-bottom:9px;padding-bottom:5px;border-bottom:2px solid var(--ink);display:flex;align-items:center;justify-content:space-between;}
+.stitle.uk{color:var(--uk);border-color:var(--uk);}
+.stitle.india{color:var(--india);border-color:var(--india);}
+.stitle.usa{color:var(--usa);border-color:var(--usa);}
+.stitle.nl{color:var(--nl);border-color:var(--nl);}
+.stitle.gold{color:#7a5a0a;border-color:var(--gold);}
+.csec{margin-bottom:7px;border-radius:8px;overflow:hidden;border:1px solid var(--bd);}
+.cshdr{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:#fff;cursor:pointer;user-select:none;}
+.cshdr-l{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;}
+.arr{font-size:10px;color:rgba(15,14,13,0.4);transition:transform .2s;}
+.arr.o{transform:rotate(180deg);}
+.csbody{padding:11px;background:#fff;border-top:1px solid var(--bd);}
+.csbody.closed{display:none;}
+.fg{margin-bottom:10px;}
+.fg label{display:block;font-size:9.5px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:rgba(15,14,13,.48);margin-bottom:4px;}
+.fg input,.fg select{width:100%;padding:7px 10px;border:1.5px solid var(--bd);border-radius:7px;background:var(--cream);font-family:'DM Mono',monospace;font-size:12px;color:var(--ink);outline:none;transition:border-color .18s;-webkit-appearance:none;appearance:none;}
 .fg input:focus,.fg select:focus{border-color:var(--gold);background:#fff;}
-.fg-hint{font-size:10px;color:rgba(15,14,13,0.4);margin-top:3px;font-style:italic;}
-.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.sdiv{border:none;border-top:1px dashed var(--border);margin:16px 0;}
-
-/* INCOME BREAKDOWN */
-.income-breakdown{background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:14px;}
-.income-breakdown-title{font-size:10px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:rgba(15,14,13,0.5);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;}
-.income-total-display{font-family:'DM Mono',monospace;font-size:13px;font-weight:600;color:var(--ink);}
-
-/* WEALTH GOAL SECTION */
-.wealth-goal-box{background:linear-gradient(135deg,rgba(201,168,76,0.1),rgba(15,14,13,0.04));border:1px solid rgba(201,168,76,0.4);border-radius:8px;padding:12px;margin-bottom:14px;}
-.wealth-goal-title{font-size:10px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:#7a5a0a;margin-bottom:10px;}
-
-.calc-btn{width:100%;padding:13px;background:var(--ink);color:var(--cream);border:none;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;letter-spacing:0.4px;cursor:pointer;transition:all 0.2s;margin-top:6px;}
-.calc-btn:hover{background:var(--india);transform:translateY(-1px);box-shadow:var(--shadow);}
-
-/* MAIN */
-.main{padding:24px 28px;overflow-y:auto;}
-
-/* TABS */
-.tabs{display:flex;gap:3px;margin-bottom:22px;border-bottom:1px solid var(--border);overflow-x:auto;}
-.tab{padding:9px 16px;font-size:12px;font-weight:600;color:rgba(15,14,13,0.5);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;white-space:nowrap;border-radius:4px 4px 0 0;}
-.tab:hover{color:var(--ink);}
-.tab.active{color:var(--ink);border-bottom-color:var(--gold);}
-.tab-content{display:none;}
-.tab-content.active{display:block;}
-
-/* CARDS */
-.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px;}
-.summary-card{background:#fff;border:1px solid var(--border);border-radius:11px;padding:18px;position:relative;overflow:hidden;}
-.summary-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
-.india-card::before{background:var(--india);}
-.uk-card::before{background:var(--uk);}
-.total-card::before{background:var(--gold);}
-.goal-card::before{background:var(--green);}
-.card-label{font-size:10px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:rgba(15,14,13,0.45);margin-bottom:7px;}
-.card-value{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;line-height:1;}
-.india-card .card-value{color:var(--india);}
-.uk-card .card-value{color:var(--uk);}
-.total-card .card-value{color:var(--ink);}
-.goal-card .card-value{color:var(--green);}
-.card-sub{font-size:11px;color:rgba(15,14,13,0.5);margin-top:5px;}
-
-/* STRATEGY PANEL */
-.strategy-panel{background:var(--ink);border-radius:12px;padding:22px;margin-bottom:20px;color:var(--cream);}
-.strategy-panel h2{font-family:'Playfair Display',serif;font-size:17px;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
-.strategy-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
-.strategy-card{background:rgba(247,243,238,0.08);border:1px solid rgba(247,243,238,0.12);border-radius:8px;padding:14px;}
-.strategy-card h3{font-size:11px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;margin-bottom:8px;color:var(--gold);}
-.strategy-item{font-size:12px;line-height:1.55;color:rgba(247,243,238,0.85);padding:4px 0;border-bottom:1px solid rgba(247,243,238,0.08);}
-.strategy-item:last-child{border-bottom:none;}
-.strategy-item strong{color:var(--cream);}
-.goal-progress-bar{height:8px;background:rgba(247,243,238,0.12);border-radius:4px;margin:12px 0 6px;overflow:hidden;}
-.goal-progress-fill{height:100%;background:var(--gold);border-radius:4px;transition:width 0.8s ease;}
-.goal-meta{display:flex;justify-content:space-between;font-size:11px;color:rgba(247,243,238,0.6);}
-
-/* CHART */
-.chart-wrap{background:#fff;border:1px solid var(--border);border-radius:11px;padding:20px;margin-bottom:18px;}
-.chart-title{font-family:'Playfair Display',serif;font-size:16px;margin-bottom:16px;}
-canvas{width:100%!important;}
-
-/* ALLOCATION */
-.alloc-section{background:#fff;border:1px solid var(--border);border-radius:11px;padding:20px;margin-bottom:18px;}
-.alloc-bar-wrap{display:flex;gap:2px;height:28px;border-radius:6px;overflow:hidden;margin-bottom:12px;}
-.alloc-seg{height:100%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:white;transition:flex 0.6s ease;overflow:hidden;white-space:nowrap;}
-.alloc-legend{display:flex;flex-wrap:wrap;gap:10px;}
-.legend-item{display:flex;align-items:center;gap:5px;font-size:11px;}
-.legend-dot{width:9px;height:9px;border-radius:3px;flex-shrink:0;}
-
-/* SALARY CALC TABS */
-.salary-tabs{display:flex;gap:0;margin-bottom:20px;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
-.salary-tab{flex:1;padding:10px;text-align:center;font-size:12px;font-weight:600;cursor:pointer;background:#fff;transition:all 0.2s;border:none;font-family:'DM Sans',sans-serif;color:rgba(15,14,13,0.5);}
-.salary-tab:first-child{border-right:1px solid var(--border);}
-.salary-tab.active{background:var(--ink);color:var(--cream);}
-.salary-tab.uk-tab.active{background:var(--uk);}
-.salary-tab.india-tab.active{background:var(--india);}
-
-/* SALARY CALC PANELS */
-.salary-calc-panel{display:none;}
-.salary-calc-panel.active{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
-.salary-input-panel{background:#fff;border:1px solid var(--border);border-radius:11px;padding:20px;}
-.salary-input-panel h3{font-family:'Playfair Display',serif;font-size:15px;margin-bottom:16px;}
-.salary-results-panel{background:var(--ink);border-radius:11px;padding:20px;color:var(--cream);}
-.salary-results-panel h3{font-family:'Playfair Display',serif;font-size:15px;margin-bottom:16px;color:var(--cream);}
-.result-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(247,243,238,0.1);font-size:13px;}
-.result-row:last-child{border-bottom:none;}
-.result-label{color:rgba(247,243,238,0.7);}
-.result-value{font-family:'DM Mono',monospace;font-weight:600;color:var(--cream);}
-.result-value.highlight{color:var(--gold);}
-.result-value.deduction{color:#f4a07a;}
-.result-value.saving{color:#7fd4a8;}
-.result-section-header{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(247,243,238,0.4);padding:12px 0 4px;}
-.period-tabs{display:flex;gap:4px;margin-bottom:14px;}
-.period-tab{padding:5px 10px;font-size:11px;font-weight:600;border:1px solid rgba(247,243,238,0.2);border-radius:5px;cursor:pointer;background:transparent;color:rgba(247,243,238,0.6);font-family:'DM Sans',sans-serif;transition:all 0.2s;}
-.period-tab.active{background:var(--gold);color:var(--ink);border-color:var(--gold);}
-
-/* INSTRUMENTS */
-.instruments-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:24px;}
-.instrument-panel{background:#fff;border:1px solid var(--border);border-radius:11px;overflow:hidden;}
-.instrument-header{padding:12px 18px;display:flex;align-items:center;gap:8px;font-family:'Playfair Display',serif;font-size:14px;font-weight:700;}
-.india-panel .instrument-header{background:rgba(224,92,42,0.08);color:var(--india);}
-.uk-panel .instrument-header{background:rgba(26,58,107,0.08);color:var(--uk);}
-.instrument-row{display:grid;grid-template-columns:1fr auto auto;gap:8px;padding:10px 18px;border-top:1px solid var(--border);align-items:center;transition:background 0.15s;font-size:12px;}
-.instrument-row:hover{background:var(--parchment);}
-.instr-limit{font-size:10px;color:rgba(15,14,13,0.4);font-style:italic;}
-.instr-rate{font-family:'DM Mono',monospace;font-size:11px;padding:2px 7px;border-radius:20px;background:rgba(201,168,76,0.15);color:#8a6a1a;font-weight:600;}
-.cbadge{font-size:10px;font-weight:600;padding:2px 6px;border-radius:20px;}
-.badge-ok{background:rgba(45,122,79,0.12);color:var(--green);}
-.badge-warn{background:rgba(224,92,42,0.12);color:var(--india);}
-.badge-caution{background:rgba(192,57,43,0.12);color:var(--red);}
-
-/* TAX */
-.tax-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
-.tax-card{background:#fff;border:1px solid var(--border);border-radius:11px;padding:20px;}
-.tax-card h3{font-family:'Playfair Display',serif;font-size:15px;margin-bottom:14px;}
-.tax-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-top:1px solid var(--border);font-size:12px;}
-.tax-row:first-of-type{border-top:none;}
-.tv{font-family:'DM Mono',monospace;font-size:12px;font-weight:500;}
-.tv.red{color:var(--red);}
-.tv.green{color:var(--green);}
-
-/* COMPLIANCE */
-.compliance-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px;}
-.compliance-card{background:#fff;border:1px solid var(--border);border-radius:11px;padding:18px;}
-.compliance-card h3{font-family:'Playfair Display',serif;font-size:14px;margin-bottom:12px;}
-.ci{display:flex;justify-content:space-between;align-items:flex-start;padding:8px 0;border-top:1px solid var(--border);gap:10px;}
+.fg-hint{font-size:9px;color:rgba(15,14,13,.38);margin-top:3px;font-style:italic;}
+.fgrow{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.sdiv{border:none;border-top:1px dashed var(--bd);margin:11px 0;}
+.goal-box{background:linear-gradient(135deg,rgba(201,168,76,.09),rgba(15,14,13,.03));border:1px solid rgba(201,168,76,.35);border-radius:8px;padding:11px;margin-bottom:12px;}
+.goal-box-t{font-size:9.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#7a5a0a;margin-bottom:8px;}
+.itotal{font-family:'DM Mono',monospace;font-size:11px;font-weight:600;float:right;}
+.calc-btn{width:100%;padding:11px;background:var(--ink);color:var(--cream);border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;margin-top:8px;transition:background .18s;}
+.calc-btn:hover{background:var(--india);}
+.tabs-row{display:flex;border-bottom:1px solid var(--bd);overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.tabs-row::-webkit-scrollbar{display:none;}
+.tbtn{padding:9px 13px;font-size:11px;font-weight:600;color:rgba(15,14,13,.5);cursor:pointer;border-bottom:2.5px solid transparent;white-space:nowrap;background:none;border-top:none;border-left:none;border-right:none;font-family:'DM Sans',sans-serif;transition:all .18s;flex-shrink:0;}
+.tbtn.active{color:var(--ink);border-bottom-color:var(--gold);}
+.tpane{display:none;padding-top:16px;}
+.tpane.active{display:block;}
+.cg4{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:14px;}
+.cg3{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-bottom:16px;}
+.sc{background:#fff;border:1px solid var(--bd);border-radius:var(--r);padding:14px;position:relative;overflow:hidden;}
+.sc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.sc.uk::before{background:var(--uk);}
+.sc.usa::before{background:var(--usa);}
+.sc.nl::before{background:var(--nl);}
+.sc.india::before{background:var(--india);}
+.sc.goal::before{background:var(--green);}
+.sc.total::before{background:var(--gold);}
+.sc-lbl{font-size:9px;font-weight:600;letter-spacing:.7px;text-transform:uppercase;color:rgba(15,14,13,.42);margin-bottom:5px;}
+.sc-val{font-family:'Playfair Display',serif;font-size:21px;font-weight:700;line-height:1;}
+.sc.uk .sc-val{color:var(--uk);}
+.sc.usa .sc-val{color:var(--usa);}
+.sc.nl .sc-val{color:var(--nl);}
+.sc.india .sc-val{color:var(--india);}
+.sc.goal .sc-val{color:var(--green);}
+.sc-sub{font-size:10px;color:rgba(15,14,13,.48);margin-top:4px;line-height:1.4;}
+.stpanel{background:var(--ink);border-radius:var(--r);padding:18px;margin-bottom:15px;color:var(--cream);}
+.stpanel h2{font-family:'Playfair Display',serif;font-size:15px;margin-bottom:11px;}
+.gbar{height:7px;background:rgba(247,243,238,.1);border-radius:4px;margin:8px 0 5px;overflow:hidden;}
+.gbar-fill{height:100%;background:var(--gold);border-radius:4px;transition:width .8s ease;}
+.gmeta{display:flex;justify-content:space-between;font-size:10px;color:rgba(247,243,238,.5);margin-bottom:13px;flex-wrap:wrap;gap:4px;}
+.sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;}
+.scard{background:rgba(247,243,238,.07);border:1px solid rgba(247,243,238,.1);border-radius:7px;padding:11px;}
+.scard h3{font-size:9.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--gold);margin-bottom:7px;}
+.si{font-size:11px;line-height:1.5;color:rgba(247,243,238,.82);padding:3.5px 0;border-bottom:1px solid rgba(247,243,238,.07);}
+.si:last-child{border-bottom:none;}
+.chart-box{background:#fff;border:1px solid var(--bd);border-radius:var(--r);padding:16px;margin-bottom:15px;}
+.chart-box-t{font-family:'Playfair Display',serif;font-size:14px;margin-bottom:12px;}
+canvas{width:100%!important;max-height:250px;}
+.alloc-box{background:#fff;border:1px solid var(--bd);border-radius:var(--r);padding:15px;margin-bottom:15px;}
+.abar{display:flex;gap:2px;height:24px;border-radius:5px;overflow:hidden;margin-bottom:9px;}
+.aseg{height:100%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#fff;overflow:hidden;white-space:nowrap;}
+.aleg{display:flex;flex-wrap:wrap;gap:7px;}
+.aleg-item{display:flex;align-items:center;gap:4px;font-size:10px;}
+.adot{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
+.sal-tabs{display:flex;border:1px solid var(--bd);border-radius:7px;overflow:hidden;margin-bottom:14px;}
+.stab{flex:1;padding:8px 6px;text-align:center;font-size:11px;font-weight:600;cursor:pointer;background:#fff;border:none;font-family:'DM Sans',sans-serif;color:rgba(15,14,13,.5);transition:all .18s;border-right:1px solid var(--bd);}
+.stab:last-child{border-right:none;}
+.stab.a-uk{background:var(--uk);color:#fff;}
+.stab.a-usa{background:var(--usa);color:#fff;}
+.stab.a-nl{background:var(--nl);color:#fff;}
+.stab.a-india{background:var(--india);color:#fff;}
+.spane{display:none;}
+.spane.active{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.sal-in{background:#fff;border:1px solid var(--bd);border-radius:var(--r);padding:16px;}
+.sal-in h3{font-family:'Playfair Display',serif;font-size:13px;margin-bottom:12px;}
+.sal-res{background:var(--ink);border-radius:var(--r);padding:16px;color:var(--cream);}
+.sal-res h3{font-family:'Playfair Display',serif;font-size:13px;color:var(--cream);margin-bottom:10px;}
+.ptabs{display:flex;gap:4px;margin-bottom:10px;}
+.ptab{padding:4px 8px;font-size:10px;font-weight:600;border:1px solid rgba(247,243,238,.2);border-radius:5px;cursor:pointer;background:transparent;color:rgba(247,243,238,.55);font-family:'DM Sans',sans-serif;}
+.ptab.active{background:var(--gold);color:var(--ink);border-color:var(--gold);}
+.rr{display:flex;justify-content:space-between;align-items:center;padding:5.5px 0;border-bottom:1px solid rgba(247,243,238,.08);font-size:10.5px;}
+.rr:last-child{border-bottom:none;}
+.rl{color:rgba(247,243,238,.65);}
+.rv{font-family:'DM Mono',monospace;font-weight:600;color:var(--cream);}
+.rv.hi{color:var(--gold);}
+.rv.dn{color:#f4a07a;}
+.rv.up{color:#7fd4a8;}
+.rsec{font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:rgba(247,243,238,.35);padding:8px 0 2px;}
+.ig{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:14px;}
+.ipanel{background:#fff;border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;}
+.ihdr{padding:10px 14px;font-family:'Playfair Display',serif;font-size:12.5px;font-weight:700;display:flex;align-items:center;gap:7px;}
+.ipanel.p-uk .ihdr{background:rgba(26,58,107,.06);color:var(--uk);}
+.ipanel.p-usa .ihdr{background:rgba(178,34,52,.06);color:var(--usa);}
+.ipanel.p-nl .ihdr{background:rgba(230,112,0,.06);color:var(--nl);}
+.ipanel.p-india .ihdr{background:rgba(224,92,42,.06);color:var(--india);}
+.irow{display:grid;grid-template-columns:1fr auto auto;gap:6px;padding:7px 14px;border-top:1px solid var(--bd);align-items:center;font-size:11px;}
+.irow:hover{background:var(--parch);}
+.ilimit{font-size:9px;color:rgba(15,14,13,.4);font-style:italic;}
+.irate{font-family:'DM Mono',monospace;font-size:9.5px;padding:2px 5px;border-radius:20px;background:rgba(201,168,76,.13);color:#7a5a0a;font-weight:600;white-space:nowrap;}
+.ibadge{font-size:9px;font-weight:600;padding:2px 5px;border-radius:20px;white-space:nowrap;}
+.ib-ok{background:rgba(45,122,79,.11);color:var(--green);}
+.ib-w{background:rgba(224,92,42,.11);color:var(--india);}
+.ib-no{background:rgba(192,57,43,.11);color:var(--red);}
+.tgrid{display:grid;grid-template-columns:1fr 1fr;gap:13px;}
+.tcard{background:#fff;border:1px solid var(--bd);border-radius:var(--r);padding:15px;}
+.tcard h3{font-family:'Playfair Display',serif;font-size:13px;margin-bottom:10px;}
+.tr2{display:flex;justify-content:space-between;padding:6px 0;border-top:1px solid var(--bd);font-size:11px;}
+.tr2:first-of-type{border-top:none;}
+.tv{font-family:'DM Mono',monospace;font-size:10.5px;font-weight:500;}
+.tv.r{color:var(--red);}
+.tv.g{color:var(--green);}
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+.ccard{background:#fff;border:1px solid var(--bd);border-radius:var(--r);padding:14px;}
+.ccard h3{font-family:'Playfair Display',serif;font-size:12.5px;margin-bottom:9px;}
+.ci{display:flex;justify-content:space-between;align-items:flex-start;padding:6px 0;border-top:1px solid var(--bd);gap:8px;font-size:11px;}
 .ci:first-of-type{border-top:none;}
-.ci-label{font-size:12px;font-weight:500;flex:1;}
-.ci-detail{font-size:10px;color:rgba(15,14,13,0.5);margin-top:2px;}
-.status-chip{font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;white-space:nowrap;flex-shrink:0;}
-.s-ok{background:rgba(45,122,79,0.15);color:var(--green);}
-.s-rev{background:rgba(201,168,76,0.2);color:#8a6a1a;}
-.s-alert{background:rgba(192,57,43,0.15);color:var(--red);}
-
-/* REMITTANCE */
-.remit-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:18px;}
-.remit-card{background:#fff;border:1px solid var(--border);border-radius:11px;padding:16px;}
-.remit-card.best-pick{border-color:var(--green);}
-.remit-card.best-pick .remit-provider::after{content:' ★ Best';font-size:10px;color:var(--green);font-weight:600;}
-.remit-provider{font-weight:700;font-size:13px;margin-bottom:5px;}
-.remit-rate{font-family:'DM Mono',monospace;font-size:17px;color:var(--uk);font-weight:600;}
-.remit-fee{font-size:10px;color:rgba(15,14,13,0.5);margin-top:3px;}
-
-/* AI ADVISOR */
-.ai-section{background:var(--ink);border-radius:14px;padding:24px;color:var(--cream);}
-.ai-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
-.ai-avatar{width:38px;height:38px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
-.ai-header h2{font-family:'Playfair Display',serif;font-size:17px;}
-.ai-header p{font-size:11px;color:rgba(247,243,238,0.5);margin-top:2px;}
-.chat-window{background:rgba(247,243,238,0.06);border-radius:9px;padding:14px;height:300px;overflow-y:auto;margin-bottom:12px;display:flex;flex-direction:column;gap:10px;}
+.ci-d{font-size:9.5px;color:rgba(15,14,13,.45);margin-top:2px;}
+.chip{font-size:9px;font-weight:700;padding:2px 5px;border-radius:20px;white-space:nowrap;flex-shrink:0;}
+.chip.ok{background:rgba(45,122,79,.12);color:var(--green);}
+.chip.rev{background:rgba(201,168,76,.18);color:#7a5a0a;}
+.chip.alert{background:rgba(192,57,43,.12);color:var(--red);}
+.rgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:13px;}
+.rcard{background:#fff;border:1px solid var(--bd);border-radius:var(--r);padding:12px;}
+.rcard.best{border-color:var(--green);}
+.rcard.best .rp::after{content:' ★ Best';font-size:9px;color:var(--green);}
+.rp{font-weight:700;font-size:12px;margin-bottom:3px;}
+.rrate{font-family:'DM Mono',monospace;font-size:15px;color:var(--uk);font-weight:600;}
+.rfee{font-size:10px;color:rgba(15,14,13,.45);margin-top:2px;}
+.ai-wrap{background:var(--ink);border-radius:var(--r);padding:18px;color:var(--cream);}
+.ai-hdr{display:flex;align-items:center;gap:9px;margin-bottom:12px;}
+.ai-av{width:34px;height:34px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.ai-hdr h2{font-family:'Playfair Display',serif;font-size:15px;}
+.ai-hdr p{font-size:10px;color:rgba(247,243,238,.45);margin-top:2px;}
+.chat-win{background:rgba(247,243,238,.06);border-radius:8px;padding:11px;height:260px;overflow-y:auto;margin-bottom:9px;display:flex;flex-direction:column;gap:8px;}
 .msg{max-width:88%;}
 .msg.ai{align-self:flex-start;}
 .msg.user{align-self:flex-end;}
-.msg-bubble{padding:9px 13px;border-radius:10px;font-size:12px;line-height:1.55;}
-.msg.ai .msg-bubble{background:rgba(247,243,238,0.1);color:var(--cream);border-bottom-left-radius:3px;}
-.msg.user .msg-bubble{background:var(--gold);color:var(--ink);font-weight:500;border-bottom-right-radius:3px;}
-.msg-time{font-size:10px;color:rgba(247,243,238,0.3);margin-top:3px;padding:0 3px;}
-.msg.user .msg-time{text-align:right;}
-.chat-input-wrap{display:flex;gap:8px;}
-.chat-input{flex:1;padding:11px 14px;background:rgba(247,243,238,0.1);border:1.5px solid rgba(247,243,238,0.15);border-radius:9px;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:12px;outline:none;transition:border-color 0.2s;}
-.chat-input::placeholder{color:rgba(247,243,238,0.3);}
-.chat-input:focus{border-color:var(--gold);}
-.send-btn{padding:11px 18px;background:var(--gold);color:var(--ink);border:none;border-radius:9px;font-weight:700;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;}
-.send-btn:hover{background:#e0b93d;}
-.send-btn:disabled{opacity:0.5;cursor:not-allowed;}
-.quick-questions{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;}
-.quick-q{font-size:10px;padding:5px 10px;border-radius:20px;border:1px solid rgba(247,243,238,0.2);color:rgba(247,243,238,0.65);background:transparent;cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif;}
-.quick-q:hover{background:rgba(247,243,238,0.1);color:var(--cream);border-color:var(--gold);}
-.typing-indicator{display:flex;align-items:center;gap:4px;padding:9px 13px;}
-.typing-dot{width:6px;height:6px;background:var(--gold);border-radius:50%;animation:bounce 1.2s infinite;}
-.typing-dot:nth-child(2){animation-delay:0.2s;}
-.typing-dot:nth-child(3){animation-delay:0.4s;}
-@keyframes bounce{0%,80%,100%{transform:translateY(0);}40%{transform:translateY(-5px);}}
+.mb{padding:8px 11px;border-radius:9px;font-size:11.5px;line-height:1.55;}
+.msg.ai .mb{background:rgba(247,243,238,.1);color:var(--cream);border-bottom-left-radius:3px;}
+.msg.user .mb{background:var(--gold);color:var(--ink);font-weight:500;border-bottom-right-radius:3px;}
+.mtime{font-size:9px;color:rgba(247,243,238,.28);margin-top:2px;padding:0 3px;}
+.msg.user .mtime{text-align:right;}
+.chat-row{display:flex;gap:7px;}
+.chat-in{flex:1;padding:9px 12px;background:rgba(247,243,238,.1);border:1.5px solid rgba(247,243,238,.14);border-radius:8px;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:11.5px;outline:none;}
+.chat-in::placeholder{color:rgba(247,243,238,.28);}
+.chat-in:focus{border-color:var(--gold);}
+.send-btn{padding:9px 15px;background:var(--gold);color:var(--ink);border:none;border-radius:8px;font-weight:700;font-size:11.5px;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;}
+.send-btn:disabled{opacity:.5;}
+.qq-wrap{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:9px;}
+.qq{font-size:10px;padding:4px 9px;border-radius:20px;border:1px solid rgba(247,243,238,.18);color:rgba(247,243,238,.6);background:transparent;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.qq:hover{background:rgba(247,243,238,.1);border-color:var(--gold);}
+.dot{width:6px;height:6px;background:var(--gold);border-radius:50%;animation:bop 1.2s infinite;display:inline-block;margin:0 2px;}
+.dot:nth-child(2){animation-delay:.2s;}
+.dot:nth-child(3){animation-delay:.4s;}
+@keyframes bop{0%,80%,100%{transform:translateY(0);}40%{transform:translateY(-5px);}}
+.banner{background:linear-gradient(135deg,rgba(224,92,42,.06),rgba(26,58,107,.06));border:1px solid var(--bd);border-left:4px solid var(--india);border-radius:7px;padding:11px 14px;margin-bottom:14px;font-size:11.5px;line-height:1.6;}
+.ibox{background:#fff;border:1px solid var(--bd);border-radius:var(--r);padding:14px;margin-bottom:14px;}
+.ibox h3{font-family:'Playfair Display',serif;font-size:13px;margin-bottom:9px;}
+.treaty-tbl{width:100%;border-collapse:collapse;font-size:11px;}
+.treaty-tbl th{padding:7px 10px;text-align:left;background:var(--parch);border-bottom:2px solid var(--bd);}
+.treaty-tbl td{padding:6px 10px;border-bottom:1px solid var(--bd);}
+.treaty-tbl tr:nth-child(even) td{background:rgba(15,14,13,.02);}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(15,14,13,.55);z-index:200;align-items:center;justify-content:center;padding:16px;}
+.modal-bg.open{display:flex;}
+.modal{background:var(--cream);border-radius:12px;padding:22px;width:100%;max-width:460px;box-shadow:var(--sh);position:relative;}
+.modal h2{font-family:'Playfair Display',serif;font-size:17px;margin-bottom:5px;}
+.modal p{font-size:11px;color:rgba(15,14,13,.58);margin-bottom:13px;line-height:1.5;}
+.modal-x{position:absolute;top:12px;right:12px;background:none;border:none;font-size:18px;cursor:pointer;color:rgba(15,14,13,.38);}
+.modal-priv{font-size:9.5px;color:rgba(15,14,13,.42);margin-bottom:11px;font-style:italic;}
+.modal-btns{display:flex;gap:7px;justify-content:flex-end;margin-top:12px;}
+.btn-sec{padding:8px 15px;background:transparent;border:1.5px solid var(--bd);border-radius:7px;font-size:11.5px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;color:var(--ink);}
+.btn-pri{padding:8px 17px;background:var(--ink);color:var(--cream);border:none;border-radius:7px;font-size:11.5px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.btn-pri:hover{background:var(--india);}
+.disclaimer{background:rgba(15,14,13,.04);border-top:1px solid var(--bd);padding:8px 18px;font-size:10px;color:rgba(15,14,13,.42);text-align:center;line-height:1.5;}
+.hidden{display:none!important;}
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-thumb{background:rgba(15,14,13,.16);border-radius:3px;}
 
-/* FEMA BANNER */
-.fema-banner{background:linear-gradient(135deg,rgba(224,92,42,0.07),rgba(26,58,107,0.07));border:1px solid var(--border);border-left:4px solid var(--india);border-radius:7px;padding:14px 18px;margin-bottom:18px;font-size:12px;line-height:1.6;}
-
-/* MODAL */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,14,13,0.55);z-index:100;align-items:center;justify-content:center;}
-.modal-overlay.open{display:flex;}
-.modal{background:var(--cream);border-radius:14px;padding:28px;width:500px;max-width:95vw;box-shadow:0 20px 60px rgba(15,14,13,0.25);position:relative;}
-.modal h2{font-family:'Playfair Display',serif;font-size:19px;margin-bottom:7px;}
-.modal p{font-size:12px;color:rgba(15,14,13,0.6);margin-bottom:18px;line-height:1.5;}
-.modal-close{position:absolute;top:14px;right:14px;background:none;border:none;font-size:19px;cursor:pointer;color:rgba(15,14,13,0.4);line-height:1;}
-.modal-close:hover{color:var(--ink);}
-.modal-privacy{font-size:10px;color:rgba(15,14,13,0.45);margin-bottom:14px;font-style:italic;}
-.modal-actions{display:flex;gap:8px;justify-content:flex-end;}
-.btn-secondary{padding:9px 18px;background:transparent;border:1.5px solid var(--border);border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;color:var(--ink);}
-.btn-primary{padding:9px 22px;background:var(--ink);color:var(--cream);border:none;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;}
-.btn-primary:hover{background:var(--india);}
-
-/* DISCLAIMER */
-.disclaimer-bar{background:rgba(15,14,13,0.04);border-top:1px solid var(--border);padding:9px 28px;font-size:11px;color:rgba(15,14,13,0.45);line-height:1.5;text-align:center;}
-
-/* UTILS */
-.hidden-section{display:none!important;}
-.india-only,.uk-only{transition:opacity 0.2s;}
-.info-box{background:#fff;border:1px solid var(--border);border-radius:11px;padding:18px;margin-bottom:18px;}
-.info-box h3{font-family:'Playfair Display',serif;font-size:15px;margin-bottom:12px;}
-::-webkit-scrollbar{width:5px;}
-::-webkit-scrollbar-thumb{background:rgba(15,14,13,0.18);border-radius:3px;}
+/* ── RESPONSIVE ── */
+@media(max-width:1100px){
+  :root{--sw:270px;}
+  .cg4{grid-template-columns:1fr 1fr;}
+  .sgrid{grid-template-columns:1fr 1fr;}
+  .tgrid{grid-template-columns:1fr 1fr;}
+  .spane.active{grid-template-columns:1fr;}
+}
+@media(max-width:820px){
+  :root{--sw:260px;}
+  .cg4{grid-template-columns:1fr 1fr;}
+  .cg3{grid-template-columns:1fr 1fr;}
+  .sgrid{grid-template-columns:1fr 1fr;}
+  .ig{grid-template-columns:1fr;}
+  .cgrid{grid-template-columns:1fr;}
+  .spane.active{grid-template-columns:1fr;}
+  .main-inner{padding:13px 13px;}
+  .hbadge{display:none;}
+}
+@media(max-width:640px){
+  .app{display:block;}
+  .sidebar{
+    position:fixed;top:52px;left:0;bottom:0;
+    width:88vw;max-width:300px;z-index:40;
+    transform:translateX(-100%);
+    transition:transform .28s cubic-bezier(.4,0,.2,1);
+    height:calc(100vh - 52px);
+    box-shadow:4px 0 24px rgba(15,14,13,.2);
+  }
+  .sidebar.open{transform:translateX(0);}
+  .menu-btn{display:flex;align-items:center;}
+  .hsub{display:none;}
+  .main{display:block;width:100%;}
+  .main-inner{padding:11px 11px;}
+  .cg4{grid-template-columns:1fr 1fr;}
+  .cg3{grid-template-columns:1fr;}
+  .sgrid{grid-template-columns:1fr;}
+  .ig{grid-template-columns:1fr;}
+  .tgrid{grid-template-columns:1fr;}
+  .cgrid{grid-template-columns:1fr;}
+  .rgrid{grid-template-columns:1fr 1fr;}
+  .spane.active{grid-template-columns:1fr;}
+  .sal-tabs{flex-wrap:wrap;}
+  .stab{flex:1 0 40%;}
+  .tbtn{font-size:10.5px;padding:8px 10px;}
+  canvas{max-height:200px;}
+  .fgrow{grid-template-columns:1fr;}
+  .sc-val{font-size:18px;}
+}
+@media(max-width:380px){
+  .cg4{grid-template-columns:1fr;}
+  .rgrid{grid-template-columns:1fr;}
+  .sal-tabs{flex-direction:column;}
+}
 </style>
 </head>
 <body>
 
-<header>
-  <div class="logo">
-    <div class="logo-flags">🇮🇳🇬🇧</div>
+<header class="hdr">
+  <div class="hdr-l">
+    <button class="menu-btn" id="menuBtn" onclick="toggleSB()" aria-label="Menu">☰</button>
+    <div class="flags">🇮🇳🇬🇧🇺🇸🇳🇱</div>
     <div>
-      <h1>India ↔ UK Savings Optimizer</h1>
-      <p>Cross-border wealth planning · FEMA compliant · Tax-aware · Educational tool</p>
+      <div class="htitle">Global NRI Savings Optimizer</div>
+      <div class="hsub">India · UK · USA · Netherlands · Educational Tool</div>
     </div>
   </div>
-  <div class="header-actions">
+  <div class="hdr-r">
     <span class="hbadge">FEMA 2000</span>
     <span class="hbadge">DTAA</span>
     <span class="hbadge">FY 2025–26</span>
-    <button class="email-btn" onclick="openEmailModal()">📧 Email Summary</button>
+    <button class="email-btn" onclick="openMail()">📧 Email Summary</button>
   </div>
 </header>
 
+<div class="backdrop" id="bd" onclick="closeSB()"></div>
 <div class="app">
-<!-- ════════════════════════════════════════
-     SIDEBAR
-════════════════════════════════════════ -->
-<aside class="sidebar">
-  <!-- Privacy Notice -->
-  <div class="privacy-banner">
-    <span style="font-size:13px;flex-shrink:0;margin-top:1px;">🔒</span>
-    <div><strong>Privacy Notice:</strong> Do not enter names, NI/PAN numbers, bank details or any PII. Use approximate figures only. All calculations run entirely in your browser — nothing is stored or transmitted.</div>
-  </div>
 
-  <!-- Mode Toggle -->
-  <div style="margin-bottom:14px;">
-    <div style="font-size:10px;font-weight:600;letter-spacing:0.6px;text-transform:uppercase;color:rgba(15,14,13,0.45);margin-bottom:7px;">Calculation Mode</div>
-    <div class="mode-toggle-wrap">
-      <button class="mode-btn active" id="modeAll" onclick="setMode('all')">🌍 Both</button>
-      <button class="mode-btn uk-btn" id="modeUK" onclick="setMode('uk')">🇬🇧 UK Only</button>
-      <button class="mode-btn india-btn" id="modeIndia" onclick="setMode('india')">🇮🇳 India Only</button>
-    </div>
-  </div>
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sb">
+<div class="sb-inner">
+<div class="priv"><span style="font-size:13px;flex-shrink:0">🔒</span><div><strong>Privacy:</strong> No names, NI/PAN/SSN or bank details. Approximate figures only. All calculations run locally — nothing stored or sent.</div></div>
 
-  <!-- ── PROFILE ── -->
-  <div class="sec-title">👤 Profile</div>
-  <div class="fg">
-    <label>Residential Status</label>
-    <select id="resStatus">
-      <option value="nri">NRI (Non-Resident Indian)</option>
-      <option value="rnor">RNOR (Returned to India)</option>
-      <option value="resident">UK Resident (Indian Citizen)</option>
-    </select>
-  </div>
-  <div class="fg">
-    <label>Current Age</label>
-    <input type="number" id="currentAge" value="32" min="18" max="70">
-  </div>
+<div class="stitle" style="margin-bottom:8px">Active Countries</div>
+<div class="c-grid">
+  <button class="cbtn on-india" id="cb-india" onclick="toggleC('india')">🇮🇳 India</button>
+  <button class="cbtn on-uk" id="cb-uk" onclick="toggleC('uk')">🇬🇧 UK</button>
+  <button class="cbtn on-usa" id="cb-usa" onclick="toggleC('usa')">🇺🇸 USA</button>
+  <button class="cbtn on-nl" id="cb-nl" onclick="toggleC('nl')">🇳🇱 Netherlands</button>
+</div>
 
-  <!-- ── WEALTH GOAL ── -->
-  <div class="wealth-goal-box">
-    <div class="wealth-goal-title">🎯 Wealth Goal</div>
-    <div class="fg">
-      <label>Target Savings Amount (£)</label>
-      <input type="number" id="goalAmount" value="500000" min="0">
-      <div class="fg-hint">e.g. £500,000 for retirement / house / FIRE</div>
-    </div>
-    <div class="fg">
-      <label>I want to achieve this by age</label>
-      <input type="number" id="goalAge" value="55" min="20" max="80">
-    </div>
-    <div class="fg">
-      <label>Risk Appetite</label>
-      <select id="riskAppetite">
-        <option value="conservative">Conservative (FD/Bonds focus)</option>
-        <option value="moderate" selected>Moderate (Balanced)</option>
-        <option value="aggressive">Aggressive (Equity focus)</option>
-      </select>
-    </div>
+<div class="stitle">👤 Profile</div>
+<div class="fg"><label>Current Age</label><input type="number" id="age" value="32" min="18" max="70"></div>
+<div class="goal-box">
+  <div class="goal-box-t">🎯 Wealth Goal</div>
+  <div class="fg"><label>Target (£ equiv.)</label><input type="number" id="goalAmt" value="500000"><div class="fg-hint">Use £ as base currency for cross-country comparison</div></div>
+  <div class="fgrow">
+    <div class="fg"><label>By Age</label><input type="number" id="goalAge" value="55" min="20" max="80"></div>
+    <div class="fg"><label>Risk</label><select id="risk"><option value="conservative">Conservative</option><option value="moderate" selected>Moderate</option><option value="aggressive">Aggressive</option></select></div>
   </div>
+</div>
 
-  <!-- ── UK INCOME BREAKDOWN ── -->
-  <div class="sec-title uk-color uk-only">🇬🇧 UK Income (£/yr)</div>
-  <div class="income-breakdown uk-only">
-    <div class="income-breakdown-title">
-      <span>Income Breakdown</span>
-      <span class="income-total-display" id="ukIncomeTotal">£0</span>
-    </div>
-    <div class="fg">
-      <label>Base / Annual Salary</label>
-      <input type="number" id="ukBasePay" value="65000" min="0" oninput="updateUKTotal()">
-    </div>
-    <div class="fg-row">
-      <div class="fg">
-        <label>Annual Bonus</label>
-        <input type="number" id="ukBonus" value="8000" min="0" oninput="updateUKTotal()">
-      </div>
-      <div class="fg">
-        <label>Stock Awards (RSU/yr)</label>
-        <input type="number" id="ukStocks" value="5000" min="0" oninput="updateUKTotal()">
-      </div>
-    </div>
-    <div class="fg">
-      <label>Student Loan Plan</label>
-      <select id="studentLoan">
-        <option value="none">None</option>
-        <option value="plan1">Plan 1 (pre-Sept 2012)</option>
-        <option value="plan2">Plan 2 (post-Sept 2012)</option>
-        <option value="plan5">Plan 5 (post-Aug 2023)</option>
-      </select>
-    </div>
-    <div class="fg">
-      <label>Pension Contribution (%)</label>
-      <input type="number" id="ukPensionPct" value="5" min="0" max="100">
-      <div class="fg-hint">Employee %; employer adds ~3% auto-enrolment</div>
-    </div>
-    <div class="fg">
-      <label>Scotland Resident?</label>
-      <select id="scotlandResident">
-        <option value="no">No (England / Wales / NI)</option>
-        <option value="yes">Yes (Scotland)</option>
-      </select>
-    </div>
+<div class="stitle gold">💱 Exchange Rates</div>
+<div class="fgrow">
+  <div class="fg"><label>₹ INR/£</label><input type="number" id="fxI" value="107" min="1"></div>
+  <div class="fg"><label>$ USD/£</label><input type="number" id="fxU" value="0.79" step="0.01"></div>
+</div>
+<div class="fg"><label>€ EUR/£</label><input type="number" id="fxE" value="0.85" step="0.01"></div>
+<div class="sdiv"></div>
+
+<!-- UK -->
+<div class="csec" id="csec-uk">
+  <div class="cshdr" onclick="toggleSec('uk')">
+    <div class="cshdr-l">🇬🇧 <span style="color:var(--uk)">UK</span></div>
+    <span class="arr o" id="arr-uk">▼</span>
   </div>
-
-  <!-- ── INDIA INCOME BREAKDOWN ── -->
-  <div class="sec-title india-color india-only">🇮🇳 India Income (₹/yr)</div>
-  <div class="income-breakdown india-only">
-    <div class="income-breakdown-title">
-      <span>Income Breakdown</span>
-      <span class="income-total-display" id="inIncomeTotal">₹0</span>
+  <div class="csbody" id="body-uk">
+    <div class="fg"><label>Base Salary (£/yr) <span class="itotal" id="ukTot">£0</span></label><input type="number" id="ukBase" value="65000" oninput="updTotals()"></div>
+    <div class="fgrow">
+      <div class="fg"><label>Bonus (£/yr)</label><input type="number" id="ukBonus" value="8000" oninput="updTotals()"></div>
+      <div class="fg"><label>RSU/Stock (£/yr)</label><input type="number" id="ukStock" value="5000" oninput="updTotals()"></div>
     </div>
-    <div class="fg">
-      <label>Rental Income</label>
-      <input type="number" id="inRental" value="300000" min="0" oninput="updateINTotal()">
+    <div class="fg"><label>Employee Pension %</label><input type="number" id="ukPen" value="5" min="0" max="60"></div>
+    <div class="fgrow">
+      <div class="fg"><label>Student Loan</label><select id="ukSL"><option value="none">None</option><option value="plan1">Plan 1</option><option value="plan2" selected>Plan 2</option><option value="plan5">Plan 5</option></select></div>
+      <div class="fg"><label>Scotland?</label><select id="ukScot"><option value="no">No</option><option value="yes">Yes</option></select></div>
     </div>
-    <div class="fg-row">
-      <div class="fg">
-        <label>Dividends</label>
-        <input type="number" id="inDividends" value="50000" min="0" oninput="updateINTotal()">
-      </div>
-      <div class="fg">
-        <label>FD/Interest</label>
-        <input type="number" id="inFDIncome" value="100000" min="0" oninput="updateINTotal()">
-      </div>
-    </div>
-    <div class="fg">
-      <label>Capital Gains (Equity)</label>
-      <input type="number" id="inCapGains" value="50000" min="0" oninput="updateINTotal()">
-    </div>
+    <div class="sdiv"></div>
+    <div class="stitle uk">Allocations (£/mo)</div>
+    <div class="fg"><label>ISA</label><input type="number" id="isa" value="1000"><div class="fg-hint">Limit £20K/yr — all growth tax-free</div></div>
+    <div class="fg"><label>SIPP Pension</label><input type="number" id="sipp" value="600"></div>
+    <div class="fg"><label>Cash / HYSA</label><input type="number" id="ukCash" value="400"></div>
   </div>
+</div>
 
-  <div class="sdiv"></div>
-
-  <!-- ── UK ALLOCATIONS ── -->
-  <div class="sec-title uk-color uk-only">🇬🇧 UK Allocations (£/mo)</div>
-  <div class="uk-only">
-    <div class="fg">
-      <label>Stocks & Shares ISA</label>
-      <input type="number" id="isaAmount" value="1000" min="0">
-      <div class="fg-hint">Limit: £20,000/yr — all growth tax-free</div>
-    </div>
-    <div class="fg">
-      <label>SIPP Pension</label>
-      <input type="number" id="sippAmount" value="600" min="0">
-      <div class="fg-hint">25% tax-free at retirement; tax relief on contributions</div>
-    </div>
-    <div class="fg">
-      <label>Cash Savings (HYSA)</label>
-      <input type="number" id="cashSavings" value="400" min="0">
-    </div>
+<!-- USA -->
+<div class="csec" id="csec-usa">
+  <div class="cshdr" onclick="toggleSec('usa')">
+    <div class="cshdr-l">🇺🇸 <span style="color:var(--usa)">USA</span></div>
+    <span class="arr o" id="arr-usa">▼</span>
   </div>
-
-  <div class="sdiv india-only"></div>
-
-  <!-- ── INDIA ALLOCATIONS ── -->
-  <div class="sec-title india-color india-only">🇮🇳 India Allocations (₹/mo)</div>
-  <div class="india-only">
-    <div class="fg">
-      <label>NRE Fixed Deposit</label>
-      <input type="number" id="nreFD" value="20000" min="0">
-      <div class="fg-hint">Tax-free in India; taxable in UK</div>
+  <div class="csbody" id="body-usa">
+    <div class="fg"><label>Base Salary ($/yr) <span class="itotal" id="usaTot">$0</span></label><input type="number" id="usaBase" value="120000" oninput="updTotals()"></div>
+    <div class="fgrow">
+      <div class="fg"><label>Bonus ($/yr)</label><input type="number" id="usaBonus" value="15000" oninput="updTotals()"></div>
+      <div class="fg"><label>RSU/Stock ($/yr)</label><input type="number" id="usaStock" value="20000" oninput="updTotals()"></div>
     </div>
-    <div class="fg">
-      <label>NRO Fixed Deposit</label>
-      <input type="number" id="nroFD" value="10000" min="0">
-      <div class="fg-hint">India-sourced income; TDS 30% (reducible via Form 10F)</div>
+    <div class="fgrow">
+      <div class="fg"><label>Filing Status</label><select id="usaFiling"><option value="single" selected>Single</option><option value="mfj">MFJ</option></select></div>
+      <div class="fg"><label>State Tax</label><select id="usaState"><option value="0">TX/FL/WA 0%</option><option value="4.95">IL 4.95%</option><option value="5">Other ~5%</option><option value="6">VA/GA ~6%</option><option value="9.3">CA up to 13.3%</option><option value="9">NY ~10.9%</option><option value="10.75">NJ max 10.75%</option></select></div>
     </div>
-    <div class="fg">
-      <label>Mutual Funds / Equity</label>
-      <input type="number" id="mfAmount" value="15000" min="0">
-      <div class="fg-hint">NRI KYC + FATCA required; some AMCs restrict UK residents</div>
-    </div>
-    <div class="fg">
-      <label>PPF (Existing accounts only)</label>
-      <input type="number" id="ppfAmount" value="0" min="0">
-      <div class="fg-hint">NRIs cannot open new PPF; continue existing till maturity</div>
-    </div>
+    <div class="sdiv"></div>
+    <div class="stitle usa">Allocations ($/mo)</div>
+    <div class="fg"><label>401(k)</label><input type="number" id="k401" value="1500"><div class="fg-hint">2025 limit $23,500/yr — pre-tax</div></div>
+    <div class="fg"><label>Roth IRA</label><input type="number" id="roth" value="583"><div class="fg-hint">2025 limit $7,000/yr — tax-free growth</div></div>
+    <div class="fg"><label>HSA (HDHP)</label><input type="number" id="hsa" value="300"><div class="fg-hint">$4,300/yr self — triple tax advantage</div></div>
+    <div class="fg"><label>Brokerage</label><input type="number" id="usaBrok" value="500"></div>
   </div>
+</div>
 
-  <!-- ── COMMON ── -->
-  <div class="sdiv"></div>
-  <div class="fg" id="fxGroup">
-    <label>GBP → INR Exchange Rate</label>
-    <input type="number" id="fxRate" value="107" min="1">
+<!-- Netherlands -->
+<div class="csec" id="csec-nl">
+  <div class="cshdr" onclick="toggleSec('nl')">
+    <div class="cshdr-l">🇳🇱 <span style="color:var(--nl)">Netherlands</span></div>
+    <span class="arr o" id="arr-nl">▼</span>
   </div>
-  <div class="fg">
-    <label>Investment Horizon (years)</label>
-    <input type="number" id="horizon" value="23" min="1" max="40">
-    <div class="fg-hint" id="horizonHint">Time to reach your wealth goal age</div>
+  <div class="csbody" id="body-nl">
+    <div class="fg"><label>Base Salary (€/yr) <span class="itotal" id="nlTot">€0</span></label><input type="number" id="nlBase" value="80000" oninput="updTotals()"></div>
+    <div class="fgrow">
+      <div class="fg"><label>Bonus (€/yr)</label><input type="number" id="nlBonus" value="10000" oninput="updTotals()"></div>
+      <div class="fg"><label>RSU/Stock (€/yr)</label><input type="number" id="nlStock" value="8000" oninput="updTotals()"></div>
+    </div>
+    <div class="fg"><label>30% Ruling?</label><select id="nl30"><option value="no">No</option><option value="yes" selected>Yes — up to 5 yrs</option></select><div class="fg-hint">30% of salary tax-free for eligible expats</div></div>
+    <div class="sdiv"></div>
+    <div class="stitle nl">Allocations (€/mo)</div>
+    <div class="fg"><label>Pensioenrekening</label><input type="number" id="nlPen" value="400"><div class="fg-hint">Tax-deductible — reduces Box 1 tax</div></div>
+    <div class="fg"><label>Beleggingsrekening</label><input type="number" id="nlBrok" value="600"><div class="fg-hint">Box 3 wealth tax applies above €57K</div></div>
+    <div class="fg"><label>Spaarrekening</label><input type="number" id="nlCash" value="300"></div>
   </div>
+</div>
 
-  <button class="calc-btn" onclick="calculate()">⚡ Calculate Strategy</button>
+<!-- India -->
+<div class="csec" id="csec-india">
+  <div class="cshdr" onclick="toggleSec('india')">
+    <div class="cshdr-l">🇮🇳 <span style="color:var(--india)">India</span></div>
+    <span class="arr o" id="arr-india">▼</span>
+  </div>
+  <div class="csbody" id="body-india">
+    <div class="fg"><label>India Income <span class="itotal" id="inTot">₹0</span></label></div>
+    <div class="fgrow">
+      <div class="fg"><label>Rental (₹/yr)</label><input type="number" id="inRent" value="300000" oninput="updTotals()"></div>
+      <div class="fg"><label>Dividends (₹/yr)</label><input type="number" id="inDiv" value="50000" oninput="updTotals()"></div>
+    </div>
+    <div class="fgrow">
+      <div class="fg"><label>FD Interest (₹/yr)</label><input type="number" id="inFD" value="100000" oninput="updTotals()"></div>
+      <div class="fg"><label>Cap Gains (₹/yr)</label><input type="number" id="inCG" value="50000" oninput="updTotals()"></div>
+    </div>
+    <div class="sdiv"></div>
+    <div class="stitle india">Allocations (₹/mo)</div>
+    <div class="fg"><label>NRE Fixed Deposit</label><input type="number" id="nreFD" value="20000"><div class="fg-hint">Tax-free in India; taxable in residence country</div></div>
+    <div class="fg"><label>NRO Fixed Deposit</label><input type="number" id="nroFD" value="10000"><div class="fg-hint">TDS 30% → ~15% via Form 10F + TRC</div></div>
+    <div class="fg"><label>Mutual Funds</label><input type="number" id="mf" value="15000"><div class="fg-hint">NRI KYC + FATCA; ⚠ US persons — PFIC rules apply</div></div>
+  </div>
+</div>
+
+<button class="calc-btn" onclick="calc()">⚡ Calculate Strategy</button>
+</div><!-- /sb-inner -->
 </aside>
 
-<!-- ════════════════════════════════════════
-     MAIN
-════════════════════════════════════════ -->
+<!-- MAIN CONTENT -->
 <main class="main">
-  <div class="tabs">
-    <div class="tab active" onclick="switchTab('overview')">📊 Strategy</div>
-    <div class="tab" onclick="switchTab('salary')">💷 Salary Calculators</div>
-    <div class="tab" onclick="switchTab('instruments')">🏦 Instruments</div>
-    <div class="tab" onclick="switchTab('tax')">💸 Tax & DTAA</div>
-    <div class="tab" onclick="switchTab('compliance')">⚖️ FEMA</div>
-    <div class="tab" onclick="switchTab('remittance')">💱 Remittance</div>
-    <div class="tab" onclick="switchTab('advisor')">🤖 AI Advisor</div>
-  </div>
+<div class="main-inner">
 
-  <!-- ══════════════════════════════
-       STRATEGY / OVERVIEW TAB
-  ══════════════════════════════ -->
-  <div id="tab-overview" class="tab-content active">
-
-    <div class="summary-grid" id="summaryGrid">
-      <div class="summary-card uk-card">
-        <div class="card-label">🇬🇧 UK Take-Home (Annual)</div>
-        <div class="card-value" id="ukTakeHome">£52,400</div>
-        <div class="card-sub" id="ukTakeHomeSub">After income tax & NI</div>
-      </div>
-      <div class="summary-card india-card">
-        <div class="card-label">🇮🇳 India Portfolio (Annual)</div>
-        <div class="card-value" id="indiaTotal">₹5.4L</div>
-        <div class="card-sub">NRE FD + NRO FD + Mutual Funds</div>
-      </div>
-      <div class="summary-card goal-card">
-        <div class="card-label">🎯 Goal Progress (Year 1)</div>
-        <div class="card-value" id="goalProgressPct">6%</div>
-        <div class="card-sub" id="goalProgressSub">On track to reach £500K by age 55</div>
-      </div>
-    </div>
-
-    <!-- STRATEGY PANEL -->
-    <div class="strategy-panel" id="strategyPanel">
-      <h2>🧭 Your Personalised Wealth Strategy</h2>
-      <div style="margin-bottom:14px;">
-        <div class="goal-progress-bar"><div class="goal-progress-fill" id="stratProgressBar" style="width:6%"></div></div>
-        <div class="goal-meta">
-          <span id="stratGoalLeft">£0 invested of £500,000 target</span>
-          <span id="stratYearsLeft">23 years to goal age</span>
-        </div>
-      </div>
-      <div class="strategy-grid" id="strategyGrid">
-        <!-- Populated by JS -->
-      </div>
-    </div>
-
-    <div class="chart-wrap">
-      <div class="chart-title">📈 Projected Portfolio Growth to Wealth Goal</div>
-      <canvas id="growthChart" height="200"></canvas>
-    </div>
-
-    <div class="alloc-section">
-      <div style="font-family:'Playfair Display',serif;font-size:15px;font-weight:700;margin-bottom:14px;">💼 Annual Savings Allocation</div>
-      <div class="alloc-bar-wrap" id="allocBar"></div>
-      <div class="alloc-legend" id="allocLegend"></div>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════
-       SALARY CALCULATORS TAB
-  ══════════════════════════════ -->
-  <div id="tab-salary" class="tab-content">
-    <div style="margin-bottom:18px;">
-      <div style="font-family:'Playfair Display',serif;font-size:20px;margin-bottom:6px;">💷 Salary Take-Home Calculators</div>
-      <p style="font-size:13px;color:rgba(15,14,13,0.6);">Understand exactly what you take home after all deductions in both countries. Figures are estimates based on standard rules — consult a tax professional for precision.</p>
-    </div>
-
-    <div class="salary-tabs">
-      <button class="salary-tab uk-tab active" onclick="switchSalaryTab('uk')">🇬🇧 UK Salary Calculator</button>
-      <button class="salary-tab india-tab" onclick="switchSalaryTab('india')">🇮🇳 India Salary Calculator</button>
-    </div>
-
-    <!-- ── UK SALARY CALC ── -->
-    <div id="salary-uk" class="salary-calc-panel active">
-      <div class="salary-input-panel">
-        <h3>🇬🇧 UK Income Details</h3>
-        <div class="fg">
-          <label>Base / Annual Salary (£)</label>
-          <input type="number" id="sc_ukBase" value="65000" min="0" oninput="calcUKSalary()">
-        </div>
-        <div class="fg-row">
-          <div class="fg">
-            <label>Annual Bonus (£)</label>
-            <input type="number" id="sc_ukBonus" value="8000" min="0" oninput="calcUKSalary()">
-          </div>
-          <div class="fg">
-            <label>Stock Awards / RSU (£/yr)</label>
-            <input type="number" id="sc_ukStocks" value="5000" min="0" oninput="calcUKSalary()">
-          </div>
-        </div>
-        <div class="fg">
-          <label>Employer Pension (% of salary)</label>
-          <input type="number" id="sc_empPension" value="3" min="0" max="20" oninput="calcUKSalary()">
-        </div>
-        <div class="fg">
-          <label>Employee Pension (% of salary)</label>
-          <input type="number" id="sc_eePension" value="5" min="0" max="60" oninput="calcUKSalary()">
-        </div>
-        <div class="fg">
-          <label>Student Loan Repayment</label>
-          <select id="sc_studentLoan" onchange="calcUKSalary()">
-            <option value="none">None</option>
-            <option value="plan1">Plan 1 — threshold £24,990</option>
-            <option value="plan2" selected>Plan 2 — threshold £27,295</option>
-            <option value="plan5">Plan 5 — threshold £25,000</option>
-          </select>
-        </div>
-        <div class="fg">
-          <label>Scotland Resident?</label>
-          <select id="sc_scotland" onchange="calcUKSalary()">
-            <option value="no">No</option>
-            <option value="yes">Yes (Scottish income tax rates)</option>
-          </select>
-        </div>
-        <div class="fg">
-          <label>Salary Sacrifice (Cycle/EV/other, £/mo)</label>
-          <input type="number" id="sc_sacrifice" value="0" min="0" oninput="calcUKSalary()">
-        </div>
-        <div class="fg">
-          <label>Tax Code</label>
-          <input type="text" id="sc_taxCode" value="1257L" placeholder="e.g. 1257L" oninput="calcUKSalary()" style="font-family:'DM Mono',monospace;">
-        </div>
-      </div>
-
-      <div class="salary-results-panel">
-        <h3>Your UK Take-Home</h3>
-        <div class="period-tabs">
-          <button class="period-tab active" onclick="setPeriod('uk','annual')">Annual</button>
-          <button class="period-tab" onclick="setPeriod('uk','monthly')">Monthly</button>
-          <button class="period-tab" onclick="setPeriod('uk','weekly')">Weekly</button>
-        </div>
-
-        <div class="result-section-header">Income</div>
-        <div class="result-row"><span class="result-label">Base Salary</span><span class="result-value highlight" id="uk_grossBase">£65,000</span></div>
-        <div class="result-row"><span class="result-label">Bonus</span><span class="result-value" id="uk_grossBonus">£8,000</span></div>
-        <div class="result-row"><span class="result-label">Stock Awards</span><span class="result-value" id="uk_grossStocks">£5,000</span></div>
-        <div class="result-row"><span class="result-label">Total Gross</span><span class="result-value highlight" id="uk_totalGross">£78,000</span></div>
-
-        <div class="result-section-header">Deductions</div>
-        <div class="result-row"><span class="result-label">Income Tax</span><span class="result-value deduction" id="uk_incomeTax">−£24,432</span></div>
-        <div class="result-row"><span class="result-label">National Insurance</span><span class="result-value deduction" id="uk_ni">−£4,284</span></div>
-        <div class="result-row"><span class="result-label">Employee Pension</span><span class="result-value deduction" id="uk_eePension">−£3,250</span></div>
-        <div class="result-row"><span class="result-label">Student Loan</span><span class="result-value deduction" id="uk_studentLoan">−£0</span></div>
-        <div class="result-row"><span class="result-label">Salary Sacrifice</span><span class="result-value deduction" id="uk_sacrifice">−£0</span></div>
-
-        <div class="result-section-header">Summary</div>
-        <div class="result-row"><span class="result-label">💰 Take-Home Pay</span><span class="result-value highlight" id="uk_takeHome">£46,034</span></div>
-        <div class="result-row"><span class="result-label">Employer Pension Added</span><span class="result-value saving" id="uk_empPension">+£1,950</span></div>
-        <div class="result-row"><span class="result-label">Total Package Value</span><span class="result-value saving" id="uk_totalPackage">£79,950</span></div>
-        <div class="result-row"><span class="result-label">Effective Tax Rate</span><span class="result-value" id="uk_effTax">36.7%</span></div>
-        <div class="result-row"><span class="result-label">Marginal Tax Rate</span><span class="result-value" id="uk_marginalTax">40%</span></div>
-
-        <div class="result-section-header">Tax-Free Savings Capacity</div>
-        <div class="result-row"><span class="result-label">ISA Allowance Remaining</span><span class="result-value saving" id="uk_isaLeft">£20,000/yr</span></div>
-        <div class="result-row"><span class="result-label">SIPP Headroom (annual)</span><span class="result-value saving" id="uk_sippLeft">£55,000</span></div>
-      </div>
-    </div>
-
-    <!-- ── INDIA SALARY CALC ── -->
-    <div id="salary-india" class="salary-calc-panel">
-      <div class="salary-input-panel">
-        <h3>🇮🇳 India Income Details</h3>
-        <div class="fg">
-          <label>Rental Income (₹/yr)</label>
-          <input type="number" id="sc_inRental" value="300000" min="0" oninput="calcIndiaSalary()">
-          <div class="fg-hint">30% standard deduction allowed on rental</div>
-        </div>
-        <div class="fg-row">
-          <div class="fg">
-            <label>Dividends (₹/yr)</label>
-            <input type="number" id="sc_inDividends" value="50000" min="0" oninput="calcIndiaSalary()">
-          </div>
-          <div class="fg">
-            <label>FD / Interest (₹/yr)</label>
-            <input type="number" id="sc_inFD" value="100000" min="0" oninput="calcIndiaSalary()">
-          </div>
-        </div>
-        <div class="fg-row">
-          <div class="fg">
-            <label>LTCG Equity &gt;1yr (₹)</label>
-            <input type="number" id="sc_inLTCG" value="50000" min="0" oninput="calcIndiaSalary()">
-            <div class="fg-hint">Tax: 12.5% above ₹1.25L</div>
-          </div>
-          <div class="fg">
-            <label>STCG Equity &lt;1yr (₹)</label>
-            <input type="number" id="sc_inSTCG" value="0" min="0" oninput="calcIndiaSalary()">
-            <div class="fg-hint">Tax: 20%</div>
-          </div>
-        </div>
-        <div class="fg">
-          <label>Tax Regime</label>
-          <select id="sc_inRegime" onchange="calcIndiaSalary()">
-            <option value="new" selected>New Regime (FY25-26 default)</option>
-            <option value="old">Old Regime (with deductions)</option>
-          </select>
-        </div>
-        <div class="fg" id="inDeductionsBox">
-          <label>Section 80C Deductions (₹)</label>
-          <input type="number" id="sc_in80C" value="150000" min="0" max="150000" oninput="calcIndiaSalary()">
-          <div class="fg-hint">Old regime only — max ₹1,50,000</div>
-        </div>
-        <div class="fg">
-          <label>NRI Status?</label>
-          <select id="sc_inNRI" onchange="calcIndiaSalary()">
-            <option value="yes" selected>Yes — NRI (taxed on India-sourced only)</option>
-            <option value="no">No — Resident Indian</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="salary-results-panel">
-        <h3>Your India Tax Position</h3>
-        <div class="period-tabs">
-          <button class="period-tab active" onclick="setPeriod('india','annual')">Annual</button>
-          <button class="period-tab" onclick="setPeriod('india','monthly')">Monthly</button>
-        </div>
-
-        <div class="result-section-header">Income (India-Sourced)</div>
-        <div class="result-row"><span class="result-label">Rental (after 30% deduction)</span><span class="result-value highlight" id="in_rentalNet">₹2,10,000</span></div>
-        <div class="result-row"><span class="result-label">Dividends</span><span class="result-value" id="in_divIncome">₹50,000</span></div>
-        <div class="result-row"><span class="result-label">FD / Interest</span><span class="result-value" id="in_fdIncome">₹1,00,000</span></div>
-        <div class="result-row"><span class="result-label">LTCG (Equity)</span><span class="result-value" id="in_ltcgIncome">₹50,000</span></div>
-        <div class="result-row"><span class="result-label">Total Gross Income</span><span class="result-value highlight" id="in_totalGross">₹4,10,000</span></div>
-
-        <div class="result-section-header">Tax Deducted / Payable</div>
-        <div class="result-row"><span class="result-label">TDS on NRO FD (30%)</span><span class="result-value deduction" id="in_fdTDS">−₹30,000</span></div>
-        <div class="result-row"><span class="result-label">Tax on Dividends (20% TDS)</span><span class="result-value deduction" id="in_divTax">−₹10,000</span></div>
-        <div class="result-row"><span class="result-label">LTCG Tax (12.5% above ₹1.25L)</span><span class="result-value deduction" id="in_ltcgTax">−₹0</span></div>
-        <div class="result-row"><span class="result-label">Total India Tax</span><span class="result-value deduction" id="in_totalTax">−₹40,000</span></div>
-
-        <div class="result-section-header">Net & DTAA</div>
-        <div class="result-row"><span class="result-label">💰 Net India Income</span><span class="result-value highlight" id="in_netIncome">₹3,70,000</span></div>
-        <div class="result-row"><span class="result-label">Effective India Tax Rate</span><span class="result-value" id="in_effTax">9.8%</span></div>
-        <div class="result-row"><span class="result-label">DTAA Credit (claimable in UK)</span><span class="result-value saving" id="in_dtaaCredit">£373</span></div>
-        <div class="result-row"><span class="result-label">UK Tax on India Income (40%)</span><span class="result-value deduction" id="in_ukOnIndia">−£1,532</span></div>
-        <div class="result-row"><span class="result-label">Net UK Tax After DTAA Credit</span><span class="result-value saving" id="in_netUKTax">−£1,159</span></div>
-
-        <div class="result-section-header">Key Actions</div>
-        <div class="result-row"><span class="result-label">File Form 10F to reduce TDS?</span><span class="result-value saving" id="in_form10F">Saves ₹15,000/yr</span></div>
-        <div class="result-row"><span class="result-label">File ITR-2 (India)?</span><span class="result-value saving">If income &gt;₹2.5L</span></div>
-        <div class="result-row"><span class="result-label">File SA106 (UK)?</span><span class="result-value deduction">Yes — required</span></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════
-       INSTRUMENTS TAB
-  ══════════════════════════════ -->
-  <div id="tab-instruments" class="tab-content">
-    <div class="instruments-grid">
-      <div class="instrument-panel uk-panel">
-        <div class="instrument-header">🇬🇧 UK Instruments</div>
-        <div class="instrument-row"><div><div>Stocks &amp; Shares ISA</div><div class="instr-limit">£20,000/yr — all growth tax-free</div></div><span class="instr-rate">7–9%</span><span class="cbadge badge-ok">✓ NRI OK</span></div>
-        <div class="instrument-row"><div><div>SIPP Pension</div><div class="instr-limit">£60K/yr or 100% earnings</div></div><span class="instr-rate">Tax relief</span><span class="cbadge badge-ok">✓ NRI OK</span></div>
-        <div class="instrument-row"><div><div>Cash ISA</div><div class="instr-limit">In £20K ISA limit</div></div><span class="instr-rate">4.5–5%</span><span class="cbadge badge-ok">✓ NRI OK</span></div>
-        <div class="instrument-row"><div><div>Workplace Pension</div><div class="instr-limit">Employer match 3–8%</div></div><span class="instr-rate">Match</span><span class="cbadge badge-ok">✓ Priority</span></div>
-        <div class="instrument-row"><div><div>High-Yield Savings</div><div class="instr-limit">FSCS £85K protection</div></div><span class="instr-rate">5.1%</span><span class="cbadge badge-ok">✓ NRI OK</span></div>
-        <div class="instrument-row"><div><div>Premium Bonds</div><div class="instr-limit">£50K max</div></div><span class="instr-rate">4.4% avg</span><span class="cbadge badge-warn">⚠ UK resident</span></div>
-        <div class="instrument-row"><div><div>GIA (General Inv. Account)</div><div class="instr-limit">No limit; CGT applies</div></div><span class="instr-rate">Market</span><span class="cbadge badge-ok">✓ NRI OK</span></div>
-      </div>
-      <div class="instrument-panel india-panel">
-        <div class="instrument-header">🇮🇳 India Instruments (NRI)</div>
-        <div class="instrument-row"><div><div>NRE Fixed Deposit</div><div class="instr-limit">No limit · Tax-free in India</div></div><span class="instr-rate">6.5–7.5%</span><span class="cbadge badge-ok">✓ FEMA OK</span></div>
-        <div class="instrument-row"><div><div>FCNR(B) Deposit</div><div class="instr-limit">Hold in GBP — no forex risk</div></div><span class="instr-rate">5–6%</span><span class="cbadge badge-ok">✓ Best for FX</span></div>
-        <div class="instrument-row"><div><div>NRO Fixed Deposit</div><div class="instr-limit">Repatriation ≤$1M/yr</div></div><span class="instr-rate">6.5–7.5%</span><span class="cbadge badge-warn">⚠ TDS 30%</span></div>
-        <div class="instrument-row"><div><div>PPF (Existing only)</div><div class="instr-limit">NRIs can't open new</div></div><span class="instr-rate">7.1% EEE</span><span class="cbadge badge-warn">⚠ Existing only</span></div>
-        <div class="instrument-row"><div><div>NPS Tier 1</div><div class="instr-limit">NRIs eligible · PFRDA</div></div><span class="instr-rate">9–12%</span><span class="cbadge badge-ok">✓ FEMA OK</span></div>
-        <div class="instrument-row"><div><div>Equity Mutual Funds</div><div class="instr-limit">FATCA/CRS required</div></div><span class="instr-rate">12–15%</span><span class="cbadge badge-warn">⚠ AMC-dependent</span></div>
-        <div class="instrument-row"><div><div>Indian Stocks (Direct)</div><div class="instr-limit">Via PIS account</div></div><span class="instr-rate">Market</span><span class="cbadge badge-caution">⚠ PIS required</span></div>
-        <div class="instrument-row"><div><div>Real Estate (Residential)</div><div class="instr-limit">No limit; no agri land</div></div><span class="instr-rate">Varies</span><span class="cbadge badge-ok">✓ FEMA Sch.4</span></div>
-      </div>
-    </div>
-    <div class="info-box">
-      <h3>📌 Key NRI Investment Restrictions</h3>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:12px;line-height:1.65;">
-        <div>• <strong>No new PPF</strong> — NRIs cannot open new PPF. Existing accounts earn 7.1% till maturity (max 15 years from opening)<br><br>• <strong>No SGBs (Sovereign Gold Bonds)</strong> — NRIs barred from primary issuance; secondary market purchases may apply<br><br>• <strong>No Small Savings Schemes</strong> — NSC, KVP, Post Office MIS not available to NRIs</div>
-        <div>• <strong>PIS account mandatory</strong> for direct Indian stock trading (linked to NRE/NRO at a RBI-designated bank)<br><br>• <strong>Mutual Fund KYC re-verification</strong> as NRI needed; FATCA/CRS self-cert required; Mirae, Nippon, HDFC, SBI MF accept UK NRIs<br><br>• <strong>FEMA bars</strong> NRIs from agricultural land, plantation property, farmhouses in India</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════
-       TAX & DTAA TAB
-  ══════════════════════════════ -->
-  <div id="tab-tax" class="tab-content">
-    <div class="fema-banner">
-      <strong>🇬🇧↔🇮🇳 DTAA:</strong> India and UK have a Double Taxation Avoidance Agreement. As a UK resident, you pay tax on worldwide income in the UK but can claim credit for Indian tax already paid. NRE interest is tax-free in India but <strong>taxable in the UK</strong> — declare it on SA106. NRO interest suffers TDS at 30% (reducible to ~15% via Form 10F + Tax Residency Certificate from HMRC).
-    </div>
-    <div class="tax-grid">
-      <div class="tax-card">
-        <h3>🇬🇧 UK Tax Position</h3>
-        <div class="tax-row"><span>Total UK Gross Income</span><span class="tv" id="t_ukGross">£78,000</span></div>
-        <div class="tax-row"><span>Income Tax (est.)</span><span class="tv red" id="t_ukTax">−£24,432</span></div>
-        <div class="tax-row"><span>National Insurance</span><span class="tv red" id="t_ukNI">−£4,284</span></div>
-        <div class="tax-row"><span>ISA growth / income</span><span class="tv green">£0 tax</span></div>
-        <div class="tax-row"><span>SIPP Tax Relief (40% band)</span><span class="tv green" id="t_sippRelief">+£2,880/yr</span></div>
-        <div class="tax-row"><span>Personal Savings Allowance</span><span class="tv">£500 (40% band)</span></div>
-        <div class="tax-row"><span>NRE FD Interest (UK taxable)</span><span class="tv red" id="t_nreFdTax">−£648</span></div>
-        <div class="tax-row"><span>India DTAA Tax Credit</span><span class="tv green">Claim via SA106</span></div>
-      </div>
-      <div class="tax-card">
-        <h3>🇮🇳 India Tax (NRI)</h3>
-        <div class="tax-row"><span>India-sourced Income</span><span class="tv" id="t_inGross">₹5,00,000</span></div>
-        <div class="tax-row"><span>NRE FD Interest</span><span class="tv green">Tax-free in India</span></div>
-        <div class="tax-row"><span>NRO FD TDS (30%)</span><span class="tv red" id="t_nroTds">−₹36,000/yr</span></div>
-        <div class="tax-row"><span>TDS with Form 10F (~15%)</span><span class="tv green" id="t_form10FBenefit">Saves ₹18,000/yr</span></div>
-        <div class="tax-row"><span>LTCG on Equity MF (&gt;₹1.25L)</span><span class="tv">12.5%</span></div>
-        <div class="tax-row"><span>STCG on Equity MF</span><span class="tv">20%</span></div>
-        <div class="tax-row"><span>Dividend TDS (NRI)</span><span class="tv">20%</span></div>
-        <div class="tax-row"><span>PPF Interest (existing)</span><span class="tv green">EEE — fully exempt</span></div>
-      </div>
-    </div>
-    <div class="info-box" style="margin-top:18px;">
-      <h3>💡 Tax Optimisation Priorities</h3>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;font-size:12px;line-height:1.6;">
-        <div style="background:rgba(45,122,79,0.07);padding:12px;border-radius:8px;border-left:3px solid var(--green);"><strong style="color:var(--green);">1. Max ISA First</strong><br>Use full £20K ISA allowance — all growth and income is permanently tax-free in the UK.</div>
-        <div style="background:rgba(26,58,107,0.07);padding:12px;border-radius:8px;border-left:3px solid var(--uk);"><strong style="color:var(--uk);">2. NRE over NRO</strong><br>Park UK-earned remittances in NRE — interest is tax-free in India. Use NRO only for India-sourced income.</div>
-        <div style="background:rgba(201,168,76,0.12);padding:12px;border-radius:8px;border-left:3px solid var(--gold);"><strong style="color:#8a6a1a;">3. Form 10F</strong><br>Submit Form 10F + HMRC Tax Residency Certificate to reduce NRO TDS from 30% → ~15% under DTAA.</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════
-       FEMA COMPLIANCE TAB
-  ══════════════════════════════ -->
-  <div id="tab-compliance" class="tab-content">
-    <div class="fema-banner"><strong>⚖️ FEMA 1999:</strong> NRI investments are governed by FEMA. Capital account transactions need RBI permission; current account transactions are generally free. Key: NRE (fully repatriable, tax-free), NRO (repatriation ≤$1M/yr after tax), FCNR(B) (foreign currency — no forex risk).</div>
-    <div class="compliance-grid">
-      <div class="compliance-card">
-        <h3>🏦 Account Compliance</h3>
-        <div class="ci"><div><div class="ci-label">NRE Account</div><div class="ci-detail">Foreign income, fully repatriable, India-tax-free interest</div></div><span class="status-chip s-ok">✓ OK</span></div>
-        <div class="ci"><div><div class="ci-label">NRO Account</div><div class="ci-detail">India-sourced income; repatriation ≤ USD 1M/yr after tax</div></div><span class="status-chip s-ok">✓ OK</span></div>
-        <div class="ci"><div><div class="ci-label">Resident Savings Account</div><div class="ci-detail">Must convert to NRO within 3 months of becoming NRI</div></div><span class="status-chip s-alert">⚠ Convert</span></div>
-        <div class="ci"><div><div class="ci-label">FCNR(B) Deposit</div><div class="ci-detail">Hold in GBP/USD — no currency risk, fully repatriable</div></div><span class="status-chip s-ok">✓ Best</span></div>
-      </div>
-      <div class="compliance-card">
-        <h3>📈 Investment Compliance</h3>
-        <div class="ci"><div><div class="ci-label">Indian Equities via PIS</div><div class="ci-detail">Portfolio Investment Scheme required; linked to NRE/NRO; RBI notification needed</div></div><span class="status-chip s-rev">⚠ Setup</span></div>
-        <div class="ci"><div><div class="ci-label">Mutual Funds (NRI KYC)</div><div class="ci-detail">FATCA/CRS self-cert + NRI KYC; verify AMC accepts UK residents</div></div><span class="status-chip s-rev">⚠ Verify</span></div>
-        <div class="ci"><div><div class="ci-label">PPF Continuation</div><div class="ci-detail">Existing PPF: 7.1% till maturity. NRIs cannot open new accounts.</div></div><span class="status-chip s-ok">✓ Continue</span></div>
-        <div class="ci"><div><div class="ci-label">NPS Investment</div><div class="ci-detail">NRIs eligible; contributions via NRE/NRO; exit subject to repatriation rules</div></div><span class="status-chip s-ok">✓ OK</span></div>
-      </div>
-      <div class="compliance-card">
-        <h3>🏠 Real Estate</h3>
-        <div class="ci"><div><div class="ci-label">Residential Property</div><div class="ci-detail">NRIs can purchase any number of residential properties</div></div><span class="status-chip s-ok">✓ FEMA Sch.4</span></div>
-        <div class="ci"><div><div class="ci-label">Agricultural / Farmhouse</div><div class="ci-detail">NRIs CANNOT purchase agricultural land, plantation property or farmhouses</div></div><span class="status-chip s-alert">✗ Prohibited</span></div>
-        <div class="ci"><div><div class="ci-label">Rental Income Repatriation</div><div class="ci-detail">Two residential properties' net rental income repatriable</div></div><span class="status-chip s-ok">✓ 2 Props</span></div>
-      </div>
-      <div class="compliance-card">
-        <h3>📋 Reporting Obligations</h3>
-        <div class="ci"><div><div class="ci-label">UK Self Assessment (SA100)</div><div class="ci-detail">Declare all worldwide income including NRE FD interest</div></div><span class="status-chip s-alert">⚠ Required</span></div>
-        <div class="ci"><div><div class="ci-label">Foreign Income (SA106)</div><div class="ci-detail">Supplement for foreign income and DTAA credit claims</div></div><span class="status-chip s-alert">⚠ Annual</span></div>
-        <div class="ci"><div><div class="ci-label">India ITR-2</div><div class="ci-detail">File if India income &gt;₹2.5L or to claim TDS refunds (July 31 deadline)</div></div><span class="status-chip s-rev">If applicable</span></div>
-        <div class="ci"><div><div class="ci-label">Form 10F + TRC</div><div class="ci-detail">Reduces NRO TDS; get Tax Residency Certificate from HMRC first</div></div><span class="status-chip s-rev">Recommended</span></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════
-       REMITTANCE TAB
-  ══════════════════════════════ -->
-  <div id="tab-remittance" class="tab-content">
-    <div style="font-family:'Playfair Display',serif;font-size:19px;margin-bottom:6px;">💱 GBP → INR Remittance Optimiser</div>
-    <p style="font-size:12px;color:rgba(15,14,13,0.6);margin-bottom:20px;">Even a 0.5% rate difference saves thousands over time. Compare providers before each transfer.</p>
-    <div style="background:#fff;border:1px solid var(--border);border-radius:11px;padding:18px;margin-bottom:18px;">
-      <div style="font-size:12px;font-weight:600;margin-bottom:10px;">Transfer calculator</div>
-      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
-        <input type="number" id="transferAmount" value="2000" style="padding:9px 12px;border:1.5px solid var(--border);border-radius:7px;font-family:'DM Mono',monospace;font-size:14px;width:130px;outline:none;" oninput="updateTransfer()">
-        <span style="font-size:13px;font-weight:600;">GBP</span>
-        <span style="font-size:13px;">→</span>
-        <span id="transferResult" style="font-family:'Playfair Display',serif;font-size:22px;color:var(--india);">₹2,14,000</span>
-        <span style="font-size:11px;color:rgba(15,14,13,0.5);">via Wise (est.)</span>
-      </div>
-      <p style="font-size:10px;color:rgba(15,14,13,0.4);margin-top:7px;">*Rates are indicative. Always check live rates at point of transfer.</p>
-    </div>
-    <div class="remit-grid">
-      <div class="remit-card best-pick"><div class="remit-provider">Wise</div><div class="remit-rate">₹106.40</div><div class="remit-fee">~0.5–0.7% · Mid-market rate</div><div style="font-size:11px;margin-top:6px;color:rgba(15,14,13,0.6);">Best for regular transfers. NRE/NRO credit. HMRC compliant.</div></div>
-      <div class="remit-card"><div class="remit-provider">Revolut</div><div class="remit-rate">₹105.80</div><div class="remit-fee">0.5–1% · Weekend limits</div><div style="font-size:11px;margin-top:6px;color:rgba(15,14,13,0.6);">Good for smaller amounts. Hold INR in-app.</div></div>
-      <div class="remit-card"><div class="remit-provider">Western Union</div><div class="remit-rate">₹104.20</div><div class="remit-fee">£3–5 flat fee</div><div style="font-size:11px;margin-top:6px;color:rgba(15,14,13,0.6);">Reliable, bank-to-bank. Good for large one-off transfers.</div></div>
-      <div class="remit-card"><div class="remit-provider">ICICI Money2India</div><div class="remit-rate">₹105.50</div><div class="remit-fee">Free for ICICI NRE</div><div style="font-size:11px;margin-top:6px;color:rgba(15,14,13,0.6);">Ideal with ICICI NRE. Purpose codes auto-filled.</div></div>
-      <div class="remit-card"><div class="remit-provider">HDFC QuickRemit</div><div class="remit-rate">₹105.30</div><div class="remit-fee">£0 for NRE credit</div><div style="font-size:11px;margin-top:6px;color:rgba(15,14,13,0.6);">Best with HDFC India. Fast NRE/NRO credit.</div></div>
-      <div class="remit-card"><div class="remit-provider">SBI UK</div><div class="remit-rate">₹104.00</div><div class="remit-fee">Varies · Slower</div><div style="font-size:11px;margin-top:6px;color:rgba(15,14,13,0.6);">Use if SBI NRE account needed for specific products.</div></div>
-    </div>
-    <div class="info-box">
-      <h3>📋 Remittance Compliance Checklist</h3>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:12px;line-height:1.65;">
-        <div>✅ Always specify <strong>purpose code</strong> (P1301 = family maintenance, P0003 = NRE deposit)<br><br>✅ NRE transfers are <strong>fully repatriable</strong> — keep records for UK self-assessment<br><br>✅ No limit on amount transferred to NRE from UK earnings</div>
-        <div>✅ Keep remittance receipts for Form A2 compliance on large amounts<br><br>⚠ Transfers over £10,000 may trigger HMRC AML checks<br><br>✅ NRO repatriation capped at <strong>USD 1 million per financial year</strong></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════
-       AI ADVISOR TAB
-  ══════════════════════════════ -->
-  <div id="tab-advisor" class="tab-content">
-    <div class="ai-section">
-      <div class="ai-header">
-        <div class="ai-avatar">🤖</div>
-        <div>
-          <h2>India ↔ UK Finance Advisor</h2>
-          <p>Powered by Claude · Educational guidance on NRI finance, FEMA, DTAA & strategy</p>
-        </div>
-      </div>
-      <div class="quick-questions">
-        <button class="quick-q" onclick="askQuestion('How should I prioritise ISA, SIPP and NRE FD to build wealth efficiently?')">ISA vs SIPP vs NRE priority?</button>
-        <button class="quick-q" onclick="askQuestion('What is the most tax-efficient way to invest in Indian mutual funds as a UK NRI?')">India MF tax strategy?</button>
-        <button class="quick-q" onclick="askQuestion('How do I reduce TDS on NRO account using DTAA Form 10F?')">Reduce NRO TDS?</button>
-        <button class="quick-q" onclick="askQuestion('What FEMA rules apply when buying property in India as NRI?')">FEMA & property?</button>
-        <button class="quick-q" onclick="askQuestion('How should I invest my annual bonus tax-efficiently across UK and India?')">Invest bonus wisely?</button>
-        <button class="quick-q" onclick="askQuestion('What happens to my NRE/NRO/PPF if I return to India permanently?')">Return to India plan?</button>
-      </div>
-      <div style="background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.3);border-radius:7px;padding:9px 12px;margin-bottom:10px;font-size:11px;color:rgba(247,243,238,0.75);line-height:1.5;">
-        🔒 <strong style="color:rgba(247,243,238,0.9);">Privacy reminder:</strong> Use approximate figures only — no names, PAN/NI numbers or account details. &nbsp;·&nbsp; ⚠️ <strong style="color:rgba(247,243,238,0.9);">Educational only</strong> — consult a qualified CA, IFA or SEBI-registered advisor before acting.
-      </div>
-      <div class="chat-window" id="chatWindow">
-        <div class="msg ai">
-          <div class="msg-bubble">👋 Hello! I'm your India ↔ UK finance education assistant. I can help you understand NRI savings strategies, FEMA rules, DTAA benefits, and cross-border wealth planning.<br><br>Your profile inputs from the sidebar will inform my guidance. Try a quick question above or ask me anything!</div>
-          <div class="msg-time">Just now</div>
-        </div>
-      </div>
-      <div class="chat-input-wrap">
-        <input type="text" class="chat-input" id="chatInput" placeholder="Ask about FEMA, DTAA, NRE/NRO, ISA, SIPP, strategy..." onkeydown="if(event.key==='Enter')sendMessage()">
-        <button class="send-btn" id="sendBtn" onclick="sendMessage()">Send →</button>
-      </div>
-    </div>
-  </div>
-
-</main>
+<div class="tabs-row">
+  <button class="tbtn active" onclick="switchTab('strategy',this)">🧭 Strategy</button>
+  <button class="tbtn" onclick="switchTab('salary',this)">💶 Salary</button>
+  <button class="tbtn" onclick="switchTab('instruments',this)">🏦 Instruments</button>
+  <button class="tbtn" onclick="switchTab('tax',this)">💸 Tax & Treaties</button>
+  <button class="tbtn" onclick="switchTab('compliance',this)">⚖️ Compliance</button>
+  <button class="tbtn" onclick="switchTab('remittance',this)">💱 Remittance</button>
+  <button class="tbtn" onclick="switchTab('advisor',this)">🤖 AI Advisor</button>
 </div>
 
-<!-- DISCLAIMER -->
-<div class="disclaimer-bar">
-  ⚠️ <strong>Educational Tool Only.</strong> This calculator provides general financial awareness for educational purposes only. It does <strong>not</strong> constitute financial, tax, or legal advice and does <strong>not</strong> replace a qualified IFA, Chartered Accountant (CA), or SEBI-registered investment advisor. Tax rules, FEMA regulations, and investment limits change frequently — always verify with a professional before acting. All figures are estimates and indicative only.
+<!-- ═══ STRATEGY ═══ -->
+<div class="tpane active" id="tab-strategy">
+  <div class="cg4">
+    <div class="sc uk" id="sc-uk"><div class="sc-lbl">🇬🇧 UK Take-Home</div><div class="sc-val" id="cv-uk">£52K</div><div class="sc-sub" id="cs-uk">After tax & NI</div></div>
+    <div class="sc usa" id="sc-usa"><div class="sc-lbl">🇺🇸 USA Take-Home</div><div class="sc-val" id="cv-usa">$92K</div><div class="sc-sub" id="cs-usa">After federal + state + FICA</div></div>
+    <div class="sc nl" id="sc-nl"><div class="sc-lbl">🇳🇱 NL Take-Home</div><div class="sc-val" id="cv-nl">€61K</div><div class="sc-sub" id="cs-nl">After Box 1 tax</div></div>
+    <div class="sc india" id="sc-india"><div class="sc-lbl">🇮🇳 India Portfolio</div><div class="sc-val" id="cv-india">₹5.4L</div><div class="sc-sub">NRE + NRO + MF annual</div></div>
+  </div>
+  <div class="cg3">
+    <div class="sc total"><div class="sc-lbl">🌍 Annual Savings (£ equiv.)</div><div class="sc-val" id="cv-total">£31K</div><div class="sc-sub" id="cs-total">All active countries</div></div>
+    <div class="sc goal"><div class="sc-lbl">🎯 Goal Progress</div><div class="sc-val" id="cv-goal">6%</div><div class="sc-sub" id="cs-goal">Toward £500K target</div></div>
+    <div class="sc" style="border-top:3px solid var(--green)"><div class="sc-lbl">⏱ Years to Goal</div><div class="sc-val" id="cv-yrs" style="color:var(--green)">23</div><div class="sc-sub" id="cs-yrs">Age 32 → 55</div></div>
+  </div>
+  <div class="stpanel">
+    <h2>🧭 Personalised Multi-Country Wealth Strategy</h2>
+    <div class="gbar"><div class="gbar-fill" id="gbarFill" style="width:6%"></div></div>
+    <div class="gmeta"><span id="gmetaL">£0/yr saving toward £500K</span><span id="gmetaR">23 years to goal age 55</span></div>
+    <div class="sgrid" id="stratGrid"><div class="scard"><h3>Loading…</h3><div class="si">Press Calculate to generate your personalised strategy</div></div></div>
+  </div>
+  <div class="chart-box">
+    <div class="chart-box-t">📈 Projected Wealth Growth by Country (£)</div>
+    <canvas id="growthChart"></canvas>
+  </div>
+  <div class="alloc-box">
+    <div style="font-family:'Playfair Display',serif;font-size:14px;margin-bottom:10px">💼 Annual Savings Allocation</div>
+    <div class="abar" id="allocBar"></div>
+    <div class="aleg" id="allocLeg"></div>
+  </div>
 </div>
+
+<!-- ═══ SALARY ═══ -->
+<div class="tpane" id="tab-salary">
+  <div style="margin-bottom:13px">
+    <div style="font-family:'Playfair Display',serif;font-size:18px;margin-bottom:4px">💶 Take-Home Salary Calculators</div>
+    <p style="font-size:11.5px;color:rgba(15,14,13,.58)">Full net-pay breakdown for UK, USA and Netherlands, plus India NRI tax position. Estimates — consult a tax professional for exact figures.</p>
+  </div>
+  <div class="sal-tabs">
+    <button class="stab a-uk" onclick="switchSal('uk',this)">🇬🇧 UK</button>
+    <button class="stab" onclick="switchSal('usa',this)">🇺🇸 USA</button>
+    <button class="stab" onclick="switchSal('nl',this)">🇳🇱 Netherlands</button>
+    <button class="stab" onclick="switchSal('india',this)">🇮🇳 India (NRI)</button>
+  </div>
+
+  <!-- UK Salary -->
+  <div class="spane active" id="sal-uk">
+    <div class="sal-in">
+      <h3>🇬🇧 UK Income Details</h3>
+      <div class="fg"><label>Base Salary (£)</label><input type="number" id="su_base" value="65000" oninput="calcUK()"></div>
+      <div class="fgrow"><div class="fg"><label>Bonus (£)</label><input type="number" id="su_bonus" value="8000" oninput="calcUK()"></div><div class="fg"><label>RSU/Stock (£)</label><input type="number" id="su_stock" value="5000" oninput="calcUK()"></div></div>
+      <div class="fgrow"><div class="fg"><label>Employee Pension %</label><input type="number" id="su_eep" value="5" min="0" oninput="calcUK()"></div><div class="fg"><label>Employer Pension %</label><input type="number" id="su_emp" value="3" min="0" oninput="calcUK()"></div></div>
+      <div class="fg"><label>Student Loan</label><select id="su_sl" onchange="calcUK()"><option value="none">None</option><option value="plan1">Plan 1 — £24,990</option><option value="plan2" selected>Plan 2 — £27,295</option><option value="plan5">Plan 5 — £25,000</option></select></div>
+      <div class="fgrow"><div class="fg"><label>Scotland?</label><select id="su_scot" onchange="calcUK()"><option value="no">No</option><option value="yes">Yes</option></select></div><div class="fg"><label>Sacrifice (£/mo)</label><input type="number" id="su_sac" value="0" oninput="calcUK()"></div></div>
+    </div>
+    <div class="sal-res">
+      <h3>UK Take-Home</h3>
+      <div class="ptabs"><button class="ptab active" onclick="setPer('uk','annual',this)">Annual</button><button class="ptab" onclick="setPer('uk','monthly',this)">Monthly</button><button class="ptab" onclick="setPer('uk','weekly',this)">Weekly</button></div>
+      <div class="rsec">Income</div>
+      <div class="rr"><span class="rl">Base Salary</span><span class="rv hi" id="uk_base">£65,000</span></div>
+      <div class="rr"><span class="rl">Annual Bonus</span><span class="rv" id="uk_bonus">£8,000</span></div>
+      <div class="rr"><span class="rl">RSU / Stock Awards</span><span class="rv" id="uk_stock">£5,000</span></div>
+      <div class="rr"><span class="rl">Total Gross</span><span class="rv hi" id="uk_gross">£78,000</span></div>
+      <div class="rsec">Deductions</div>
+      <div class="rr"><span class="rl">Income Tax</span><span class="rv dn" id="uk_tax">−£24,432</span></div>
+      <div class="rr"><span class="rl">National Insurance</span><span class="rv dn" id="uk_ni">−£4,284</span></div>
+      <div class="rr"><span class="rl">Employee Pension</span><span class="rv dn" id="uk_eep">−£3,250</span></div>
+      <div class="rr"><span class="rl">Student Loan</span><span class="rv dn" id="uk_sl">−£0</span></div>
+      <div class="rr"><span class="rl">Salary Sacrifice</span><span class="rv dn" id="uk_sac">−£0</span></div>
+      <div class="rsec">Summary</div>
+      <div class="rr"><span class="rl">💰 Take-Home Pay</span><span class="rv hi" id="uk_th">£46,034</span></div>
+      <div class="rr"><span class="rl">+ Employer Pension</span><span class="rv up" id="uk_empp">+£1,950</span></div>
+      <div class="rr"><span class="rl">Effective Tax Rate</span><span class="rv" id="uk_eff">37%</span></div>
+      <div class="rr"><span class="rl">Marginal Rate</span><span class="rv" id="uk_marg">40%</span></div>
+      <div class="rsec">Tax-Free Headroom</div>
+      <div class="rr"><span class="rl">ISA Remaining</span><span class="rv up" id="uk_isa_l">£20,000/yr</span></div>
+      <div class="rr"><span class="rl">SIPP Headroom</span><span class="rv up" id="uk_sipp_l">£55,000/yr</span></div>
+    </div>
+  </div>
+
+  <!-- USA Salary -->
+  <div class="spane" id="sal-usa">
+    <div class="sal-in">
+      <h3>🇺🇸 USA Income Details</h3>
+      <div class="fg"><label>Base Salary ($)</label><input type="number" id="uu_base" value="120000" oninput="calcUSA()"></div>
+      <div class="fgrow"><div class="fg"><label>Bonus ($)</label><input type="number" id="uu_bonus" value="15000" oninput="calcUSA()"></div><div class="fg"><label>RSU/Stock ($)</label><input type="number" id="uu_stock" value="20000" oninput="calcUSA()"></div></div>
+      <div class="fg"><label>Filing Status</label><select id="uu_filing" onchange="calcUSA()"><option value="single" selected>Single</option><option value="mfj">Married Filing Jointly</option></select></div>
+      <div class="fg"><label>State Tax Rate</label><select id="uu_state" onchange="calcUSA()"><option value="0">Texas / Florida / Washington (0%)</option><option value="4.95">Illinois (4.95%)</option><option value="5">Other states (~5%)</option><option value="6">Virginia / Georgia (~6%)</option><option value="9.3">California (up to 13.3%)</option><option value="9">New York (~10.9%)</option><option value="10.75">New Jersey (max 10.75%)</option></select></div>
+      <div class="fg"><label>401(k) ($/mo)</label><input type="number" id="uu_401k" value="1500" oninput="calcUSA()"><div class="fg-hint">2025 limit $23,500/yr — pre-tax; reduces federal AGI</div></div>
+      <div class="fg"><label>HSA ($/mo, HDHP)</label><input type="number" id="uu_hsa" value="300" oninput="calcUSA()"><div class="fg-hint">$4,300/yr self — triple tax advantage</div></div>
+      <div class="fg"><label>Pre-tax Benefits ($/mo)</label><input type="number" id="uu_pre" value="200" oninput="calcUSA()"><div class="fg-hint">Medical, FSA, commuter, etc.</div></div>
+    </div>
+    <div class="sal-res">
+      <h3>USA Take-Home</h3>
+      <div class="ptabs"><button class="ptab active" onclick="setPer('usa','annual',this)">Annual</button><button class="ptab" onclick="setPer('usa','monthly',this)">Monthly</button><button class="ptab" onclick="setPer('usa','biweekly',this)">Bi-weekly</button></div>
+      <div class="rsec">Income</div>
+      <div class="rr"><span class="rl">Base Salary</span><span class="rv hi" id="ua_base">$120,000</span></div>
+      <div class="rr"><span class="rl">Annual Bonus</span><span class="rv" id="ua_bonus">$15,000</span></div>
+      <div class="rr"><span class="rl">RSU / Stock</span><span class="rv" id="ua_stock">$20,000</span></div>
+      <div class="rr"><span class="rl">Total Gross</span><span class="rv hi" id="ua_gross">$155,000</span></div>
+      <div class="rsec">Deductions</div>
+      <div class="rr"><span class="rl">Federal Income Tax</span><span class="rv dn" id="ua_fed">−$30,427</span></div>
+      <div class="rr"><span class="rl">Social Security (6.2%)</span><span class="rv dn" id="ua_ss">−$9,114</span></div>
+      <div class="rr"><span class="rl">Medicare (1.45%+)</span><span class="rv dn" id="ua_mc">−$2,248</span></div>
+      <div class="rr"><span class="rl">State Income Tax</span><span class="rv dn" id="ua_state">−$0</span></div>
+      <div class="rr"><span class="rl">401(k) Contribution</span><span class="rv dn" id="ua_401k">−$18,000</span></div>
+      <div class="rr"><span class="rl">HSA Contribution</span><span class="rv dn" id="ua_hsa">−$3,600</span></div>
+      <div class="rsec">Summary</div>
+      <div class="rr"><span class="rl">💰 Take-Home Pay</span><span class="rv hi" id="ua_th">$91,611</span></div>
+      <div class="rr"><span class="rl">Effective Tax Rate</span><span class="rv" id="ua_eff">25%</span></div>
+      <div class="rr"><span class="rl">Marginal Federal Rate</span><span class="rv" id="ua_marg">24%</span></div>
+      <div class="rsec">NRI-Specific</div>
+      <div class="rr"><span class="rl">FBAR Required?</span><span class="rv dn" id="ua_fbar">If India accts &gt;$10K</span></div>
+      <div class="rr"><span class="rl">Indian MF (PFIC)</span><span class="rv dn">Avoid — punitive tax</span></div>
+      <div class="rr"><span class="rl">401(k) Headroom</span><span class="rv up" id="ua_401l">$5,500/yr</span></div>
+    </div>
+  </div>
+
+  <!-- NL Salary -->
+  <div class="spane" id="sal-nl">
+    <div class="sal-in">
+      <h3>🇳🇱 Netherlands Income Details</h3>
+      <div class="fg"><label>Base Salary (€)</label><input type="number" id="un_base" value="80000" oninput="calcNL()"></div>
+      <div class="fgrow"><div class="fg"><label>Bonus (€)</label><input type="number" id="un_bonus" value="10000" oninput="calcNL()"></div><div class="fg"><label>RSU/Stock (€)</label><input type="number" id="un_stock" value="8000" oninput="calcNL()"></div></div>
+      <div class="fg"><label>30% Ruling?</label><select id="un_30" onchange="calcNL()"><option value="no">No</option><option value="yes" selected>Yes — valid up to 5 years</option></select><div class="fg-hint">30% of salary exempt from income tax. Apply within 4 months of starting work.</div></div>
+      <div class="fg"><label>Health Insurance (€/mo)</label><input type="number" id="un_health" value="140" oninput="calcNL()"><div class="fg-hint">~€130–160/mo typical; zorgtoeslag subsidy may reduce this</div></div>
+      <div class="fg"><label>Employee Pension (%)</label><input type="number" id="un_pen" value="5" min="0" max="30" oninput="calcNL()"></div>
+    </div>
+    <div class="sal-res">
+      <h3>Netherlands Take-Home</h3>
+      <div class="ptabs"><button class="ptab active" onclick="setPer('nl','annual',this)">Annual</button><button class="ptab" onclick="setPer('nl','monthly',this)">Monthly</button></div>
+      <div class="rsec">Income</div>
+      <div class="rr"><span class="rl">Base Salary</span><span class="rv hi" id="un_base_r">€80,000</span></div>
+      <div class="rr"><span class="rl">Bonus</span><span class="rv" id="un_bonus_r">€10,000</span></div>
+      <div class="rr"><span class="rl">RSU / Stock</span><span class="rv" id="un_stock_r">€8,000</span></div>
+      <div class="rr"><span class="rl">Total Gross</span><span class="rv hi" id="un_gross">€98,000</span></div>
+      <div class="rr"><span class="rl">30% Ruling Exempt</span><span class="rv up" id="un_30r">€29,400</span></div>
+      <div class="rr"><span class="rl">Taxable Gross (Box 1)</span><span class="rv" id="un_taxable">€68,600</span></div>
+      <div class="rsec">Deductions</div>
+      <div class="rr"><span class="rl">Box 1 Income Tax</span><span class="rv dn" id="un_tax">−€25,030</span></div>
+      <div class="rr"><span class="rl">Employee Pension</span><span class="rv dn" id="un_pen_r">−€4,000</span></div>
+      <div class="rr"><span class="rl">Health Insurance</span><span class="rv dn" id="un_health_r">−€1,680</span></div>
+      <div class="rsec">Summary</div>
+      <div class="rr"><span class="rl">💰 Netto Take-Home</span><span class="rv hi" id="un_th">€67,290</span></div>
+      <div class="rr"><span class="rl">Effective Tax Rate</span><span class="rv" id="un_eff">38%</span></div>
+      <div class="rr"><span class="rl">Box 3 Wealth Tax Est.</span><span class="rv dn" id="un_box3">~€0</span></div>
+      <div class="rsec">NRI-Specific</div>
+      <div class="rr"><span class="rl">NL–India DTAA</span><span class="rv up">Active — claim TDS credit</span></div>
+      <div class="rr"><span class="rl">NRE FD declared in</span><span class="rv dn">Box 3 (wealth tax, Jan 1)</span></div>
+    </div>
+  </div>
+
+  <!-- India NRI -->
+  <div class="spane" id="sal-india">
+    <div class="sal-in">
+      <h3>🇮🇳 India Income (NRI)</h3>
+      <div class="fg"><label>Rental Income (₹/yr)</label><input type="number" id="si_rent" value="300000" oninput="calcIndia()"><div class="fg-hint">30% standard deduction applied automatically</div></div>
+      <div class="fgrow"><div class="fg"><label>Dividends (₹/yr)</label><input type="number" id="si_div" value="50000" oninput="calcIndia()"></div><div class="fg"><label>FD Interest (₹/yr)</label><input type="number" id="si_fd" value="100000" oninput="calcIndia()"></div></div>
+      <div class="fgrow"><div class="fg"><label>LTCG &gt;1yr (₹)</label><input type="number" id="si_ltcg" value="50000" oninput="calcIndia()"><div class="fg-hint">12.5% above ₹1.25L</div></div><div class="fg"><label>STCG &lt;1yr (₹)</label><input type="number" id="si_stcg" value="0" oninput="calcIndia()"><div class="fg-hint">20% flat</div></div></div>
+      <div class="fg"><label>Residence Country (DTAA rate)</label><select id="si_dtaa" onchange="calcIndia()"><option value="0.15" selected>UK (~15%)</option><option value="0.15">USA (~15%)</option><option value="0.10">Netherlands (~10%)</option></select></div>
+    </div>
+    <div class="sal-res">
+      <h3>India Tax Position (NRI)</h3>
+      <div class="ptabs"><button class="ptab active" onclick="setPer('india','annual',this)">Annual</button><button class="ptab" onclick="setPer('india','monthly',this)">Monthly</button></div>
+      <div class="rsec">India-Sourced Income</div>
+      <div class="rr"><span class="rl">Rental (after 30% deduction)</span><span class="rv hi" id="si_rent_r">₹2,10,000</span></div>
+      <div class="rr"><span class="rl">Dividends</span><span class="rv" id="si_div_r">₹50,000</span></div>
+      <div class="rr"><span class="rl">FD / Interest</span><span class="rv" id="si_fd_r">₹1,00,000</span></div>
+      <div class="rr"><span class="rl">LTCG + STCG</span><span class="rv" id="si_cg_r">₹50,000</span></div>
+      <div class="rr"><span class="rl">Total Gross</span><span class="rv hi" id="si_gross">₹4,10,000</span></div>
+      <div class="rsec">Tax Deducted (TDS)</div>
+      <div class="rr"><span class="rl">NRO FD TDS (30%)</span><span class="rv dn" id="si_fdtds">−₹30,000</span></div>
+      <div class="rr"><span class="rl">Dividend TDS (20%)</span><span class="rv dn" id="si_divtds">−₹10,000</span></div>
+      <div class="rr"><span class="rl">LTCG Tax (12.5% above ₹1.25L)</span><span class="rv dn" id="si_ltcgt">−₹0</span></div>
+      <div class="rr"><span class="rl">Total India Tax</span><span class="rv dn" id="si_totaltax">−₹40,000</span></div>
+      <div class="rsec">Net & DTAA Relief</div>
+      <div class="rr"><span class="rl">💰 Net India Income</span><span class="rv hi" id="si_net">₹3,70,000</span></div>
+      <div class="rr"><span class="rl">DTAA Credit (claimable)</span><span class="rv up" id="si_dtaa_r">+£373</span></div>
+      <div class="rr"><span class="rl">Form 10F Saving (est.)</span><span class="rv up" id="si_10f">₹15,000/yr</span></div>
+      <div class="rr"><span class="rl">File ITR-2?</span><span class="rv dn">Yes if income &gt;₹2.5L (Jul 31)</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ INSTRUMENTS ═══ -->
+<div class="tpane" id="tab-instruments">
+  <div class="ig">
+    <div class="ipanel p-uk"><div class="ihdr">🇬🇧 UK Instruments</div>
+      <div class="irow"><div><div>Stocks &amp; Shares ISA</div><div class="ilimit">£20K/yr — all growth tax-free</div></div><span class="irate">7–9%</span><span class="ibadge ib-ok">✓ OK</span></div>
+      <div class="irow"><div><div>SIPP Pension</div><div class="ilimit">£60K/yr; 25% tax-free at 57</div></div><span class="irate">Tax relief</span><span class="ibadge ib-ok">✓ Priority</span></div>
+      <div class="irow"><div><div>Cash ISA</div><div class="ilimit">Within £20K allowance</div></div><span class="irate">4.5–5%</span><span class="ibadge ib-ok">✓ OK</span></div>
+      <div class="irow"><div><div>Workplace Pension</div><div class="ilimit">Employer match 3–8%</div></div><span class="irate">Match!</span><span class="ibadge ib-ok">✓ Max</span></div>
+      <div class="irow"><div><div>Lifetime ISA (LISA)</div><div class="ilimit">25% govt bonus; ages 18–39</div></div><span class="irate">+25%</span><span class="ibadge ib-ok">✓ OK</span></div>
+      <div class="irow"><div><div>Premium Bonds</div><div class="ilimit">£50K max; UK residents</div></div><span class="irate">4.4%</span><span class="ibadge ib-w">⚠ Resident</span></div>
+    </div>
+    <div class="ipanel p-usa"><div class="ihdr">🇺🇸 USA Instruments</div>
+      <div class="irow"><div><div>401(k) Traditional</div><div class="ilimit">$23,500/yr 2025 — pre-tax</div></div><span class="irate">Pre-tax</span><span class="ibadge ib-ok">✓ Max first</span></div>
+      <div class="irow"><div><div>Roth IRA</div><div class="ilimit">$7,000/yr — tax-free growth</div></div><span class="irate">Tax-free</span><span class="ibadge ib-ok">✓ Great</span></div>
+      <div class="irow"><div><div>HSA (HDHP required)</div><div class="ilimit">$4,300 self; triple tax</div></div><span class="irate">Triple tax</span><span class="ibadge ib-ok">✓ Max it</span></div>
+      <div class="irow"><div><div>Taxable Brokerage</div><div class="ilimit">No limit; LTCG 0–20%</div></div><span class="irate">Market</span><span class="ibadge ib-ok">✓ OK</span></div>
+      <div class="irow"><div><div>Indian ETFs (INDA, SMIN)</div><div class="ilimit">US-listed; no PFIC issue</div></div><span class="irate">Market</span><span class="ibadge ib-ok">✓ Alt. to MF</span></div>
+      <div class="irow"><div><div>Indian Mutual Funds</div><div class="ilimit">PFIC rules — punitive tax + Form 8621</div></div><span class="irate">Complex</span><span class="ibadge ib-no">⚠ Avoid</span></div>
+    </div>
+  </div>
+  <div class="ig">
+    <div class="ipanel p-nl"><div class="ihdr">🇳🇱 Netherlands Instruments</div>
+      <div class="irow"><div><div>Pensioenrekening (3rd pillar)</div><div class="ilimit">Tax-deductible; reduces Box 1</div></div><span class="irate">Pre-tax</span><span class="ibadge ib-ok">✓ Priority</span></div>
+      <div class="irow"><div><div>Beleggingsrekening (ETFs)</div><div class="ilimit">Box 3 wealth tax above €57K</div></div><span class="irate">Market</span><span class="ibadge ib-w">⚠ Box 3</span></div>
+      <div class="irow"><div><div>Spaarrekening (Savings)</div><div class="ilimit">Box 3 fictitious return 1.03%</div></div><span class="irate">3–4%</span><span class="ibadge ib-w">⚠ Box 3</span></div>
+      <div class="irow"><div><div>Eigen Woning (Mortgage)</div><div class="ilimit">Interest deductible — Box 1</div></div><span class="irate">Deductible</span><span class="ibadge ib-ok">✓ Efficient</span></div>
+      <div class="irow"><div><div>Banksparen (annuity)</div><div class="ilimit">Pre-tax; pays at retirement</div></div><span class="irate">Pre-tax</span><span class="ibadge ib-ok">✓ OK</span></div>
+      <div class="irow"><div><div>Indian MFs (via NRI)</div><div class="ilimit">Check PFIC if dual US/NL holder</div></div><span class="irate">12–15%</span><span class="ibadge ib-w">⚠ Check</span></div>
+    </div>
+    <div class="ipanel p-india"><div class="ihdr">🇮🇳 India NRI Instruments</div>
+      <div class="irow"><div><div>NRE Fixed Deposit</div><div class="ilimit">Fully repatriable; India-tax-free</div></div><span class="irate">6.5–7.5%</span><span class="ibadge ib-ok">✓ FEMA OK</span></div>
+      <div class="irow"><div><div>FCNR(B) Deposit</div><div class="ilimit">Hold in GBP/USD — no forex risk</div></div><span class="irate">5–6%</span><span class="ibadge ib-ok">✓ Best FX</span></div>
+      <div class="irow"><div><div>NRO Fixed Deposit</div><div class="ilimit">Repatriation ≤$1M/yr; TDS 30%</div></div><span class="irate">6.5–7.5%</span><span class="ibadge ib-w">⚠ TDS 30%</span></div>
+      <div class="irow"><div><div>NPS Tier 1</div><div class="ilimit">NRIs eligible; PFRDA regulated</div></div><span class="irate">9–12%</span><span class="ibadge ib-ok">✓ OK</span></div>
+      <div class="irow"><div><div>Equity Mutual Funds</div><div class="ilimit">NRI KYC + FATCA; US persons ⚠</div></div><span class="irate">12–15%</span><span class="ibadge ib-w">⚠ AMC check</span></div>
+      <div class="irow"><div><div>PPF (existing only)</div><div class="ilimit">NRIs can't open new; 7.1% EEE</div></div><span class="irate">7.1%</span><span class="ibadge ib-w">⚠ Existing</span></div>
+    </div>
+  </div>
+  <div class="ibox">
+    <h3>⚠️ Country-Specific NRI Cautions</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;font-size:11px;line-height:1.65">
+      <div style="padding:10px;background:rgba(26,58,107,.05);border-radius:7px;border-left:3px solid var(--uk)"><strong>🇬🇧 UK:</strong> Declare NRE FD interest on SA106. ISA + SIPP are most efficient wrappers. Claim DTAA credit on Self-Assessment.</div>
+      <div style="padding:10px;background:rgba(178,34,52,.05);border-radius:7px;border-left:3px solid var(--usa)"><strong>🇺🇸 USA:</strong> Indian MFs = PFIC — avoid. File FBAR if foreign accounts &gt;$10K. Form 8938 for FATCA. Use US-listed India ETFs instead of direct MFs.</div>
+      <div style="padding:10px;background:rgba(230,112,0,.05);border-radius:7px;border-left:3px solid var(--nl)"><strong>🇳🇱 Netherlands:</strong> 30% ruling reduces effective tax significantly. Declare ALL India assets in Box 3 on Jan 1. NL–India DTAA is active — attach TRC to claim credit.</div>
+      <div style="padding:10px;background:rgba(224,92,42,.05);border-radius:7px;border-left:3px solid var(--india)"><strong>🇮🇳 India:</strong> Form 10F + TRC halves NRO TDS (30%→15%). NRE always better than NRO for foreign earnings. FCNR(B) eliminates forex risk entirely.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TAX & TREATIES ═══ -->
+<div class="tpane" id="tab-tax">
+  <div class="banner"><strong>🌐 India DTAA Network:</strong> India has active DTAAs with UK, USA and Netherlands, preventing double taxation. As an NRI, you pay residence-country tax on worldwide income but can claim credit for Indian TDS paid. NRE FD interest is tax-free in India but <strong>taxable in your residence country</strong>.</div>
+  <div class="tgrid">
+    <div class="tcard"><h3>🇬🇧 UK Tax</h3>
+      <div class="tr2"><span>Total Gross</span><span class="tv" id="t_ukG">£78,000</span></div>
+      <div class="tr2"><span>Income Tax</span><span class="tv r" id="t_ukT">−£24,432</span></div>
+      <div class="tr2"><span>National Insurance</span><span class="tv r" id="t_ukNI">−£4,284</span></div>
+      <div class="tr2"><span>ISA (all growth)</span><span class="tv g">£0 tax</span></div>
+      <div class="tr2"><span>SIPP Tax Relief</span><span class="tv g" id="t_sipp">+£2,880/yr</span></div>
+      <div class="tr2"><span>NRE FD (UK taxable)</span><span class="tv r" id="t_nreTax">−£648</span></div>
+      <div class="tr2"><span>DTAA Credit</span><span class="tv g">Claim via SA106</span></div>
+    </div>
+    <div class="tcard"><h3>🇺🇸 USA Tax</h3>
+      <div class="tr2"><span>Total Gross</span><span class="tv" id="t_usaG">$155,000</span></div>
+      <div class="tr2"><span>Federal Income Tax</span><span class="tv r" id="t_usaT">−$30,427</span></div>
+      <div class="tr2"><span>FICA (SS + Medicare)</span><span class="tv r" id="t_fica">−$11,362</span></div>
+      <div class="tr2"><span>401(k) Tax Saving</span><span class="tv g" id="t_401ks">Saves ~$4,320/yr</span></div>
+      <div class="tr2"><span>Indian MF (PFIC)</span><span class="tv r">Punitive — avoid</span></div>
+      <div class="tr2"><span>FBAR Required?</span><span class="tv r" id="t_fbar">Check annually</span></div>
+      <div class="tr2"><span>DTAA Credit (Form 1116)</span><span class="tv g">For Indian TDS paid</span></div>
+    </div>
+    <div class="tcard"><h3>🇳🇱 Netherlands Tax</h3>
+      <div class="tr2"><span>Total Gross</span><span class="tv" id="t_nlG">€98,000</span></div>
+      <div class="tr2"><span>30% Ruling Exempt</span><span class="tv g" id="t_nl30">€29,400</span></div>
+      <div class="tr2"><span>Box 1 Tax</span><span class="tv r" id="t_nlT">−€25,030</span></div>
+      <div class="tr2"><span>Box 3 (wealth tax)</span><span class="tv r">~1.03% above €57K</span></div>
+      <div class="tr2"><span>NRE FD in NL</span><span class="tv r">Box 3 — declare Jan 1</span></div>
+      <div class="tr2"><span>NL–India DTAA</span><span class="tv g">Active — claim TDS</span></div>
+    </div>
+    <div class="tcard"><h3>🇮🇳 India Tax (NRI)</h3>
+      <div class="tr2"><span>India-Sourced Income</span><span class="tv" id="t_inG">₹5,00,000</span></div>
+      <div class="tr2"><span>NRE FD Interest</span><span class="tv g">Tax-free in India</span></div>
+      <div class="tr2"><span>NRO TDS (30%)</span><span class="tv r" id="t_nroTDS">−₹36,000/yr</span></div>
+      <div class="tr2"><span>Form 10F Saving</span><span class="tv g" id="t_10f">₹18,000/yr</span></div>
+      <div class="tr2"><span>LTCG Equity</span><span class="tv">12.5% above ₹1.25L</span></div>
+      <div class="tr2"><span>Dividend TDS (NRI)</span><span class="tv">20%</span></div>
+    </div>
+  </div>
+  <div class="ibox" style="margin-top:14px;overflow-x:auto">
+    <h3>📋 India DTAA — UK · USA · Netherlands Comparison</h3>
+    <table class="treaty-tbl">
+      <thead><tr><th>Item</th><th>🇬🇧 UK</th><th>🇺🇸 USA</th><th>🇳🇱 Netherlands</th></tr></thead>
+      <tbody>
+        <tr><td>India DTAA active?</td><td style="color:var(--green)">✓ Yes</td><td style="color:var(--green)">✓ Yes</td><td style="color:var(--green)">✓ Yes</td></tr>
+        <tr><td>NRO TDS with TRC (Form 10F)</td><td>~15%</td><td>~15%</td><td>~10%</td></tr>
+        <tr><td>NRE FD taxable abroad?</td><td style="color:var(--red)">Yes — income tax</td><td style="color:var(--red)">Yes — federal tax</td><td style="color:var(--red)">Yes — Box 3</td></tr>
+        <tr><td>Indian Mutual Funds</td><td style="color:var(--green)">✓ OK with NRI KYC</td><td style="color:var(--red)">⚠ PFIC — avoid</td><td style="color:var(--green)">✓ OK (verify PFIC)</td></tr>
+        <tr><td>Foreign account reporting</td><td>SA106 (HMRC)</td><td style="color:var(--red)">FBAR + Form 8938</td><td>Box 3 declaration</td></tr>
+        <tr><td>India equity capital gains</td><td>UK CGT rules</td><td>LTCG 15–20%</td><td>Box 3 flat</td></tr>
+        <tr><td>Unique expat benefit</td><td>—</td><td>Foreign Tax Credit (1116)</td><td style="color:var(--nl)">30% Ruling (Kennismigranten)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══ COMPLIANCE ═══ -->
+<div class="tpane" id="tab-compliance">
+  <div class="banner"><strong>⚖️ Multi-Country NRI Compliance:</strong> USA has the most onerous reporting obligations (FBAR + FATCA + PFIC forms). Netherlands requires Box 3 worldwide asset declaration. UK requires SA106. All require India TDS/ITR coordination via DTAA.</div>
+  <div class="cgrid">
+    <div class="ccard"><h3>🇬🇧 UK Obligations</h3>
+      <div class="ci"><div><div style="font-weight:500">Self Assessment SA100</div><div class="ci-d">Mandatory if India income &gt;£1K or total gross &gt;£100K</div></div><span class="chip alert">Required</span></div>
+      <div class="ci"><div><div style="font-weight:500">SA106 (Foreign Income)</div><div class="ci-d">India income + DTAA credit claims — file every year</div></div><span class="chip alert">Required</span></div>
+      <div class="ci"><div><div style="font-weight:500">NRE FD Interest</div><div class="ci-d">Tax-free in India but taxable in UK — report as foreign interest</div></div><span class="chip alert">Declare</span></div>
+      <div class="ci"><div><div style="font-weight:500">CGT on India Equity</div><div class="ci-d">SA108 if gains above £3,000 annual exempt amount (2024–25)</div></div><span class="chip rev">If gains</span></div>
+    </div>
+    <div class="ccard"><h3>🇺🇸 USA Obligations</h3>
+      <div class="ci"><div><div style="font-weight:500">FBAR (FinCEN 114)</div><div class="ci-d">If any foreign account &gt;$10K at any point. Penalty: $10K+ per violation</div></div><span class="chip alert">Critical</span></div>
+      <div class="ci"><div><div style="font-weight:500">Form 8938 (FATCA)</div><div class="ci-d">Foreign assets &gt;$50K (single) / $100K (MFJ) — filed with Form 1040</div></div><span class="chip alert">Required</span></div>
+      <div class="ci"><div><div style="font-weight:500">Form 8621 (PFIC)</div><div class="ci-d">Required for each Indian mutual fund held — best avoided entirely</div></div><span class="chip alert">Avoid MFs</span></div>
+      <div class="ci"><div><div style="font-weight:500">Form 1116 (Tax Credit)</div><div class="ci-d">Claim foreign tax credit for Indian TDS — avoids double taxation</div></div><span class="chip ok">Claim it</span></div>
+    </div>
+    <div class="ccard"><h3>🇳🇱 Netherlands Obligations</h3>
+      <div class="ci"><div><div style="font-weight:500">Aangifte inkomstenbelasting</div><div class="ci-d">Annual return — includes Box 3 worldwide asset declaration on Jan 1</div></div><span class="chip alert">Annual</span></div>
+      <div class="ci"><div><div style="font-weight:500">Box 3 Foreign Assets</div><div class="ci-d">All NRE/NRO/FD balances on Jan 1 subject to 1.03–5.53% fictitious return tax</div></div><span class="chip alert">Declare all</span></div>
+      <div class="ci"><div><div style="font-weight:500">30% Ruling Application</div><div class="ci-d">Apply within 4 months of starting work; valid up to 5 years; saves ~15% effective tax</div></div><span class="chip ok">Apply early</span></div>
+      <div class="ci"><div><div style="font-weight:500">NL–India DTAA</div><div class="ci-d">Attach TRC from Belastingdienst to claim Indian TDS credit in Dutch return</div></div><span class="chip ok">Claim TDS</span></div>
+    </div>
+    <div class="ccard"><h3>🇮🇳 India Obligations (NRI)</h3>
+      <div class="ci"><div><div style="font-weight:500">ITR-2 Filing</div><div class="ci-d">File if India income &gt;₹2.5L or to claim TDS refunds. Deadline: July 31</div></div><span class="chip rev">If applicable</span></div>
+      <div class="ci"><div><div style="font-weight:500">Convert A/c to NRO</div><div class="ci-d">Within 3 months of becoming NRI — mandatory under FEMA 1999</div></div><span class="chip alert">Mandatory</span></div>
+      <div class="ci"><div><div style="font-weight:500">Form 10F + TRC</div><div class="ci-d">Get Tax Residency Certificate from HMRC/IRS/Belastingdienst + submit Form 10F to reduce NRO TDS 30%→15%</div></div><span class="chip ok">Recommended</span></div>
+      <div class="ci"><div><div style="font-weight:500">PIS for Indian Equities</div><div class="ci-d">Portfolio Investment Scheme — mandatory for NRI trading on NSE/BSE</div></div><span class="chip rev">If investing</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ REMITTANCE ═══ -->
+<div class="tpane" id="tab-remittance">
+  <div style="font-family:'Playfair Display',serif;font-size:18px;margin-bottom:5px">💱 Multi-Currency Remittance to India</div>
+  <p style="font-size:11.5px;color:rgba(15,14,13,.58);margin-bottom:13px">Sending from UK, USA or Netherlands — compare providers and maximise ₹ received.</p>
+  <div style="background:#fff;border:1px solid var(--bd);border-radius:var(--r);padding:14px;margin-bottom:13px">
+    <div style="font-size:12px;font-weight:600;margin-bottom:8px">Transfer Calculator</div>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <input type="number" id="txAmt" value="2000" style="padding:7px 10px;border:1.5px solid var(--bd);border-radius:7px;font-family:'DM Mono',monospace;font-size:13px;width:110px;outline:none" oninput="updTx()">
+      <select id="txCurr" onchange="updTx()" style="padding:7px 10px;border:1.5px solid var(--bd);border-radius:7px;font-size:12px;font-family:'DM Sans',sans-serif;outline:none"><option value="gbp">GBP (£)</option><option value="usd">USD ($)</option><option value="eur">EUR (€)</option></select>
+      <span style="font-size:13px;font-weight:600">→</span>
+      <span id="txResult" style="font-family:'Playfair Display',serif;font-size:20px;color:var(--india)">₹2,14,000</span>
+      <span style="font-size:10px;color:rgba(15,14,13,.45)">via Wise (est.)</span>
+    </div>
+    <div style="font-size:9.5px;color:rgba(15,14,13,.38);margin-top:5px">*Indicative rates only. Always verify live rates before transferring.</div>
+  </div>
+  <div class="rgrid">
+    <div class="rcard best"><div class="rp">Wise</div><div class="rrate">₹106.40/£</div><div class="rfee">~0.5–0.7% · GBP/USD/EUR</div><div style="font-size:10px;margin-top:5px;color:rgba(15,14,13,.55)">Best all-round. NRE/NRO credit. Supports all 3 currencies.</div></div>
+    <div class="rcard"><div class="rp">Revolut</div><div class="rrate">₹105.80/£</div><div class="rfee">0.5–1% · Weekend limits</div><div style="font-size:10px;margin-top:5px;color:rgba(15,14,13,.55)">Good for smaller amounts. INR can be held in-app.</div></div>
+    <div class="rcard"><div class="rp">ICICI Money2India</div><div class="rrate">₹105.50/£</div><div class="rfee">Free for ICICI NRE accounts</div><div style="font-size:10px;margin-top:5px;color:rgba(15,14,13,.55)">Best with ICICI. Auto purpose codes. UK + US + NL.</div></div>
+    <div class="rcard"><div class="rp">HDFC QuickRemit</div><div class="rrate">₹105.30/£</div><div class="rfee">£0 for NRE credit</div><div style="font-size:10px;margin-top:5px;color:rgba(15,14,13,.55)">Best with HDFC India. Fast NRE/NRO. UK + US.</div></div>
+    <div class="rcard"><div class="rp">Remitly</div><div class="rrate">₹105.90/£</div><div class="rfee">~1% · Express option</div><div style="font-size:10px;margin-top:5px;color:rgba(15,14,13,.55)">Good for USD from USA. Express next-day delivery.</div></div>
+    <div class="rcard"><div class="rp">Western Union</div><div class="rrate">₹104.20/£</div><div class="rfee">£3–5 flat · GBP/USD/EUR</div><div style="font-size:10px;margin-top:5px;color:rgba(15,14,13,.55)">Reliable. Lower rate. Good for large one-off transfers.</div></div>
+  </div>
+  <div class="ibox">
+    <h3>📋 Compliance Checklist by Country of Origin</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;font-size:11.5px;line-height:1.65">
+      <div><strong style="color:var(--uk)">🇬🇧 UK</strong><br>✅ Purpose code (P1301 / P0003)<br>✅ No limit for NRE from UK earnings<br>⚠ &gt;£10K may trigger AML checks<br>✅ Keep receipts for SA106</div>
+      <div><strong style="color:var(--usa)">🇺🇸 USA</strong><br>✅ Purpose code required<br>⚠ FBAR if India accts &gt;$10K total<br>✅ No limit for NRE from US income<br>⚠ Report on Form 8938 if &gt;$50K</div>
+      <div><strong style="color:var(--nl)">🇳🇱 Netherlands</strong><br>✅ Wise / ICICI support EUR→INR<br>✅ Purpose code required<br>⚠ Declare India assets in Box 3<br>✅ NRO repatriation max $1M/yr</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ AI ADVISOR ═══ -->
+<div class="tpane" id="tab-advisor">
+  <div class="ai-wrap">
+    <div class="ai-hdr">
+      <div class="ai-av">🤖</div>
+      <div><h2>Global NRI Finance Advisor</h2><p>Powered by Claude · India · UK · USA · Netherlands · FEMA · DTAA · Tax · Strategy</p></div>
+    </div>
+    <div class="qq-wrap">
+      <button class="qq" onclick="askQ('How should I prioritise ISA, 401k, NL pension and NRE FD across countries?')">Multi-country priority?</button>
+      <button class="qq" onclick="askQ('What are PFIC rules for US-based NRIs holding Indian mutual funds?')">US PFIC rules?</button>
+      <button class="qq" onclick="askQ('How does the 30% ruling in Netherlands affect my Indian NRE FD and investments?')">NL 30% ruling + India?</button>
+      <button class="qq" onclick="askQ('What FBAR and FATCA forms do I need as a US-based NRI with Indian accounts?')">FBAR & FATCA?</button>
+      <button class="qq" onclick="askQ('How do I claim DTAA credit for Indian TDS paid in UK, USA and Netherlands?')">DTAA credit all countries?</button>
+      <button class="qq" onclick="askQ('What is the most tax-efficient way to invest my bonus across UK, USA and India?')">Invest bonus wisely?</button>
+    </div>
+    <div style="background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.28);border-radius:7px;padding:8px 11px;margin-bottom:9px;font-size:11px;color:rgba(247,243,238,.72);line-height:1.5">
+      🔒 <strong style="color:rgba(247,243,238,.9)">Privacy:</strong> Approximate figures only — no names, PAN/NI/SSN or account numbers. &nbsp;·&nbsp; ⚠️ <strong style="color:rgba(247,243,238,.9)">Educational only</strong> — consult a qualified CA, IFA, CPA or SEBI advisor before acting.
+    </div>
+    <div class="chat-win" id="chatWin">
+      <div class="msg ai"><div class="mb">👋 Hello! I'm your multi-country NRI finance assistant covering <strong>India, UK, USA and Netherlands</strong>. I can help with FEMA, DTAA treaties, PFIC rules, 30% ruling, FBAR/FATCA, cross-border tax, and wealth strategy.<br><br>Your sidebar inputs inform my guidance — try a quick question above or type anything below!</div><div class="mtime">Just now</div></div>
+    </div>
+    <div class="chat-row">
+      <input type="text" class="chat-in" id="chatIn" placeholder="Ask about FEMA, PFIC, 30% ruling, FBAR, DTAA, strategy…" onkeydown="if(event.key==='Enter')sendMsg()">
+      <button class="send-btn" id="sendBtn" onclick="sendMsg()">Send →</button>
+    </div>
+  </div>
+</div>
+
+</div></main></div>
+
+<div class="disclaimer">⚠️ <strong>Educational Tool Only.</strong> This calculator provides general financial awareness and does <strong>not</strong> constitute financial, tax or legal advice. It does not replace a qualified IFA, Chartered Accountant, CPA or SEBI-registered advisor. Tax rules and FEMA regulations change frequently — always verify with a professional before acting. All figures are estimates.</div>
 
 <!-- EMAIL MODAL -->
-<div class="modal-overlay" id="emailModal">
+<div class="modal-bg" id="emailModal">
   <div class="modal">
-    <button class="modal-close" onclick="closeEmailModal()">✕</button>
+    <button class="modal-x" onclick="closeMail()">✕</button>
     <h2>📧 Email Your Summary</h2>
-    <p>Opens your email client with a pre-filled financial summary. No data is stored or transmitted — compiled locally in your browser.</p>
-    <div class="modal-privacy">🔒 Only the approximate financial figures you entered are included. No PII is shared.</div>
-    <div class="fg"><label>Recipient Email</label><input type="email" id="emailTo" placeholder="e.g. yourname@email.com"></div>
-    <div class="fg"><label>Personal note (optional)</label><textarea id="emailNote" style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:7px;background:#fff;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--ink);outline:none;min-height:70px;resize:vertical;" placeholder="e.g. For discussion with my CA..."></textarea></div>
-    <div class="modal-actions">
-      <button class="btn-secondary" onclick="closeEmailModal()">Cancel</button>
-      <button class="btn-primary" onclick="sendEmail()">Open Email Client →</button>
-    </div>
+    <p>Opens your email client with a pre-filled financial summary. Everything runs locally — nothing is stored or transmitted.</p>
+    <div class="modal-priv">🔒 Only approximate financial figures included. No personal identification data.</div>
+    <div class="fg"><label>Recipient Email</label><input type="email" id="emailTo" placeholder="yourname@email.com" style="font-family:'DM Sans',sans-serif"></div>
+    <div class="fg"><label>Note (optional)</label><textarea id="emailNote" style="width:100%;padding:8px 10px;border:1.5px solid var(--bd);border-radius:7px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--ink);outline:none;min-height:58px;resize:vertical"></textarea></div>
+    <div class="modal-btns"><button class="btn-sec" onclick="closeMail()">Cancel</button><button class="btn-pri" onclick="doEmail()">Open Email Client →</button></div>
   </div>
 </div>
-
-<!-- ══════════════════════════════════════════════════
-     JAVASCRIPT
-══════════════════════════════════════════════════ -->
 <script>
-// ── GLOBALS ──
-let currentMode = 'all';
-let ukPeriod = 'annual';
-let indiaPeriod = 'annual';
-let myChart = null;
+// ── STATE ──────────────────────────────────────────
+const on={india:true,uk:true,usa:true,nl:true};
+const sOpen={india:true,uk:true,usa:true,nl:true};
+const pers={uk:'annual',usa:'annual',nl:'annual',india:'annual'};
+let myChart=null;
 
-// ── MODE ──
-function setMode(mode) {
-  currentMode = mode;
-  ['all','uk','india'].forEach(m => {
-    const btn = document.getElementById('mode'+m.charAt(0).toUpperCase()+m.slice(1));
-    if(btn) btn.classList.toggle('active', m===mode);
-  });
-  document.querySelectorAll('.uk-only').forEach(el => el.classList.toggle('hidden-section', mode==='india'));
-  document.querySelectorAll('.india-only').forEach(el => el.classList.toggle('hidden-section', mode==='uk'));
-  const fxG = document.getElementById('fxGroup');
-  if(fxG) fxG.classList.toggle('hidden-section', mode!=='all');
-  calculate();
+// ── HELPERS ─────────────────────────────────────────
+const el=id=>document.getElementById(id);
+const nv=id=>+(el(id)?.value||0);
+const sv=id=>el(id)?.value||'';
+const set=(id,v)=>{const e=el(id);if(e)e.textContent=v;};
+const fmt=(n,sym,d=1)=>sym+(n/d>=1000?Math.round(n/d).toLocaleString():Math.round(n/d));
+function fmtPer(n,sym,p){const d={annual:1,monthly:12,weekly:52,biweekly:26}[p]||1;return sym+Math.round(Math.abs(n)/d).toLocaleString();}
+
+// ── SIDEBAR MOBILE ──────────────────────────────────
+function toggleSB(){el('sb').classList.toggle('open');el('bd').classList.toggle('show');}
+function closeSB(){el('sb').classList.remove('open');el('bd').classList.remove('show');}
+
+// ── COUNTRY TOGGLE ──────────────────────────────────
+function toggleC(c){
+  on[c]=!on[c];
+  const btn=el('cb-'+c);
+  btn.className=on[c]?'cbtn on-'+c:'cbtn';
+  el('csec-'+c).style.opacity=on[c]?'1':'0.4';
+  calc();
 }
 
-// ── TAB SWITCHER ──
-const TAB_NAMES = ['overview','salary','instruments','tax','compliance','remittance','advisor'];
-function switchTab(name) {
-  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', TAB_NAMES[i]===name));
-  document.querySelectorAll('.tab-content').forEach(c => c.classList.toggle('active', c.id==='tab-'+name));
+// ── SECTION COLLAPSE ────────────────────────────────
+function toggleSec(c){
+  sOpen[c]=!sOpen[c];
+  el('body-'+c).classList.toggle('closed',!sOpen[c]);
+  el('arr-'+c).classList.toggle('o',sOpen[c]);
 }
 
-// ── SALARY TAB SWITCHER ──
-function switchSalaryTab(which) {
-  document.querySelectorAll('.salary-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.salary-calc-panel').forEach(p => p.classList.remove('active'));
-  document.querySelector('.salary-tab.'+(which==='uk'?'uk':'india')+'-tab').classList.add('active');
-  document.getElementById('salary-'+which).classList.add('active');
+// ── TABS ─────────────────────────────────────────────
+function switchTab(name,e){
+  document.querySelectorAll('.tbtn').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tpane').forEach(p=>p.classList.remove('active'));
+  e.classList.add('active');
+  el('tab-'+name).classList.add('active');
+  closeSB();
+}
+function switchSal(c,e){
+  document.querySelectorAll('.stab').forEach(t=>t.className='stab');
+  document.querySelectorAll('.spane').forEach(p=>p.classList.remove('active'));
+  e.classList.add('a-'+c);
+  el('sal-'+c).classList.add('active');
+}
+function setPer(c,p,e){
+  pers[c]=p;
+  e.closest('.ptabs').querySelectorAll('.ptab').forEach(b=>b.classList.remove('active'));
+  e.classList.add('active');
+  ({uk:calcUK,usa:calcUSA,nl:calcNL,india:calcIndia})[c]();
 }
 
-// ── PERIOD TABS ──
-function setPeriod(which, period) {
-  if(which==='uk') ukPeriod=period; else indiaPeriod=period;
-  document.querySelectorAll('#salary-'+which+' .period-tab').forEach((t,i) => {
-    const periods = which==='uk' ? ['annual','monthly','weekly'] : ['annual','monthly'];
-    t.classList.toggle('active', periods[i]===period);
-  });
-  if(which==='uk') calcUKSalary(); else calcIndiaSalary();
+// ── INCOME TOTALS ────────────────────────────────────
+function updTotals(){
+  set('ukTot','£'+(nv('ukBase')+nv('ukBonus')+nv('ukStock')).toLocaleString());
+  set('usaTot','$'+(nv('usaBase')+nv('usaBonus')+nv('usaStock')).toLocaleString());
+  set('nlTot','€'+(nv('nlBase')+nv('nlBonus')+nv('nlStock')).toLocaleString());
+  set('inTot','₹'+(nv('inRent')+nv('inDiv')+nv('inFD')+nv('inCG')).toLocaleString());
 }
 
-// ── UK TOTAL UPDATER ──
-function updateUKTotal() {
-  const base = +document.getElementById('ukBasePay').value||0;
-  const bonus = +document.getElementById('ukBonus').value||0;
-  const stocks = +document.getElementById('ukStocks').value||0;
-  document.getElementById('ukIncomeTotal').textContent = '£'+(base+bonus+stocks).toLocaleString();
-}
-
-function updateINTotal() {
-  const r = +document.getElementById('inRental').value||0;
-  const d = +document.getElementById('inDividends').value||0;
-  const f = +document.getElementById('inFDIncome').value||0;
-  const cg = +document.getElementById('inCapGains').value||0;
-  document.getElementById('inIncomeTotal').textContent = '₹'+(r+d+f+cg).toLocaleString();
-}
-
-// ── UK SALARY CALCULATOR ──
-function calcUKSalary() {
-  const base    = +document.getElementById('sc_ukBase').value||0;
-  const bonus   = +document.getElementById('sc_ukBonus').value||0;
-  const stocks  = +document.getElementById('sc_ukStocks').value||0;
-  const empPct  = +document.getElementById('sc_empPension').value||0;
-  const eePct   = +document.getElementById('sc_eePension').value||0;
-  const slPlan  = document.getElementById('sc_studentLoan').value;
-  const scotland= document.getElementById('sc_scotland').value==='yes';
-  const sacrifice= (+document.getElementById('sc_sacrifice').value||0)*12;
-
-  const grossTotal = base + bonus + stocks;
-  const eePension = base * eePct/100;
-  const empPension = base * empPct/100;
-  const pensionablePay = Math.max(0, grossTotal - eePension - sacrifice);
-
-  // Personal allowance
-  let pa = 12570;
-  if(pensionablePay > 100000) pa = Math.max(0, 12570 - Math.floor((pensionablePay-100000)/2));
-
-  // Income tax
-  let tax = 0;
-  const taxable = Math.max(0, pensionablePay - pa);
-  if(scotland) {
-    // Scottish bands 2025-26
-    const bands = [[2306,0.19],[13991,0.20],[31092,0.21],[62430,0.42],[0,0.48]];
-    let rem = taxable;
-    for(const [bw,r] of bands) { const amt = bw>0?Math.min(rem,bw):rem; tax+=amt*r; rem-=amt; if(rem<=0)break; }
+// ── UK SALARY CALCULATOR ─────────────────────────────
+function calcUK(){
+  const base=nv('su_base'),bonus=nv('su_bonus'),stock=nv('su_stock');
+  const eePct=nv('su_eep'),empPct=nv('su_emp');
+  const slPlan=sv('su_sl'),scot=sv('su_scot')==='yes',sac=nv('su_sac')*12;
+  const gross=base+bonus+stock;
+  const eePen=base*eePct/100,empPen=base*empPct/100;
+  const netPen=gross-eePen-sac;
+  let pa=12570;
+  if(netPen>100000)pa=Math.max(0,12570-Math.floor((netPen-100000)/2));
+  const taxable=Math.max(0,netPen-pa);
+  let tax=0;
+  if(scot){
+    const bands=[[2306,.19],[13991,.20],[31092,.21],[62430,.42],[1e9,.48]];
+    let r=taxable;for(const[w,rt]of bands){const a=Math.min(r,w);tax+=a*rt;r-=a;if(r<=0)break;}
   } else {
-    const basic = Math.min(taxable, 37700);
-    const higher = Math.min(Math.max(0,taxable-37700), 125140-12570-37700);
-    const add = Math.max(0, taxable - (125140-12570));
-    tax = basic*0.20 + higher*0.40 + add*0.45;
+    tax=Math.min(taxable,37700)*.20+Math.min(Math.max(0,taxable-37700),112570-37700)*.40+Math.max(0,taxable-112570)*.45;
+  }
+  let ni=0;
+  if(netPen>12570){ni=Math.min(netPen-12570,50270-12570)*.08+Math.max(0,netPen-50270)*.02;}
+  const slT={plan1:24990,plan2:27295,plan5:25000};
+  const slAmt=slPlan!=='none'&&slT[slPlan]?Math.max(0,netPen-slT[slPlan])*.09:0;
+  const th=netPen-tax-ni-slAmt;
+  const p=pers.uk;
+  const f=(x,sym='£')=>sym+Math.round(Math.abs(x)/({annual:1,monthly:12,weekly:52}[p]||1)).toLocaleString();
+  set('uk_base',f(base));set('uk_bonus',f(bonus));set('uk_stock',f(stock));set('uk_gross',f(gross));
+  set('uk_tax','−'+f(tax));set('uk_ni','−'+f(ni));set('uk_eep','−'+f(eePen));
+  set('uk_sl',slAmt>0?'−'+f(slAmt):'−£0');set('uk_sac',sac>0?'−'+f(sac):'−£0');
+  set('uk_th',f(th));set('uk_empp','+'+f(empPen));
+  set('uk_eff',netPen>0?Math.round((tax+ni)/netPen*100)+'%':'0%');
+  set('uk_marg',netPen>125140?'45%':netPen>50270?'40%':'20%');
+  const isaUsed=Math.min(20000,nv('isa')*12);
+  set('uk_isa_l','£'+(20000-isaUsed).toLocaleString()+'/yr');
+  set('uk_sipp_l','£'+Math.min(60000,Math.max(0,gross-nv('sipp')*12)).toLocaleString()+'/yr');
+  return{gross,th,tax,ni,eePen,empPen};
+}
+
+// ── USA SALARY CALCULATOR ────────────────────────────
+function calcUSA(){
+  const base=nv('uu_base'),bonus=nv('uu_bonus'),stock=nv('uu_stock');
+  const filing=sv('uu_filing'),stRate=nv('uu_state')/100;
+  const k401=Math.min(nv('uu_401k')*12,23500),hsaA=Math.min(nv('uu_hsa')*12,4300),pre=nv('uu_pre')*12;
+  const gross=base+bonus+stock;
+  const preTax=k401+hsaA+pre;
+  const agi=Math.max(0,gross-preTax);
+  const stdDed=filing==='mfj'?30000:15000;
+  const taxInc=Math.max(0,agi-stdDed);
+  const fedB=filing==='mfj'?[[23850,.10],[73100,.12],[109750,.22],[206700,.24],[194100,.32],[62900,.35],[1e9,.37]]:[[11925,.10],[36550,.12],[54875,.22],[103350,.24],[97050,.32],[31450,.35],[1e9,.37]];
+  let fedTax=0,r=taxInc;for(const[w,rt]of fedB){const a=Math.min(r,w);fedTax+=a*rt;r-=a;if(r<=0)break;}
+  const ss=Math.min(gross,176100)*.062;
+  const mc=gross*.0145+(gross>200000?(gross-200000)*.009:0);
+  const stateTax=agi*stRate;
+  const th=gross-fedTax-ss-mc-stateTax-preTax;
+  const p=pers.usa;
+  const f=(x,sym='$')=>sym+Math.round(Math.abs(x)/({annual:1,monthly:12,biweekly:26}[p]||1)).toLocaleString();
+  const fedMarg=taxInc>523601?37:taxInc>209426?35:taxInc>164926?32:taxInc>86376?24:taxInc>40526?22:taxInc>9951?12:10;
+  set('ua_base',f(base));set('ua_bonus',f(bonus));set('ua_stock',f(stock));set('ua_gross',f(gross));
+  set('ua_fed','−'+f(fedTax));set('ua_ss','−'+f(ss));set('ua_mc','−'+f(mc));
+  set('ua_state',stateTax>0?'−'+f(stateTax):'−$0');
+  set('ua_401k','−'+f(k401));set('ua_hsa','−'+f(hsaA));
+  set('ua_th',f(th));
+  set('ua_eff',gross>0?Math.round((fedTax+ss+mc+stateTax)/gross*100)+'%':'0%');
+  set('ua_marg',fedMarg+'%');
+  set('ua_fbar','If India accounts >$10K at any point');
+  set('ua_401l','$'+Math.max(0,23500-k401).toLocaleString()+'/yr');
+  return{gross,th,fedTax,ss,mc,stateTax};
+}
+
+// ── NL SALARY CALCULATOR ─────────────────────────────
+function calcNL(){
+  const base=nv('un_base'),bonus=nv('un_bonus'),stock=nv('un_stock');
+  const rule30=sv('un_30')==='yes',healthMo=nv('un_health'),penPct=nv('un_pen');
+  const gross=base+bonus+stock;
+  const health=healthMo*12,pension=base*penPct/100;
+  const exempt30=rule30?gross*.30:0;
+  const taxable=Math.max(0,gross-exempt30-pension);
+  let tax=taxable<=38441?taxable*.3697:38441*.3697+(taxable-38441)*.495;
+  // Arbeidskorting approximation + Algemene heffingskorting
+  const ahk=Math.max(0,3362-(Math.max(0,taxable-22660)*.06095));
+  const ak=taxable<=11491?taxable*.08231:taxable<=24820?945+(taxable-11491)*.02913:taxable<=39957?1334:Math.max(0,1334-(taxable-39957)*.006);
+  tax=Math.max(0,tax-ahk-ak);
+  const th=gross-tax-pension-health;
+  const p=pers.nl;
+  const f=(x,sym='€')=>sym+Math.round(Math.abs(x)/({annual:1,monthly:12}[p]||1)).toLocaleString();
+  set('un_base_r',f(base));set('un_bonus_r',f(bonus));set('un_stock_r',f(stock));set('un_gross',f(gross));
+  set('un_30r',rule30?f(exempt30):'€0');set('un_taxable',f(taxable));
+  set('un_tax','−'+f(tax));set('un_pen_r','−'+f(pension));set('un_health_r','−'+f(health));
+  set('un_th',f(th));
+  set('un_eff',gross>0?Math.round(tax/gross*100)+'%':'0%');
+  const nlSavingsAnn=(nv('nlBrok')+nv('nlCash'))*12;
+  set('un_box3',nlSavingsAnn>57000?'~€'+Math.round((nlSavingsAnn-57000)*.0103).toLocaleString()+'/yr':'€0 (below threshold)');
+  return{gross,th,tax};
+}
+
+// ── INDIA NRI TAX ────────────────────────────────────
+function calcIndia(){
+  const rent=nv('si_rent'),div=nv('si_div'),fd=nv('si_fd'),ltcg=nv('si_ltcg'),stcg=nv('si_stcg');
+  const dtaaRate=+(sv('si_dtaa')||0.15);
+  const fxI=nv('fxI')||107;
+  const rentNet=rent*.70,totalGross=rentNet+div+fd+ltcg+stcg;
+  const fdTds=fd*.30,divTds=div*.20,ltcgTax=Math.max(0,ltcg-125000)*.125,stcgTax=stcg*.20;
+  const totalTax=fdTds+divTds+ltcgTax+stcgTax;
+  const net=totalGross-totalTax;
+  const form10FSave=fd*(0.30-dtaaRate);
+  const dtaaCredit=totalTax/fxI;
+  const p=pers.india;
+  const fi=(x)=>'₹'+Math.round(Math.abs(x)/({annual:1,monthly:12}[p]||1)).toLocaleString();
+  const fg=(x)=>'£'+Math.round(Math.abs(x)/({annual:1,monthly:12}[p]||1)).toLocaleString();
+  set('si_rent_r',fi(rentNet));set('si_div_r',fi(div));set('si_fd_r',fi(fd));
+  set('si_cg_r',fi(ltcg+stcg));set('si_gross',fi(totalGross));
+  set('si_fdtds','−'+fi(fdTds));set('si_divtds','−'+fi(divTds));
+  set('si_ltcgt','−'+fi(ltcgTax));set('si_totaltax','−'+fi(totalTax));
+  set('si_net',fi(net));set('si_dtaa_r','+'+fg(dtaaCredit));
+  set('si_10f','₹'+Math.round(form10FSave).toLocaleString()+'/yr');
+  return{totalGross,totalTax,net,form10FSave,dtaaCredit};
+}
+
+// ── MAIN CALCULATE ────────────────────────────────────
+function calc(){
+  const age=nv('age'),goalAmt=nv('goalAmt'),goalAge=nv('goalAge');
+  const risk=sv('risk'),horizon=Math.max(1,goalAge-age);
+  const fxI=nv('fxI')||107,fxU=nv('fxU')||0.79,fxE=nv('fxE')||0.85;
+
+  // UK savings in £
+  const isaA=nv('isa'),sippA=nv('sipp'),ukCashA=nv('ukCash');
+  const ukSav=on.uk?(isaA+sippA+ukCashA)*12:0;
+
+  // UK take-home approx
+  const ukGross=nv('ukBase')+nv('ukBonus')+nv('ukStock');
+  let ukTH=0;
+  if(on.uk){
+    const pa=ukGross>100000?Math.max(0,12570-Math.floor((ukGross-100000)/2)):12570;
+    const t=Math.max(0,ukGross-nv('ukBase')*(nv('ukPen')/100)-pa);
+    const tax=Math.min(t,37700)*.20+Math.max(0,t-37700)*.40;
+    const ni=ukGross>12570?Math.min(ukGross-12570,50270-12570)*.08+Math.max(0,ukGross-50270)*.02:0;
+    ukTH=ukGross-tax-ni-nv('ukBase')*(nv('ukPen')/100);
   }
 
-  // NI Class 1 2025-26: 8% on £12,570–£50,270; 2% above
-  let ni = 0;
-  if(pensionablePay > 12570) {
-    ni = Math.min(pensionablePay-12570, 50270-12570)*0.08;
-    if(pensionablePay > 50270) ni += (pensionablePay-50270)*0.02;
+  // USA savings in £
+  const k401A=nv('k401'),rothA=nv('roth'),hsaA=nv('hsa'),usaBrokA=nv('usaBrok');
+  const usaSav=on.usa?(k401A+rothA+hsaA+usaBrokA)*12*fxU:0;
+  const usaGross=nv('usaBase')+nv('usaBonus')+nv('usaStock');
+  let usaTH=0;
+  if(on.usa){
+    const k=Math.min(k401A*12,23500),h=Math.min(hsaA*12,4300);
+    const agi=Math.max(0,usaGross-k-h);
+    const tI=Math.max(0,agi-15000);
+    const fb=[[11925,.10],[36550,.12],[54875,.22],[103350,.24],[97050,.32],[31450,.35],[1e9,.37]];
+    let fedT=0,r=tI;for(const[w,rt]of fb){const a=Math.min(r,w);fedT+=a*rt;r-=a;if(r<=0)break;}
+    const ss=Math.min(usaGross,176100)*.062,mc=usaGross*.0145;
+    usaTH=usaGross-fedT-ss-mc-k-h;
   }
 
-  // Student loan
-  let sl = 0;
-  const slThresholds = {plan1:24990,plan2:27295,plan5:25000};
-  const slRates = {plan1:0.09,plan2:0.09,plan5:0.09};
-  if(slPlan!=='none' && slThresholds[slPlan]) {
-    sl = Math.max(0, pensionablePay - slThresholds[slPlan]) * slRates[slPlan];
+  // NL savings in £
+  const nlPenA=nv('nlPen'),nlBrokA=nv('nlBrok'),nlCashA=nv('nlCash');
+  const nlSav=on.nl?(nlPenA+nlBrokA+nlCashA)*12*fxE:0;
+  const nlGross=nv('nlBase')+nv('nlBonus')+nv('nlStock');
+  let nlTH=0;
+  if(on.nl){
+    const r30=sv('nl30')==='yes',tG=Math.max(0,nlGross*(r30?.70:1));
+    const tax=tG<=38441?tG*.3697:38441*.3697+(tG-38441)*.495;
+    nlTH=nlGross-Math.max(0,tax-3362)-(nv('nlBase')*(nv('nlPen')/100||5/100))-140*12;
   }
 
-  const takeHome = pensionablePay - tax - ni - sl - sacrifice;
-  const effTax = pensionablePay>0 ? ((tax+ni)/pensionablePay*100).toFixed(1) : '0.0';
-  const marginal = pensionablePay > 125140 ? 45 : pensionablePay > 50270 ? 40 : 20;
+  // India savings in £
+  const nreFDA=nv('nreFD'),nroFDA=nv('nroFD'),mfA=nv('mf');
+  const indiaSav=on.india?(nreFDA+nroFDA+mfA)*12/fxI:0;
 
-  const div = (v) => ({annual:v, monthly:v/12, weekly:v/52})[ukPeriod];
-  const fmt = (v) => '£'+Math.round(div(v)).toLocaleString();
+  const totalSav=ukSav+usaSav+nlSav+indiaSav;
+  const pct=goalAmt>0?Math.min(99,Math.round(totalSav/goalAmt*100)):0;
 
-  document.getElementById('uk_grossBase').textContent = fmt(base);
-  document.getElementById('uk_grossBonus').textContent = fmt(bonus);
-  document.getElementById('uk_grossStocks').textContent = fmt(stocks);
-  document.getElementById('uk_totalGross').textContent = fmt(grossTotal);
-  document.getElementById('uk_incomeTax').textContent = '−'+fmt(tax);
-  document.getElementById('uk_ni').textContent = '−'+fmt(ni);
-  document.getElementById('uk_eePension').textContent = '−'+fmt(eePension);
-  document.getElementById('uk_studentLoan').textContent = sl>0?'−'+fmt(sl):'−£0';
-  document.getElementById('uk_sacrifice').textContent = sacrifice>0?'−'+fmt(sacrifice):'−£0';
-  document.getElementById('uk_takeHome').textContent = fmt(takeHome);
-  document.getElementById('uk_empPension').textContent = '+'+fmt(empPension);
-  document.getElementById('uk_totalPackage').textContent = fmt(takeHome + empPension);
-  document.getElementById('uk_effTax').textContent = effTax+'%';
-  document.getElementById('uk_marginalTax').textContent = marginal+'%';
-  const isaYearlyUsed = (+document.getElementById('isaAmount').value||0)*12;
-  document.getElementById('uk_isaLeft').textContent = '£'+(Math.max(0,20000-isaYearlyUsed)).toLocaleString()+'/yr';
-  document.getElementById('uk_sippLeft').textContent = '£'+Math.min(60000, Math.max(0,grossTotal - (+document.getElementById('sippAmount').value||0)*12)).toLocaleString();
+  // Update summary cards visibility
+  ['uk','usa','nl','india'].forEach(c=>el('sc-'+c)?.style.setProperty('display',on[c]?'':'none'));
+
+  set('cv-uk','£'+Math.round(ukTH/1000)+'K');
+  set('cs-uk','Base £'+Math.round(nv('ukBase')/1000)+'K + Bonus £'+Math.round(nv('ukBonus')/1000)+'K + Stock £'+Math.round(nv('ukStock')/1000)+'K');
+  set('cv-usa','$'+Math.round(usaTH/1000)+'K');
+  set('cs-usa','Federal + FICA + state deducted');
+  set('cv-nl','€'+Math.round(nlTH/1000)+'K');
+  set('cs-nl',sv('nl30')==='yes'?'Incl. 30% ruling benefit':'Box 1 tax applied');
+  set('cv-india','₹'+((nreFDA+nroFDA+mfA)*12/100000).toFixed(1)+'L');
+  set('cv-total','£'+Math.round(totalSav/1000)+'K');
+  set('cs-total','Combined all active countries annually');
+  set('cv-goal',pct+'%');
+  set('cs-goal','Saving £'+Math.round(totalSav/1000)+'K/yr toward £'+Math.round(goalAmt/1000)+'K');
+  set('cv-yrs',horizon+'');
+  set('cs-yrs','Age '+age+' → '+goalAge);
+  el('gbarFill').style.width=pct+'%';
+  set('gmetaL','£'+Math.round(totalSav/1000)+'K/yr saving toward £'+Math.round(goalAmt/1000)+'K target');
+  set('gmetaR',horizon+' years to goal age '+goalAge);
+
+  // Tax tab
+  set('t_ukG','£'+ukGross.toLocaleString());
+  const ukTaxEst=Math.min(Math.max(0,ukGross-12570),37700)*.20+Math.max(0,Math.max(0,ukGross-12570)-37700)*.40;
+  const ukNIEst=ukGross>12570?Math.min(ukGross-12570,50270-12570)*.08+Math.max(0,ukGross-50270)*.02:0;
+  set('t_ukT','−£'+Math.round(ukTaxEst).toLocaleString());
+  set('t_ukNI','−£'+Math.round(ukNIEst).toLocaleString());
+  set('t_sipp','+£'+Math.round(sippA*12*0.40).toLocaleString()+'/yr');
+  set('t_nreTax','−£'+Math.round(nreFDA*12*.075/fxI*.40).toLocaleString());
+  set('t_usaG','$'+usaGross.toLocaleString());
+  const usaFedEst=Math.min(Math.max(0,usaGross-15000),36550)*.12+Math.min(Math.max(0,usaGross-48475),54875)*.22+Math.max(0,Math.min(usaGross-103350,0))*.24;
+  set('t_usaT','−$'+Math.round(usaFedEst).toLocaleString());
+  set('t_fica','−$'+Math.round(Math.min(usaGross,176100)*.062+usaGross*.0145).toLocaleString());
+  set('t_401ks','Saves ~$'+Math.round(Math.min(k401A*12,23500)*.22).toLocaleString()+'/yr');
+  const fbarCheck=(nreFDA+nroFDA)*12/fxI*fxU;
+  set('t_fbar',fbarCheck>10000?'⚠ Required — file by Apr 15':'Not required (check annually)');
+  set('t_nlG','€'+nlGross.toLocaleString());
+  set('t_nl30',sv('nl30')==='yes'?'€'+Math.round(nlGross*.30).toLocaleString():'N/A');
+  const nlTaxEst=nlGross*.70<=38441?nlGross*.70*.3697:38441*.3697+(nlGross*.70-38441)*.495;
+  set('t_nlT','−€'+Math.round(Math.max(0,nlTaxEst-3362)).toLocaleString());
+  const inT=nv('inRent')*.70+nv('inDiv')+nv('inFD')+nv('inCG');
+  set('t_inG','₹'+Math.round(inT).toLocaleString());
+  set('t_nroTDS','−₹'+Math.round(nroFDA*12*.30).toLocaleString()+'/yr');
+  set('t_10f','₹'+Math.round(nroFDA*12*.15).toLocaleString()+'/yr');
+
+  buildStrategy({ukSav,usaSav,nlSav,indiaSav,totalSav,ukGross,usaGross,nlGross,horizon,goalAmt,risk,isaA,sippA,k401A,nreFDA,nroFDA,fxI,fxU,fxE});
+  updateChart({isaA,sippA,ukCashA,nreFDA,nroFDA,mfA,k401A,rothA,hsaA,usaBrokA,nlPenA,nlBrokA,nlCashA,fxI,fxU,fxE,horizon,goalAmt,risk});
+  updateAlloc({ukSav,usaSav,nlSav,indiaSav,isaA,sippA,ukCashA,k401A,rothA,hsaA,usaBrokA,nlPenA,nlBrokA,nreFDA,nroFDA,mfA,fxU,fxE,fxI});
+  calcUK();calcUSA();calcNL();calcIndia();
+  updTx();
 }
 
-// ── INDIA SALARY CALCULATOR ──
-function calcIndiaSalary() {
-  const rental   = +document.getElementById('sc_inRental').value||0;
-  const divInc   = +document.getElementById('sc_inDividends').value||0;
-  const fdInc    = +document.getElementById('sc_inFD').value||0;
-  const ltcg     = +document.getElementById('sc_inLTCG').value||0;
-  const stcg     = +document.getElementById('sc_inSTCG').value||0;
-  const regime   = document.getElementById('sc_inRegime').value;
-  const is80C    = regime==='old' ? Math.min(+document.getElementById('sc_in80C').value||0, 150000) : 0;
-  const fxRate   = +document.getElementById('fxRate').value||107;
-
-  document.getElementById('inDeductionsBox').classList.toggle('hidden-section', regime==='new');
-
-  const rentalNet = rental * 0.70; // 30% standard deduction
-  const totalGross = rentalNet + divInc + fdInc + ltcg + stcg;
-  const fdTds = fdInc * 0.30;
-  const divTax = divInc * 0.20;
-  const ltcgTax = Math.max(0, ltcg - 125000) * 0.125;
-  const stcgTax = stcg * 0.20;
-  const totalTax = fdTds + divTax + ltcgTax + stcgTax;
-  const netIncome = totalGross - totalTax;
-  const effTax = totalGross>0 ? (totalTax/totalGross*100).toFixed(1) : '0.0';
-
-  // DTAA credit (India tax paid / FX rate)
-  const dtaaCredit = totalTax / fxRate;
-  // UK tax on India income (40% band assumed)
-  const ukOnIndia = (totalGross / fxRate) * 0.40;
-  const netUKTax = Math.max(0, ukOnIndia - dtaaCredit);
-
-  // Form 10F benefit: reduces NRO TDS from 30% to ~15%
-  const form10FBenefit = fdInc * 0.15;
-
-  const d = (v) => ({annual:v, monthly:v/12})[indiaPeriod];
-  const fmtI = (v, pre='₹') => pre+Math.round(d(Math.abs(v))).toLocaleString();
-  const fmtG = (v) => '£'+Math.round(d(Math.abs(v))).toLocaleString();
-
-  document.getElementById('in_rentalNet').textContent = fmtI(rentalNet);
-  document.getElementById('in_divIncome').textContent = fmtI(divInc);
-  document.getElementById('in_fdIncome').textContent = fmtI(fdInc);
-  document.getElementById('in_ltcgIncome').textContent = fmtI(ltcg);
-  document.getElementById('in_totalGross').textContent = fmtI(totalGross);
-  document.getElementById('in_fdTDS').textContent = '−'+fmtI(fdTds);
-  document.getElementById('in_divTax').textContent = '−'+fmtI(divTax);
-  document.getElementById('in_ltcgTax').textContent = '−'+fmtI(ltcgTax);
-  document.getElementById('in_totalTax').textContent = '−'+fmtI(totalTax);
-  document.getElementById('in_netIncome').textContent = fmtI(netIncome);
-  document.getElementById('in_effTax').textContent = effTax+'%';
-  document.getElementById('in_dtaaCredit').textContent = '+'+fmtG(dtaaCredit);
-  document.getElementById('in_ukOnIndia').textContent = '−'+fmtG(ukOnIndia);
-  document.getElementById('in_netUKTax').textContent = '−'+fmtG(netUKTax);
-  document.getElementById('in_form10F').textContent = 'Saves ₹'+Math.round(form10FBenefit).toLocaleString()+'/yr';
+// ── STRATEGY ─────────────────────────────────────────
+function buildStrategy({ukSav,usaSav,nlSav,indiaSav,totalSav,ukGross,usaGross,nlGross,horizon,goalAmt,risk,isaA,sippA,k401A,nreFDA,nroFDA,fxI}){
+  const R={conservative:{uk:.055,usa:.055,nl:.045,india:.075},moderate:{uk:.08,usa:.085,nl:.07,india:.095},aggressive:{uk:.10,usa:.11,nl:.09,india:.12}};
+  const r=R[risk]||R.moderate;
+  const fv=(ann,rate,yr)=>ann&&yr?ann*((Math.pow(1+rate,yr)-1)/rate):0;
+  const ukFV=fv(ukSav,r.uk,horizon),usaFV=fv(usaSav,r.usa,horizon),nlFV=fv(nlSav,r.nl,horizon),indFV=fv(indiaSav,r.india,horizon);
+  const totFV=ukFV+usaFV+nlFV+indFV;
+  const onTrack=totFV>=goalAmt*.95,gap=Math.max(0,goalAmt-totFV);
+  const extra=gap>0?gap/((Math.pow(1.08,horizon)-1)/.08)/12:0;
+  const cards=[];
+  if(on.uk)cards.push(`<div class="scard"><h3>🇬🇧 UK</h3>
+    <div class="si">${20000-Math.min(20000,isaA*12)>0?'<strong>ISA headroom: £'+Math.round((20000-Math.min(20000,isaA*12))/12)+'/mo</strong> unused — tax-free growth potential':'✅ ISA fully utilised'}</div>
+    <div class="si"><strong>SIPP: +£${Math.round(sippA*12*.40).toLocaleString()}/yr</strong> tax relief — effective 40% subsidy</div>
+    <div class="si">${ukGross>50270?'⚠ <strong>40% taxpayer</strong> — max SIPP to reduce taxable income below £50K':'✅ Basic rate band — prioritise ISA first'}</div>
+    <div class="si">Projected at ${(r.uk*100).toFixed(0)}%/yr: <strong>£${Math.round(ukFV/1000)}K</strong> in ${horizon}yr</div></div>`);
+  if(on.usa)cards.push(`<div class="scard"><h3>🇺🇸 USA</h3>
+    <div class="si"><strong>Max 401(k) first</strong> — ${Math.max(0,23500-k401A*12)>0?'$'+Math.round(Math.max(0,23500-k401A*12)/12)+'/mo headroom left':'✅ Maxed'} — pre-tax reduces federal AGI</div>
+    <div class="si"><strong>HSA triple tax</strong> — pre-tax in, tax-free growth, tax-free for medical. Max it ($4,300/yr self)</div>
+    <div class="si">⚠ <strong>Avoid Indian MFs</strong> — PFIC rules = punitive tax + Form 8621. Use INDA/SMIN ETFs instead</div>
+    <div class="si">⚠ <strong>File FBAR</strong> if NRE+NRO total >$10K. Penalty: $10K+ per violation</div>
+    <div class="si">Projected at ${(r.usa*100).toFixed(0)}%/yr: <strong>£${Math.round(usaFV/1000)}K</strong> in ${horizon}yr</div></div>`);
+  if(on.nl)cards.push(`<div class="scard"><h3>🇳🇱 Netherlands</h3>
+    <div class="si">${sv('nl30')==='yes'?'✅ <strong>30% ruling active</strong> — 30% of salary tax-exempt. Valid max 5 years — use fully':'⚠ Check 30% ruling eligibility — worth ~15% net pay increase'}</div>
+    <div class="si"><strong>Prioritise pensioenrekening</strong> over beleggingsrekening — pension reduces Box 1; savings above €57K face Box 3 wealth tax</div>
+    <div class="si">NRE FD: declare balance on Jan 1 in <strong>Box 3</strong> (not income tax)</div>
+    <div class="si">Projected at ${(r.nl*100).toFixed(0)}%/yr: <strong>£${Math.round(nlFV/1000)}K</strong> in ${horizon}yr</div></div>`);
+  if(on.india)cards.push(`<div class="scard"><h3>🇮🇳 India (NRI)</h3>
+    <div class="si"><strong>NRE over NRO</strong> — NRE interest tax-free in India. NRO suffers 30% TDS (→15% with Form 10F + TRC)</div>
+    <div class="si"><strong>FCNR(B)</strong> over NRE FD — hold in GBP/USD to eliminate forex risk entirely</div>
+    <div class="si">Form 10F saves: <strong>₹${Math.round(nroFDA*12*.15).toLocaleString()}/yr</strong> — get TRC from HMRC/IRS/Belastingdienst</div>
+    <div class="si">Projected at ${(r.india*100).toFixed(0)}%/yr: <strong>£${Math.round(indFV/1000)}K</strong> in ${horizon}yr</div></div>`);
+  cards.push(`<div class="scard"><h3>🎯 Goal Status</h3>
+    <div class="si">${onTrack?`<strong style="color:#7fd4a8">✅ On track!</strong> Projected £${Math.round(totFV/1000)}K vs goal £${Math.round(goalAmt/1000)}K`:`<strong style="color:#f4a07a">⚠ Gap: £${Math.round(gap/1000)}K</strong><br>Proj. £${Math.round(totFV/1000)}K vs target £${Math.round(goalAmt/1000)}K`}</div>
+    ${gap>0?`<div class="si">Need <strong>+£${Math.round(extra).toLocaleString()}/mo</strong> extra to close gap by age ${nv('goalAge')}</div>`:''}
+    <div class="si">UK £${Math.round(ukFV/1000)}K · USA £${Math.round(usaFV/1000)}K · NL £${Math.round(nlFV/1000)}K · India £${Math.round(indFV/1000)}K</div>
+    <div class="si">Top priority: ${ukGross>50270?'Max UK SIPP (40% band)':usaGross>0?'Max 401(k) + HSA (USA)':'Optimise NRE FD + pension'}</div></div>`);
+  el('stratGrid').innerHTML=cards.join('');
 }
 
-// ── MAIN CALCULATE ──
-function calculate() {
-  // Read inputs
-  const currentAge = +document.getElementById('currentAge').value||32;
-  const goalAmount = +document.getElementById('goalAmount').value||500000;
-  const goalAge    = +document.getElementById('goalAge').value||55;
-  const fxRate     = +document.getElementById('fxRate').value||107;
-  const risk       = document.getElementById('riskAppetite').value;
-
-  const horizonYears = Math.max(1, goalAge - currentAge);
-  document.getElementById('horizon').value = horizonYears;
-  document.getElementById('horizonHint').textContent = `${currentAge} → ${goalAge} = ${horizonYears} years to goal`;
-
-  const isa   = currentMode==='india' ? 0 : (+document.getElementById('isaAmount').value||0);
-  const sipp  = currentMode==='india' ? 0 : (+document.getElementById('sippAmount').value||0);
-  const cash  = currentMode==='india' ? 0 : (+document.getElementById('cashSavings').value||0);
-  const nreFD = currentMode==='uk'    ? 0 : (+document.getElementById('nreFD').value||0);
-  const nroFD = currentMode==='uk'    ? 0 : (+document.getElementById('nroFD').value||0);
-  const mf    = currentMode==='uk'    ? 0 : (+document.getElementById('mfAmount').value||0);
-
-  // UK income
-  const ukBase  = +document.getElementById('ukBasePay').value||0;
-  const ukBonus = +document.getElementById('ukBonus').value||0;
-  const ukSt    = +document.getElementById('ukStocks').value||0;
-  const ukGross = ukBase+ukBonus+ukSt;
-
-  // Simple UK take-home estimate
-  const eePct = +document.getElementById('ukPensionPct').value||0;
-  const eePension = ukBase*eePct/100;
-  const pa = ukGross>100000 ? Math.max(0,12570-Math.floor((ukGross-100000)/2)) : 12570;
-  const taxable = Math.max(0, ukGross-eePension-pa);
-  const basic = Math.min(taxable,37700);
-  const higher = Math.max(0,taxable-37700);
-  const ukTax = basic*0.20+higher*0.40;
-  const ni = ukGross>12570 ? Math.min(ukGross-12570,50270-12570)*0.08+Math.max(0,ukGross-50270)*0.02 : 0;
-  const ukTakeHome = ukGross-ukTax-ni-eePension;
-
-  const ukAnnual = (isa+sipp+cash)*12;
-  const inAnnual = (nreFD+nroFD+mf)*12;
-  const inAnnualGBP = inAnnual/fxRate;
-  const totalAnnualGBP = ukAnnual+inAnnualGBP;
-
-  // Summary cards
-  document.getElementById('ukTakeHome').textContent = '£'+Math.round(ukTakeHome).toLocaleString();
-  document.getElementById('ukTakeHomeSub').textContent = 'Base £'+ukBase.toLocaleString()+' + Bonus £'+ukBonus.toLocaleString()+' + Stocks £'+ukSt.toLocaleString();
-  document.getElementById('indiaTotal').textContent = '₹'+(inAnnual/100000).toFixed(1)+'L';
-  const pct1 = goalAmount>0 ? Math.min(99,Math.round(totalAnnualGBP/goalAmount*100)) : 0;
-  document.getElementById('goalProgressPct').textContent = pct1+'%';
-  document.getElementById('goalProgressSub').textContent = 'Saving £'+Math.round(totalAnnualGBP/1000)+'K/yr toward £'+Math.round(goalAmount/1000)+'K by age '+goalAge;
-
-  // Progress bar
-  document.getElementById('stratProgressBar').style.width = pct1+'%';
-  document.getElementById('stratGoalLeft').textContent = '£'+Math.round(totalAnnualGBP/1000)+'K invested annually toward £'+(goalAmount/1000).toFixed(0)+'K target';
-  document.getElementById('stratYearsLeft').textContent = horizonYears+' years to goal age '+goalAge;
-
-  // Tax display
-  document.getElementById('t_ukGross').textContent = '£'+ukGross.toLocaleString();
-  document.getElementById('t_ukTax').textContent = '−£'+Math.round(ukTax).toLocaleString();
-  document.getElementById('t_ukNI').textContent = '−£'+Math.round(ni).toLocaleString();
-  document.getElementById('t_sippRelief').textContent = '+£'+Math.round(sipp*12*0.40).toLocaleString()+'/yr';
-  document.getElementById('t_nreFdTax').textContent = '−£'+Math.round(nreFD*12*0.07/fxRate*0.40).toLocaleString();
-  const inIncome = (+document.getElementById('inFDIncome').value||0)+(+document.getElementById('inRental').value||0)*(1)+(+document.getElementById('inDividends').value||0);
-  document.getElementById('t_inGross').textContent = '₹'+inIncome.toLocaleString();
-  document.getElementById('t_nroTds').textContent = '−₹'+Math.round(nroFD*12*0.30).toLocaleString()+'/yr';
-  document.getElementById('t_form10FBenefit').textContent = 'Saves ₹'+Math.round(nroFD*12*0.15).toLocaleString()+'/yr';
-
-  // Build strategy
-  buildStrategy(isa,sipp,cash,nreFD,nroFD,mf,fxRate,horizonYears,goalAmount,ukGross,ukTakeHome,risk);
-  updateChart(isa,sipp,cash,nreFD,nroFD,mf,fxRate,horizonYears,goalAmount,risk);
-  updateAllocBar(isa,sipp,cash,nreFD,nroFD,mf,fxRate);
-  calcUKSalary();
-  calcIndiaSalary();
+// ── CHART ─────────────────────────────────────────────
+function updateChart({isaA,sippA,ukCashA,nreFDA,nroFDA,mfA,k401A,rothA,hsaA,usaBrokA,nlPenA,nlBrokA,nlCashA,fxI,fxU,fxE,horizon,goalAmt,risk}){
+  const R={conservative:{uk:.055,usa:.055,nl:.045,india:.075},moderate:{uk:.08,usa:.085,nl:.07,india:.095},aggressive:{uk:.10,usa:.11,nl:.09,india:.12}};
+  const r=R[risk]||R.moderate;
+  const yrs=Array.from({length:horizon+1},(_,i)=>i);
+  const fv=(m,rate,y)=>m&&y?m*12*((Math.pow(1+rate,y)-1)/rate):0;
+  const ukD=yrs.map(y=>Math.round(fv(isaA,r.uk,y)+fv(sippA,r.uk,y)+fv(ukCashA,r.uk*.6,y)));
+  const usaD=yrs.map(y=>Math.round((fv(k401A,r.usa,y)+fv(rothA,r.usa,y)+fv(hsaA,r.usa,y)+fv(usaBrokA,r.usa*.8,y))*fxU));
+  const nlD=yrs.map(y=>Math.round((fv(nlPenA,r.nl,y)+fv(nlBrokA,r.nl*.85,y)+fv(nlCashA,r.nl*.55,y))*fxE));
+  const indD=yrs.map(y=>Math.round((fv(nreFDA,r.india,y)+fv(nroFDA,r.india*.7,y)+fv(mfA,r.india*1.2,y))/fxI));
+  const totD=yrs.map((_,i)=>ukD[i]+usaD[i]+nlD[i]+indD[i]);
+  const goalLine=yrs.map(()=>goalAmt);
+  const sets=[];
+  if(on.uk)sets.push({label:'🇬🇧 UK',data:ukD,borderColor:'#1a3a6b',borderWidth:2,tension:.4,fill:false,pointRadius:0});
+  if(on.usa)sets.push({label:'🇺🇸 USA',data:usaD,borderColor:'#b22234',borderWidth:2,tension:.4,fill:false,pointRadius:0});
+  if(on.nl)sets.push({label:'🇳🇱 Netherlands',data:nlD,borderColor:'#e67000',borderWidth:2,tension:.4,fill:false,pointRadius:0});
+  if(on.india)sets.push({label:'🇮🇳 India',data:indD,borderColor:'#e05c2a',borderWidth:2,tension:.4,fill:false,pointRadius:0});
+  sets.push({label:'Total (£)',data:totD,borderColor:'#c9a84c',backgroundColor:'rgba(201,168,76,.07)',fill:true,borderWidth:2.5,tension:.4,pointRadius:0});
+  sets.push({label:'Goal £'+Math.round(goalAmt/1000)+'K',data:goalLine,borderColor:'rgba(45,122,79,.5)',borderWidth:1.5,borderDash:[5,4],fill:false,pointRadius:0});
+  const ctx=el('growthChart').getContext('2d');
+  if(myChart)myChart.destroy();
+  myChart=new Chart(ctx,{type:'line',data:{labels:yrs.map(y=>y+'yr'),datasets:sets},options:{responsive:true,interaction:{mode:'index',intersect:false},plugins:{legend:{labels:{font:{family:'DM Sans',size:10},color:'#0f0e0d'}}},scales:{x:{grid:{display:false},ticks:{font:{family:'DM Mono',size:9},maxTicksLimit:8}},y:{ticks:{font:{family:'DM Mono',size:9},callback:v=>'£'+(v>=1e6?(v/1e6).toFixed(1)+'M':v>=1000?Math.round(v/1000)+'K':v)}}}}});
 }
 
-// ── STRATEGY BUILDER ──
-function buildStrategy(isa,sipp,cash,nreFD,nroFD,mf,fx,horizon,goal,ukGross,takeHome,risk) {
-  const rates = {conservative:{isa:0.05,sipp:0.05,cash:0.048,nre:0.07,nro:0.07,mf:0.09},moderate:{isa:0.08,sipp:0.08,cash:0.048,nre:0.07,nro:0.07,mf:0.12},aggressive:{isa:0.10,sipp:0.10,cash:0.045,nre:0.07,nro:0.07,mf:0.15}};
-  const r = rates[risk];
-
-  function fv(monthly,rate,years){if(years<=0||rate===0)return 0;return monthly*12*((Math.pow(1+rate,years)-1)/rate);}
-  const ukFV = fv(isa,r.isa,horizon)+fv(sipp,r.sipp,horizon)+fv(cash,r.cash,horizon);
-  const indiaFV = (fv(nreFD,r.nre,horizon)+fv(nroFD,r.nro,horizon)+fv(mf,r.mf,horizon))/fx;
-  const totalFV = ukFV+indiaFV;
-  const gap = Math.max(0, goal-totalFV);
-  const onTrack = totalFV >= goal*0.95;
-
-  const isaUsed = isa*12;
-  const isaLimit = 20000;
-  const isaRemaining = Math.max(0,isaLimit-isaUsed);
-  const sippTaxRelief = sipp*12*0.40;
-  const nroSaving = nroFD*12*0.15;
-
-  const riskLabel = {conservative:'Conservative (bonds/FD focus)',moderate:'Moderate (balanced)',aggressive:'Aggressive (equity focus)'}[risk];
-
-  const html = `
-    <div class="strategy-card">
-      <h3>🇬🇧 UK Priorities</h3>
-      <div class="strategy-item">${isaRemaining>0?`<strong>+£${Math.round(isaRemaining/12).toLocaleString()}/mo ISA headroom left</strong><br>You have £${isaRemaining.toLocaleString()} of annual ISA allowance unused — grow it tax-free`:'✅ ISA fully utilised (£20K/yr)'}</div>
-      <div class="strategy-item"><strong>SIPP tax relief: +£${Math.round(sippTaxRelief).toLocaleString()}/yr</strong><br>Your pension contributions earn 40% tax relief — effectively reducing cost by 40%</div>
-      <div class="strategy-item">${ukGross>50270?'⚠ You are a 40% taxpayer — maximise SIPP contributions to reduce taxable income to basic-rate band':'✅ In basic-rate band — ISA first, then SIPP'}</div>
-      <div class="strategy-item"><strong>Bonus/RSU strategy:</strong> Consider directing bonus/stock awards into ISA or pension to avoid 40% tax hit on lump sums</div>
-    </div>
-    <div class="strategy-card">
-      <h3>🇮🇳 India Priorities</h3>
-      <div class="strategy-item"><strong>NRE FD over NRO:</strong> Keep UK-earned remittances in NRE — interest is India-tax-free and fully repatriable</div>
-      <div class="strategy-item">${nroSaving>0?`<strong>File Form 10F:</strong> Reduce NRO TDS 30%→15% — saves ₹${Math.round(nroSaving).toLocaleString()}/yr in tax`:'Open NRO account for India-sourced income and file Form 10F to halve TDS'}</div>
-      <div class="strategy-item"><strong>Consider FCNR(B):</strong> Hold deposits in GBP to eliminate currency risk on your Indian savings</div>
-      <div class="strategy-item">Verify AMC eligibility before starting Indian mutual fund SIPs — Mirae, Nippon, HDFC, SBI MF accept UK NRIs</div>
-    </div>
-    <div class="strategy-card">
-      <h3>🎯 Goal Analysis (${riskLabel})</h3>
-      <div class="strategy-item">${onTrack?`<strong style="color:#7fd4a8;">✅ On track!</strong> Projected portfolio: <strong>£${Math.round(totalFV/1000)}K</strong> — exceeds £${Math.round(goal/1000)}K goal`:`<strong style="color:#f4a07a;">⚠ Shortfall: £${Math.round(gap/1000)}K</strong><br>Projected: £${Math.round(totalFV/1000)}K vs goal £${Math.round(goal/1000)}K`}</div>
-      <div class="strategy-item"><strong>Required monthly savings:</strong> £${Math.round(gap>0?goal/((Math.pow(1.08,horizon)-1)/0.08)/12:0).toLocaleString()} extra to close the gap</div>
-      <div class="strategy-item"><strong>UK projected:</strong> £${Math.round(ukFV/1000)}K &nbsp;|&nbsp; <strong>India (£ equiv.):</strong> £${Math.round(indiaFV/1000)}K</div>
-      <div class="strategy-item"><strong>Top action:</strong> ${ukGross>50270?'Increase SIPP to reduce 40% tax, redirecting tax saving into ISA':'Maximise ISA allowance first — £20K/yr, all tax-free'}</div>
-    </div>
-  `;
-  document.getElementById('strategyGrid').innerHTML = html;
+// ── ALLOC BAR ──────────────────────────────────────────
+function updateAlloc({ukSav,usaSav,nlSav,indiaSav,isaA,sippA,ukCashA,k401A,rothA,hsaA,usaBrokA,nlPenA,nlBrokA,nreFDA,nroFDA,mfA,fxU,fxE,fxI}){
+  const segs=[];
+  if(on.uk){if(isaA)segs.push({l:'ISA',v:isaA*12,c:'#1a3a6b'});if(sippA)segs.push({l:'SIPP',v:sippA*12,c:'#3a5a9b'});if(ukCashA)segs.push({l:'Cash',v:ukCashA*12,c:'#6a8fcb'});}
+  if(on.usa){if(k401A)segs.push({l:'401k',v:k401A*12*fxU,c:'#8b1a1a'});if(rothA)segs.push({l:'Roth',v:rothA*12*fxU,c:'#b22234'});if(hsaA)segs.push({l:'HSA',v:hsaA*12*fxU,c:'#d04060'});if(usaBrokA)segs.push({l:'Brok.',v:usaBrokA*12*fxU,c:'#e06080'});}
+  if(on.nl){if(nlPenA)segs.push({l:'NL Pen',v:nlPenA*12*fxE,c:'#994d00'});if(nlBrokA)segs.push({l:'NL Inv',v:nlBrokA*12*fxE,c:'#e67000'});}
+  if(on.india){if(nreFDA)segs.push({l:'NRE',v:nreFDA*12/fxI,c:'#e05c2a'});if(nroFDA)segs.push({l:'NRO',v:nroFDA*12/fxI,c:'#e88a63'});if(mfA)segs.push({l:'MF',v:mfA*12/fxI,c:'#c9a84c'});}
+  const tot=segs.reduce((s,x)=>s+x.v,0)||1;
+  el('allocBar').innerHTML=segs.map(s=>`<div class="aseg" style="flex:${Math.round(s.v/tot*1000)};background:${s.c}">${s.l}</div>`).join('');
+  el('allocLeg').innerHTML=segs.map(s=>`<div class="aleg-item"><div class="adot" style="background:${s.c}"></div>${s.l} (£${Math.round(s.v/1000)}K/yr)</div>`).join('');
 }
 
-// ── GROWTH CHART ──
-function updateChart(isa,sipp,cash,nreFD,nroFD,mf,fx,horizon,goal,risk) {
-  const rates = {conservative:{isa:0.05,sipp:0.05,cash:0.048,nre:0.07,nro:0.07,mf:0.09},moderate:{isa:0.08,sipp:0.08,cash:0.048,nre:0.07,nro:0.07,mf:0.12},aggressive:{isa:0.10,sipp:0.10,cash:0.045,nre:0.07,nro:0.07,mf:0.15}};
-  const r = rates[risk];
-  const years = Array.from({length:horizon+1},(_,i)=>i);
-
-  function fv(m,rate,y){if(y===0)return 0;return m*12*((Math.pow(1+rate,y)-1)/rate);}
-  const ukData    = years.map(y=>Math.round(fv(isa,r.isa,y)+fv(sipp,r.sipp,y)+fv(cash,r.cash,y)));
-  const indiaData = years.map(y=>Math.round((fv(nreFD,r.nre,y)+fv(nroFD,r.nro,y)+fv(mf,r.mf,y))/fx));
-  const totalData = years.map((_,i)=>ukData[i]+indiaData[i]);
-  const goalLine  = years.map(()=>goal);
-
-  const datasets = [];
-  if(currentMode!=='india') datasets.push({label:'UK (£)',data:ukData,borderColor:'#1a3a6b',borderWidth:2,tension:0.4,fill:false,pointRadius:0});
-  if(currentMode!=='uk') datasets.push({label:'India (£ equiv.)',data:indiaData,borderColor:'#e05c2a',borderWidth:2,tension:0.4,fill:false,pointRadius:0});
-  if(currentMode==='all') datasets.unshift({label:'Total (£)',data:totalData,borderColor:'#c9a84c',backgroundColor:'rgba(201,168,76,0.07)',fill:true,borderWidth:2.5,tension:0.4,pointRadius:0});
-  datasets.push({label:'Goal £'+Math.round(goal/1000)+'K',data:goalLine,borderColor:'rgba(45,122,79,0.5)',borderWidth:1.5,borderDash:[6,4],fill:false,pointRadius:0});
-
-  const ctx = document.getElementById('growthChart').getContext('2d');
-  if(myChart) myChart.destroy();
-  myChart = new Chart(ctx,{type:'line',data:{labels:years.map(y=>y+'yr'),datasets},options:{responsive:true,interaction:{mode:'index',intersect:false},plugins:{legend:{labels:{font:{family:'DM Sans',size:11},color:'#0f0e0d'}},tooltip:{callbacks:{label:c=>`${c.dataset.label}: £${c.raw.toLocaleString()}`}}},scales:{x:{grid:{display:false},ticks:{font:{family:'DM Mono',size:9}}},y:{ticks:{font:{family:'DM Mono',size:9},callback:v=>'£'+(v>=1000000?(v/1000000).toFixed(1)+'M':v>=1000?(v/1000).toFixed(0)+'K':v)}}}}});
+// ── TRANSFER CALC ──────────────────────────────────────
+function updTx(){
+  const amt=nv('txAmt'),curr=sv('txCurr');
+  const fxI=nv('fxI')||107,fxU=nv('fxU')||0.79,fxE=nv('fxE')||0.85;
+  let inr=0;
+  if(curr==='gbp')inr=amt*fxI*.994;
+  else if(curr==='usd')inr=amt*(fxI/fxU)*.994;
+  else if(curr==='eur')inr=amt*(fxI/fxE)*.994;
+  el('txResult').textContent='₹'+Math.round(inr).toLocaleString();
 }
 
-// ── ALLOC BAR ──
-function updateAllocBar(isa,sipp,cash,nreFD,nroFD,mf,fx) {
-  const segs = [];
-  if(currentMode!=='india') {
-    if(isa>0) segs.push({label:'ISA',amt:isa*12,color:'#1a3a6b'});
-    if(sipp>0) segs.push({label:'SIPP',amt:sipp*12,color:'#4a6fa8'});
-    if(cash>0) segs.push({label:'Cash',amt:cash*12,color:'#7a9fd8'});
-  }
-  if(currentMode!=='uk') {
-    if(nreFD>0) segs.push({label:'NRE FD',amt:nreFD*12/fx,color:'#e05c2a'});
-    if(nroFD>0) segs.push({label:'NRO FD',amt:nroFD*12/fx,color:'#e88a63'});
-    if(mf>0) segs.push({label:'MF',amt:mf*12/fx,color:'#c9a84c'});
-  }
-  const total = segs.reduce((s,x)=>s+x.amt,0)||1;
-  document.getElementById('allocBar').innerHTML = segs.map(s=>`<div class="alloc-seg" style="flex:${Math.round(s.amt/total*1000)};background:${s.color}" title="${s.label}">${s.label}</div>`).join('');
-  document.getElementById('allocLegend').innerHTML = segs.map(s=>`<div class="legend-item"><div class="legend-dot" style="background:${s.color}"></div>${s.label} (£${Math.round(s.amt/1000)}K/yr)</div>`).join('');
-}
-
-// ── TRANSFER CALC ──
-function updateTransfer() {
-  const amt = +document.getElementById('transferAmount').value||0;
-  const fx = +document.getElementById('fxRate').value||107;
-  document.getElementById('transferResult').textContent = '₹'+Math.round(amt*fx*0.994).toLocaleString();
-}
-
-// ── EMAIL ──
-function openEmailModal(){document.getElementById('emailModal').classList.add('open');}
-function closeEmailModal(){document.getElementById('emailModal').classList.remove('open');}
-function buildEmailSummary(){
-  const mode = currentMode==='all'?'Combined':'UK only';
-  const note = document.getElementById('emailNote').value;
-  const goal = document.getElementById('goalAmount').value;
-  const goalAge = document.getElementById('goalAge').value;
-  const age = document.getElementById('currentAge').value;
-  const risk = document.getElementById('riskAppetite').value;
-  return {
-    subject:`India↔UK Savings Summary — ${new Date().toLocaleDateString('en-GB')} (${mode})`,
-    body:`India ↔ UK Savings Optimizer — Financial Summary
-Generated: ${new Date().toLocaleString('en-GB')}
-Mode: ${mode} | Risk: ${risk}
-
-=== WEALTH GOAL ===
-Target: £${goal} by age ${goalAge} (currently age ${age})
-
-=== UK INCOME (APPROX.) ===
-Base Salary: £${document.getElementById('ukBasePay').value}
-Annual Bonus: £${document.getElementById('ukBonus').value}
-Stock Awards: £${document.getElementById('ukStocks').value}
-UK Take-Home: ${document.getElementById('ukTakeHome').textContent}
-
-=== UK MONTHLY ALLOCATIONS ===
-ISA: £${document.getElementById('isaAmount').value}/mo
-SIPP: £${document.getElementById('sippAmount').value}/mo
-Cash: £${document.getElementById('cashSavings').value}/mo
-
-=== INDIA ALLOCATIONS ===
-NRE FD: ₹${document.getElementById('nreFD').value}/mo
-NRO FD: ₹${document.getElementById('nroFD').value}/mo
-Mutual Funds: ₹${document.getElementById('mfAmount').value}/mo
-Exchange Rate: ₹${document.getElementById('fxRate').value}/£
-
-=== KEY REMINDERS ===
-• Declare NRE FD interest on UK self-assessment (SA106)
-• File Form 10F + HMRC TRC to reduce NRO TDS 30%→15%
-• Max ISA allowance: £20,000/yr — all growth tax-free
-• NRO repatriation max: USD 1M per financial year
-• PIS account needed for direct Indian stock investing
-
-=== DISCLAIMER ===
-Educational purposes only. Not financial/tax/legal advice.
-Consult a qualified CA, IFA or SEBI advisor before acting.
-
-${note?'=== NOTE ===\n'+note:''}
-— Generated by India ↔ UK Savings Optimizer`
-  };
-}
-function sendEmail(){
-  const to=document.getElementById('emailTo').value.trim();
+// ── EMAIL ──────────────────────────────────────────────
+function openMail(){el('emailModal').classList.add('open');}
+function closeMail(){el('emailModal').classList.remove('open');}
+function doEmail(){
+  const to=el('emailTo').value.trim();
   if(!to||!to.includes('@')){alert('Please enter a valid email address.');return;}
-  const {subject,body}=buildEmailSummary();
-  window.location.href=`mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  closeEmailModal();
+  const note=el('emailNote').value;
+  const ctry=Object.keys(on).filter(k=>on[k]).join('+').toUpperCase();
+  const sub=`Global NRI Savings Summary — ${new Date().toLocaleDateString('en-GB')} (${ctry})`;
+  const body=`Global NRI Savings Optimizer — Financial Summary
+Generated: ${new Date().toLocaleString('en-GB')}
+Active Countries: ${ctry} | Risk: ${sv('risk')}
+
+WEALTH GOAL
+Target: £${nv('goalAmt').toLocaleString()} by age ${nv('goalAge')} (current age ${nv('age')})
+
+UK
+Base: £${nv('ukBase').toLocaleString()} | Bonus: £${nv('ukBonus').toLocaleString()} | RSU: £${nv('ukStock').toLocaleString()}
+ISA: £${nv('isa')}/mo | SIPP: £${nv('sipp')}/mo | Cash: £${nv('ukCash')}/mo
+Student Loan: ${sv('ukSL')} | Scotland: ${sv('ukScot')}
+
+USA
+Base: $${nv('usaBase').toLocaleString()} | Bonus: $${nv('usaBonus').toLocaleString()} | RSU: $${nv('usaStock').toLocaleString()}
+401(k): $${nv('k401')}/mo | Roth IRA: $${nv('roth')}/mo | HSA: $${nv('hsa')}/mo | Brokerage: $${nv('usaBrok')}/mo
+State: ${sv('usaState')}% | Filing: ${sv('usaFiling')}
+
+NETHERLANDS
+Base: €${nv('nlBase').toLocaleString()} | Bonus: €${nv('nlBonus').toLocaleString()} | RSU: €${nv('nlStock').toLocaleString()}
+Pensioenrekening: €${nv('nlPen')}/mo | Beleggingsrekening: €${nv('nlBrok')}/mo | Cash: €${nv('nlCash')}/mo
+30% Ruling: ${sv('nl30')}
+
+INDIA (NRI)
+NRE FD: ₹${nv('nreFD')}/mo | NRO FD: ₹${nv('nroFD')}/mo | Mutual Funds: ₹${nv('mf')}/mo
+Rental: ₹${nv('inRent').toLocaleString()}/yr | FD Interest: ₹${nv('inFD').toLocaleString()}/yr
+
+KEY REMINDERS
+UK: Declare NRE FD interest on SA106; ISA max £20K/yr
+USA: File FBAR if India accounts >$10K; avoid Indian MFs (PFIC); Form 8938 (FATCA)
+Netherlands: Declare India assets in Box 3 on Jan 1; check 30% ruling eligibility
+India: Form 10F + TRC to reduce NRO TDS 30%→15%; PIS for equity trading
+
+DISCLAIMER: Educational only. Not financial/tax/legal advice. Consult CA/IFA/CPA/SEBI advisor.
+${note?'\nNOTE:\n'+note:''}
+— Global NRI Savings Optimizer`;
+  window.location.href=`mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(sub)}&body=${encodeURIComponent(body)}`;
+  closeMail();
 }
+el('emailModal').addEventListener('click',e=>{if(e.target===el('emailModal'))closeMail();});
 
-// ── AI CHAT ──
-const SYSTEM_PROMPT=`You are an expert cross-border financial education assistant for NRIs (Non-Resident Indians) living in the UK. You have deep expertise in: FEMA 1999, India-UK DTAA, UK income tax/NI/ISA/SIPP/Self-Assessment, Indian NRE/NRO/FD/PPF/NPS/Mutual Funds/PIS, FATCA/CRS, remittance optimisation, and NRI property rules.
-
-IMPORTANT: You are an educational tool — not a regulated financial advisor. Always clarify this is general educational information and recommend consulting a qualified CA, IFA, or SEBI-registered advisor for personal decisions. Be practical, accurate, and concise. Use **bold** for key terms and always cite relevant rules/years.`;
-
-function getProfileContext(){
-  return `Context (no PII): Mode=${currentMode}, Age=${document.getElementById('currentAge').value}, Goal=£${document.getElementById('goalAmount').value} by age ${document.getElementById('goalAge').value}, Risk=${document.getElementById('riskAppetite').value}, UK gross=£${+document.getElementById('ukBasePay').value+ +document.getElementById('ukBonus').value+ +document.getElementById('ukStocks').value}, ISA=£${document.getElementById('isaAmount').value}/mo, SIPP=£${document.getElementById('sippAmount').value}/mo, NRE FD=₹${document.getElementById('nreFD').value}/mo, NRO FD=₹${document.getElementById('nroFD').value}/mo, MF=₹${document.getElementById('mfAmount').value}/mo, FX=₹${document.getElementById('fxRate').value}/£`;}
-
-async function askQuestion(q){document.getElementById('chatInput').value=q;sendMessage();}
-async function sendMessage(){
-  const input=document.getElementById('chatInput');const msg=input.value.trim();if(!msg)return;
-  const cw=document.getElementById('chatWindow');const sb=document.getElementById('sendBtn');
-  const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  cw.innerHTML+=`<div class="msg user"><div class="msg-bubble">${msg}</div><div class="msg-time">${now}</div></div>`;
+// ── AI CHAT ────────────────────────────────────────────
+const SYS=`You are an expert multi-country NRI finance education assistant specialising in India, UK, USA and Netherlands. Cover FEMA, NRE/NRO accounts, DTAA treaties, ISA/SIPP (UK), 401k/Roth IRA/HSA/PFIC/FBAR/FATCA (USA), 30% ruling/Box 1/Box 2/Box 3 taxes (Netherlands), and cross-border wealth planning. Always clarify this is educational information, not regulated financial advice. Recommend a qualified CA/IFA/CPA/SEBI advisor for specific decisions. Use **bold** for key terms. Be practical and accurate.`;
+function getCtx(){return `User profile: Age=${nv('age')}, Goal=£${nv('goalAmt')} by age ${nv('goalAge')}, Risk=${sv('risk')}, Countries active=${Object.keys(on).filter(k=>on[k]).join('+')}. UK gross=£${nv('ukBase')+nv('ukBonus')+nv('ukStock')}, USA gross=$${nv('usaBase')+nv('usaBonus')+nv('usaStock')}, NL gross=€${nv('nlBase')+nv('nlBonus')+nv('nlStock')}, NRE FD=₹${nv('nreFD')}/mo, NRO FD=₹${nv('nroFD')}/mo, 30% ruling=${sv('nl30')}.`;}
+async function askQ(q){el('chatIn').value=q;sendMsg();}
+async function sendMsg(){
+  const input=el('chatIn'),msg=input.value.trim();if(!msg)return;
+  const cw=el('chatWin'),sb=el('sendBtn');
+  cw.innerHTML+=`<div class="msg user"><div class="mb">${msg}</div><div class="mtime">${new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div></div>`;
   input.value='';sb.disabled=true;
   const tid='t'+Date.now();
-  cw.innerHTML+=`<div class="msg ai" id="${tid}"><div class="msg-bubble"><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div></div>`;
+  cw.innerHTML+=`<div class="msg ai" id="${tid}"><div class="mb"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div></div>`;
   cw.scrollTop=cw.scrollHeight;
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:SYSTEM_PROMPT,messages:[{role:'user',content:`${getProfileContext()}\n\nQuestion: ${msg}`}]})});
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:SYS,messages:[{role:'user',content:`${getCtx()}\n\nQuestion: ${msg}`}]})});
     const data=await res.json();
-    const reply=data.content?.map(c=>c.text||'').join('')||'Sorry, could not get a response. Please try again.';
-    document.getElementById(tid).remove();
-    const fmt=reply.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
-    cw.innerHTML+=`<div class="msg ai"><div class="msg-bubble">${fmt}</div><div class="msg-time">${new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div></div>`;
+    const reply=data.content?.map(c=>c.text||'').join('')||'Unable to get a response. Please try again.';
+    el(tid)?.remove();
+    cw.innerHTML+=`<div class="msg ai"><div class="mb">${reply.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>')}</div><div class="mtime">${new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div></div>`;
   }catch(e){
-    document.getElementById(tid).remove();
-    cw.innerHTML+=`<div class="msg ai"><div class="msg-bubble">⚠️ Could not connect to AI advisor. Please check your connection.</div></div>`;
+    el(tid)?.remove();
+    cw.innerHTML+=`<div class="msg ai"><div class="mb">⚠️ Connection error. Please check your network and try again.</div></div>`;
   }
   sb.disabled=false;cw.scrollTop=cw.scrollHeight;
 }
 
-document.getElementById('emailModal').addEventListener('click',function(e){if(e.target===this)closeEmailModal();});
-
-// ── INIT ──
-window.onload=()=>{updateUKTotal();updateINTotal();calculate();calcUKSalary();calcIndiaSalary();updateTransfer();};
+// ── INIT ──────────────────────────────────────────────
+window.onload=()=>{updTotals();calc();};
 </script>
 </body>
 </html>
