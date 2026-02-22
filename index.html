@@ -222,7 +222,32 @@ canvas{width:100%!important;max-height:250px;}
 ::-webkit-scrollbar{width:5px;height:5px;}
 ::-webkit-scrollbar-thumb{background:rgba(15,14,13,.16);border-radius:3px;}
 
-/* ── RESPONSIVE ── */
+/* ── UK SALARY TABS ── */
+.uk-sal-hero{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.uk-sal-lbl{font-size:15px;font-weight:400;white-space:nowrap}
+.uk-sal-input{flex:1;min-width:140px;padding:9px 12px;border:2px solid var(--bd);border-radius:8px;font-family:'DM Mono',monospace;font-size:16px;color:var(--ink);outline:none;background:var(--cream)}
+.uk-sal-input:focus{border-color:#8b1a2a}
+.uk-tip{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:rgba(15,14,13,.12);font-size:10px;cursor:help;flex-shrink:0}
+.uk-tabs-strip{display:flex;background:#8b1a2a;border-radius:8px 8px 0 0;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin-top:10px}
+.uk-tabs-strip::-webkit-scrollbar{display:none}
+.uk-tab{padding:9px 11px;font-size:11px;font-weight:600;color:rgba(255,255,255,.65);cursor:pointer;border:none;background:transparent;font-family:'DM Sans',sans-serif;white-space:nowrap;border-right:1px solid rgba(255,255,255,.12);flex-shrink:0;transition:all .15s}
+.uk-tab:last-child{border-right:none}
+.uk-tab.active,.uk-tab:hover{color:#fff;background:rgba(0,0,0,.18)}
+.uk-tab-pane{display:none;padding:12px;border:1px solid var(--bd);border-top:none;border-radius:0 0 8px 8px;background:#fff}
+.uk-tab-pane.active{display:block}
+.uk-pen-toggle{flex:1;padding:8px 10px;font-size:11px;font-weight:600;cursor:pointer;border:none;background:#fff;color:rgba(15,14,13,.5);font-family:'DM Sans',sans-serif;transition:all .15s}
+.uk-pen-toggle.active{background:#8b1a2a;color:#fff}
+.uk-periods{display:flex;flex-wrap:wrap;gap:12px;padding:10px 0;border-top:1px dashed var(--bd);margin-top:6px}
+.uk-period-lbl{display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer}
+/* ── QUESTIONNAIRE ── */
+.qsec{border:1px solid var(--bd);border-radius:8px;margin-bottom:8px;overflow:hidden}
+.qsec-hdr{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;background:#fff;cursor:pointer;user-select:none;font-size:12px;font-weight:600}
+.qsec-hdr:hover{background:var(--parch)}
+.qsec-body{padding:13px;background:#fff;border-top:1px solid var(--bd)}
+.qgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:500px){.qgrid{grid-template-columns:1fr}.uk-sal-lbl{font-size:13px}}
+
+
 @media(max-width:1100px){
   :root{--sw:270px;}
   .cg4{grid-template-columns:1fr 1fr;}
@@ -442,6 +467,7 @@ canvas{width:100%!important;max-height:250px;}
   <button class="tbtn" onclick="switchTab('tax',this)">💸 Tax & Treaties</button>
   <button class="tbtn" onclick="switchTab('compliance',this)">⚖️ Compliance</button>
   <button class="tbtn" onclick="switchTab('remittance',this)">💱 Remittance</button>
+  <button class="tbtn" onclick="switchTab('questionnaire',this)">📋 Profile</button>
   <button class="tbtn" onclick="switchTab('advisor',this)">🤖 AI Advisor</button>
 </div>
 
@@ -491,35 +517,228 @@ canvas{width:100%!important;max-height:250px;}
   <!-- UK Salary -->
   <div class="spane active" id="sal-uk">
     <div class="sal-in">
-      <h3>🇬🇧 UK Income Details</h3>
-      <div class="fg"><label>Base Salary (£)</label><input type="number" id="su_base" value="65000" oninput="calcUK()"></div>
-      <div class="fgrow"><div class="fg"><label>Bonus (£)</label><input type="number" id="su_bonus" value="8000" oninput="calcUK()"></div><div class="fg"><label>RSU/Stock (£)</label><input type="number" id="su_stock" value="5000" oninput="calcUK()"></div></div>
-      <div class="fgrow"><div class="fg"><label>Employee Pension %</label><input type="number" id="su_eep" value="5" min="0" oninput="calcUK()"></div><div class="fg"><label>Employer Pension %</label><input type="number" id="su_emp" value="3" min="0" oninput="calcUK()"></div></div>
-      <div class="fg"><label>Student Loan</label><select id="su_sl" onchange="calcUK()"><option value="none">None</option><option value="plan1">Plan 1 — £24,990</option><option value="plan2" selected>Plan 2 — £27,295</option><option value="plan5">Plan 5 — £25,000</option></select></div>
-      <div class="fgrow"><div class="fg"><label>Scotland?</label><select id="su_scot" onchange="calcUK()"><option value="no">No</option><option value="yes">Yes</option></select></div><div class="fg"><label>Sacrifice (£/mo)</label><input type="number" id="su_sac" value="0" oninput="calcUK()"></div></div>
+      <h3>🇬🇧 UK Salary Calculator</h3>
+
+      <!-- Salary input row -->
+      <div class="uk-sal-hero">
+        <label class="uk-sal-lbl">I want to see the breakdown for a salary of £</label>
+        <input type="number" id="su_base" value="65000" oninput="calcUK()" class="uk-sal-input" placeholder="e.g. 65000">
+      </div>
+      <div class="fg" style="margin-top:8px">
+        <label style="display:flex;align-items:center;gap:7px;font-size:12px;font-weight:500;cursor:pointer">
+          <input type="checkbox" id="su_scot" onchange="calcUK()" style="width:16px;height:16px;cursor:pointer"> Resident in Scotland?
+          <span class="uk-tip" title="Scottish income tax rates differ from the rest of the UK">?</span>
+        </label>
+      </div>
+
+      <!-- Tab strip -->
+      <div class="uk-tabs-strip" id="ukTabStrip">
+        <button class="uk-tab active" data-tab="taxcode" onclick="switchUKTab('taxcode',this)">Tax Code</button>
+        <button class="uk-tab" data-tab="studentloan" onclick="switchUKTab('studentloan',this)">Student Loan</button>
+        <button class="uk-tab" data-tab="pension" onclick="switchUKTab('pension',this)">Pension</button>
+        <button class="uk-tab" data-tab="bonus" onclick="switchUKTab('bonus',this)">Bonus</button>
+        <button class="uk-tab" data-tab="overtime" onclick="switchUKTab('overtime',this)">Overtime</button>
+        <button class="uk-tab" data-tab="childcare" onclick="switchUKTab('childcare',this)">Childcare</button>
+        <button class="uk-tab" data-tab="salsac" onclick="switchUKTab('salsac',this)">Salary Sacrifice</button>
+        <button class="uk-tab" data-tab="taxbenefits" onclick="switchUKTab('taxbenefits',this)">Taxable Benefits</button>
+        <button class="uk-tab" data-tab="addopts" onclick="switchUKTab('addopts',this)">Additional Options</button>
+      </div>
+
+      <!-- Tab panes -->
+      <div class="uk-tab-pane active" id="ukt-taxcode">
+        <p style="font-size:11px;color:rgba(15,14,13,.55);margin-bottom:8px">If you know your tax code, please enter it here.</p>
+        <div class="fg"><input type="text" id="su_taxcode" placeholder="e.g. 1257L" oninput="calcUK()" style="font-size:13px"></div>
+        <div class="fg-hint">Leave blank to use the standard 1257L personal allowance (£12,570). The most common tax code for 2025/26.</div>
+      </div>
+      <div class="uk-tab-pane" id="ukt-studentloan">
+        <p style="font-size:11px;color:rgba(15,14,13,.55);margin-bottom:8px">If you're still repaying your Student Loan, please select the repayment option that applies to you.</p>
+        <div class="fg">
+          <label style="display:flex;align-items:center;gap:7px;font-size:12px;margin-bottom:6px;cursor:pointer"><input type="checkbox" id="su_sl1" onchange="calcUK()" style="width:15px;height:15px"> Repayment Plan 1</label>
+          <label style="display:flex;align-items:center;gap:7px;font-size:12px;margin-bottom:6px;cursor:pointer"><input type="checkbox" id="su_sl2" onchange="calcUK()" style="width:15px;height:15px"> Repayment Plan 2</label>
+          <label style="display:flex;align-items:center;gap:7px;font-size:12px;margin-bottom:6px;cursor:pointer"><input type="checkbox" id="su_sl4" onchange="calcUK()" style="width:15px;height:15px"> Repayment Plan 4 (Scotland)</label>
+          <label style="display:flex;align-items:center;gap:7px;font-size:12px;margin-bottom:6px;cursor:pointer"><input type="checkbox" id="su_sl5" onchange="calcUK()" style="width:15px;height:15px"> Repayment Plan 5</label>
+          <label style="display:flex;align-items:center;gap:7px;font-size:12px;cursor:pointer"><input type="checkbox" id="su_slpg" onchange="calcUK()" style="width:15px;height:15px"> Postgraduate Loan</label>
+        </div>
+      </div>
+      <div class="uk-tab-pane" id="ukt-pension">
+        <p style="font-size:11px;color:rgba(15,14,13,.55);margin-bottom:8px">Do you contribute to a pension?</p>
+        <div style="display:flex;gap:7px;align-items:flex-start;flex-wrap:wrap">
+          <div style="border:1px solid var(--bd);border-radius:7px;overflow:hidden;min-width:160px">
+            <button class="uk-pen-toggle active" id="penPctBtn" onclick="switchPenMode('pct')">Percentage</button>
+            <button class="uk-pen-toggle" id="penAmtBtn" onclick="switchPenMode('amt')">£ Amount</button>
+          </div>
+          <div style="flex:1;min-width:120px">
+            <div class="fg" id="penPctDiv"><label>I contribute</label><input type="number" id="su_eep" value="5" min="0" max="100" step="0.5" oninput="calcUK()"><span style="font-size:12px;margin-top:3px;display:block">%</span></div>
+            <div class="fg" id="penAmtDiv" style="display:none"><label>I contribute £</label><input type="number" id="su_eep_amt" value="0" min="0" oninput="calcUK()"><span style="font-size:11px;margin-top:3px;display:block">per month</span></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:5px;padding-top:4px">
+            <label style="font-size:11px;display:flex;align-items:center;gap:6px;cursor:pointer"><input type="radio" name="pentype" value="autoenrol" onchange="calcUK()" checked style="cursor:pointer"> Auto-enrolment</label>
+            <label style="font-size:11px;display:flex;align-items:center;gap:6px;cursor:pointer"><input type="radio" name="pentype" value="employer" onchange="calcUK()" style="cursor:pointer"> Employer</label>
+            <label style="font-size:11px;display:flex;align-items:center;gap:6px;cursor:pointer"><input type="radio" name="pentype" value="salsac" onchange="calcUK()" style="cursor:pointer"> Salary sacrifice</label>
+            <label style="font-size:11px;display:flex;align-items:center;gap:6px;cursor:pointer"><input type="radio" name="pentype" value="personal" onchange="calcUK()" style="cursor:pointer"> Personal</label>
+          </div>
+        </div>
+        <div class="fg" style="margin-top:8px"><label>Employer Pension %</label><input type="number" id="su_emp" value="3" min="0" oninput="calcUK()"></div>
+      </div>
+      <div class="uk-tab-pane" id="ukt-bonus">
+        <p style="font-size:11px;color:rgba(15,14,13,.55);margin-bottom:8px">Are you receiving a one-off bonus?</p>
+        <div class="fg"><label>I get an annual bonus of £</label><input type="number" id="su_bonus" value="0" oninput="calcUK()"></div>
+        <div class="fg"><label>My normal pay period is</label>
+          <select id="su_bonusperiod" onchange="calcUK()">
+            <option value="monthly" selected>Monthly</option>
+            <option value="weekly">Weekly</option>
+            <option value="4weekly">4-Weekly</option>
+          </select>
+        </div>
+      </div>
+      <div class="uk-tab-pane" id="ukt-overtime">
+        <p style="font-size:11px;color:rgba(15,14,13,.55);margin-bottom:8px">How many hours of paid overtime do you do each month?</p>
+        <div class="fgrow">
+          <div class="fg"><label>I do</label><input type="number" id="su_ot1h" value="0" min="0" oninput="calcUK()"></div>
+          <div class="fg"><label>hours at <strong>1.5×</strong> normal hourly rate</label><input type="number" id="su_ot1r" value="1.5" step="0.1" style="width:70px;display:inline" oninput="calcUK()"></div>
+        </div>
+        <div class="fgrow">
+          <div class="fg"><label>I do</label><input type="number" id="su_ot2h" value="0" min="0" oninput="calcUK()"></div>
+          <div class="fg"><label>hours at <strong>2×</strong> normal hourly rate</label><input type="number" id="su_ot2r" value="2" step="0.1" style="width:70px;display:inline" oninput="calcUK()"></div>
+        </div>
+        <div class="fg"><label>Normal working week is <strong id="su_wkhrs_lbl">37.5</strong> hours</label><input type="number" id="su_wkhrs" value="37.5" step="0.5" oninput="this.previousElementSibling.querySelector('strong').textContent=this.value;calcUK()"></div>
+        <div class="fg" style="margin-top:4px"><p style="font-size:11px;color:rgba(15,14,13,.55)">If it is easier, you can enter the cash value of the overtime:</p>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <span style="font-size:12px">I receive £</span>
+            <input type="number" id="su_otcash" value="0" oninput="calcUK()" style="width:110px;padding:6px 8px;border:1.5px solid var(--bd);border-radius:7px;font-family:'DM Mono',monospace;font-size:12px;background:var(--cream)">
+            <span style="font-size:12px">in overtime pay every</span>
+            <select id="su_otperiod" onchange="calcUK()" style="padding:6px 8px;border:1.5px solid var(--bd);border-radius:7px;font-size:12px">
+              <option value="month">Month</option><option value="week">Week</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="uk-tab-pane" id="ukt-childcare">
+        <p style="font-size:11px;color:rgba(15,14,13,.55);margin-bottom:8px">What value of childcare vouchers do you receive from your employer?</p>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px">
+          <span style="font-size:12px">I receive £</span>
+          <input type="number" id="su_childcare" value="0" oninput="calcUK()" style="width:110px;padding:6px 8px;border:1.5px solid var(--bd);border-radius:7px;font-family:'DM Mono',monospace;font-size:12px;background:var(--cream)">
+          <span style="font-size:12px">of vouchers each month</span>
+        </div>
+        <label style="display:flex;align-items:center;gap:7px;font-size:12px;cursor:pointer"><input type="checkbox" id="su_childcare_pre2011" onchange="calcUK()" style="width:15px;height:15px"> I joined the scheme before 6th April 2011.</label>
+      </div>
+      <div class="uk-tab-pane" id="ukt-salsac">
+        <p style="font-size:11px;color:rgba(15,14,13,.55);margin-bottom:8px">Do you have any salary sacrifice arrangements (excluding your pension if you entered it on the "Pension" tab)?</p>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px">
+          <span style="font-size:12px">I sacrifice £</span>
+          <input type="number" id="su_sac_ni" value="0" oninput="calcUK()" style="width:100px;padding:6px 8px;border:1.5px solid var(--bd);border-radius:7px;font-family:'DM Mono',monospace;font-size:12px;background:var(--cream)">
+          <span style="font-size:12px">NI only, of my salary every</span>
+          <select id="su_sac_ni_per" onchange="calcUK()" style="padding:6px 8px;border:1.5px solid var(--bd);border-radius:7px;font-size:12px">
+            <option value="month">Month</option><option value="year">Year</option>
+          </select>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span style="font-size:12px">I sacrifice £</span>
+          <input type="number" id="su_sac" value="0" oninput="calcUK()" style="width:100px;padding:6px 8px;border:1.5px solid var(--bd);border-radius:7px;font-family:'DM Mono',monospace;font-size:12px;background:var(--cream)">
+          <span style="font-size:12px">tax exempt, of my salary every</span>
+          <select id="su_sac_per" onchange="calcUK()" style="padding:6px 8px;border:1.5px solid var(--bd);border-radius:7px;font-size:12px">
+            <option value="month">Month</option><option value="year">Year</option>
+          </select>
+        </div>
+      </div>
+      <div class="uk-tab-pane" id="ukt-taxbenefits">
+        <p style="font-size:11px;color:rgba(15,14,13,.55);margin-bottom:8px">Do you receive any taxable benefits?</p>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px">
+          <span style="font-size:12px">I receive £</span>
+          <input type="number" id="su_taxbens" value="0" oninput="calcUK()" style="width:100px;padding:6px 8px;border:1.5px solid var(--bd);border-radius:7px;font-family:'DM Mono',monospace;font-size:12px;background:var(--cream)">
+          <span style="font-size:12px">in taxable benefits every</span>
+          <select id="su_taxbens_per" onchange="calcUK()" style="padding:6px 8px;border:1.5px solid var(--bd);border-radius:7px;font-size:12px">
+            <option value="month">Month</option><option value="year">Year</option>
+          </select>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span style="font-size:12px">I receive £</span>
+          <input type="number" id="su_cashalw" value="0" oninput="calcUK()" style="width:100px;padding:6px 8px;border:1.5px solid var(--bd);border-radius:7px;font-family:'DM Mono',monospace;font-size:12px;background:var(--cream)">
+          <span style="font-size:12px">in cash allowances every</span>
+          <select id="su_cashalw_per" onchange="calcUK()" style="padding:6px 8px;border:1.5px solid var(--bd);border-radius:7px;font-size:12px">
+            <option value="month">Month</option><option value="year">Year</option>
+          </select>
+        </div>
+      </div>
+      <div class="uk-tab-pane" id="ukt-addopts">
+        <div class="fg"><label style="display:flex;align-items:center;gap:7px;font-size:12px;cursor:pointer"><input type="checkbox" id="su_noni" onchange="calcUK()" style="width:15px;height:15px"> I do not pay National Insurance</label></div>
+        <div class="fg"><label style="display:flex;align-items:center;gap:7px;font-size:12px;cursor:pointer"><input type="checkbox" id="su_blind" onchange="calcUK()" style="width:15px;height:15px"> I am eligible for the Blind Person's Allowance</label></div>
+        <div class="fg"><label style="display:flex;align-items:center;gap:7px;font-size:12px;cursor:pointer"><input type="checkbox" id="su_married" onchange="calcUK()" style="width:15px;height:15px"> I am married and one of us was born before 6th April 1935</label></div>
+        <div class="fg"><label style="display:flex;align-items:center;gap:7px;font-size:12px;cursor:pointer"><input type="checkbox" id="su_showni" onchange="calcUK()" style="width:15px;height:15px"> Show my Employer's NI contributions</label></div>
+        <div class="fg"><label style="display:flex;align-items:center;gap:7px;font-size:12px;cursor:pointer"><input type="checkbox" id="su_adjnet" onchange="calcUK()" style="width:15px;height:15px"> Show my Adjusted Net Income</label></div>
+        <div class="fgrow" style="margin-top:8px">
+          <div class="fg"><label>I work</label><select id="su_daysperweek" onchange="calcUK()"><option>1</option><option>2</option><option>3</option><option>4</option><option value="5" selected>5</option><option>6</option><option>7</option></select><span style="font-size:11px">days per week</span></div>
+          <div class="fg"><label>There are</label><select id="su_weeksyr" onchange="calcUK()"><option value="52" selected>52</option><option value="53">53</option></select><span style="font-size:11px">weeks in a year</span></div>
+        </div>
+        <div class="fg" style="margin-top:6px"><p style="font-size:11px;font-weight:600;margin-bottom:5px">Other Deductions?</p><p style="font-size:11px;color:rgba(15,14,13,.55);margin-bottom:7px">Do you have any other deductions, either before tax (Give As You Earn) or after tax (like Gift Aid)?</p>
+          <div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-bottom:5px">
+            <span style="font-size:12px">I give £</span><input type="number" id="su_gayet" value="0" oninput="calcUK()" style="width:90px;padding:5px 8px;border:1.5px solid var(--bd);border-radius:6px;font-size:12px;background:var(--cream)">
+            <span style="font-size:12px">each month before tax</span>
+          </div>
+          <div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap">
+            <span style="font-size:12px">I give £</span><input type="number" id="su_giftaid" value="0" oninput="calcUK()" style="width:90px;padding:5px 8px;border:1.5px solid var(--bd);border-radius:6px;font-size:12px;background:var(--cream)">
+            <span style="font-size:12px">each month after tax</span>
+          </div>
+        </div>
+        <div class="fg" style="margin-top:8px"><p style="font-size:11px;font-weight:600;margin-bottom:5px">Age:</p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <label style="font-size:12px;display:flex;align-items:center;gap:5px;cursor:pointer"><input type="radio" name="ukage" value="u77" checked onchange="calcUK()"> Under 77</label>
+            <label style="font-size:12px;display:flex;align-items:center;gap:5px;cursor:pointer"><input type="radio" name="ukage" value="77to86" onchange="calcUK()"> 77 - 86</label>
+            <label style="font-size:12px;display:flex;align-items:center;gap:5px;cursor:pointer"><input type="radio" name="ukage" value="87plus" onchange="calcUK()"> 87 plus</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Period checkboxes -->
+      <div class="uk-periods" style="margin-top:14px">
+        <label class="uk-period-lbl"><input type="checkbox" class="uk-per-chk" id="per_yearly" checked onchange="setUKPeriods()"> Yearly</label>
+        <label class="uk-period-lbl"><input type="checkbox" class="uk-per-chk" id="per_monthly" checked onchange="setUKPeriods()"> Monthly</label>
+        <label class="uk-period-lbl"><input type="checkbox" class="uk-per-chk" id="per_4weekly" onchange="setUKPeriods()"> 4 Weekly</label>
+        <label class="uk-period-lbl"><input type="checkbox" class="uk-per-chk" id="per_2weekly" onchange="setUKPeriods()"> 2 Weekly</label>
+        <label class="uk-period-lbl"><input type="checkbox" class="uk-per-chk" id="per_weekly" checked onchange="setUKPeriods()"> Weekly</label>
+        <label class="uk-period-lbl"><input type="checkbox" class="uk-per-chk" id="per_daily" checked onchange="setUKPeriods()"> Daily</label>
+      </div>
+
+      <!-- Tax Year + Calculate -->
+      <div style="display:flex;align-items:center;gap:10px;margin-top:12px;flex-wrap:wrap">
+        <span style="font-size:13px;font-weight:700">Tax Year</span>
+        <select id="su_taxyear" onchange="calcUK()" style="padding:7px 10px;border:1.5px solid var(--bd);border-radius:7px;font-size:12px;background:var(--cream)">
+          <option value="2526" selected>2025 / 26</option>
+          <option value="2425">2024 / 25</option>
+          <option value="2324">2023 / 24</option>
+        </select>
+        <button onclick="calcUK()" style="flex:1;min-width:140px;padding:10px 16px;background:#8b1a2a;color:#fff;border:none;border-radius:22px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer">Calculate!</button>
+      </div>
     </div>
     <div class="sal-res">
       <h3>UK Take-Home</h3>
-      <div class="ptabs"><button class="ptab active" onclick="setPer('uk','annual',this)">Annual</button><button class="ptab" onclick="setPer('uk','monthly',this)">Monthly</button><button class="ptab" onclick="setPer('uk','weekly',this)">Weekly</button></div>
+      <div class="ptabs"><button class="ptab active" onclick="setPer('uk','annual',this)">Annual</button><button class="ptab" onclick="setPer('uk','monthly',this)">Monthly</button><button class="ptab" onclick="setPer('uk','weekly',this)">Weekly</button><button class="ptab" onclick="setPer('uk','daily',this)">Daily</button></div>
       <div class="rsec">Income</div>
       <div class="rr"><span class="rl">Base Salary</span><span class="rv hi" id="uk_base">£65,000</span></div>
-      <div class="rr"><span class="rl">Annual Bonus</span><span class="rv" id="uk_bonus">£8,000</span></div>
-      <div class="rr"><span class="rl">RSU / Stock Awards</span><span class="rv" id="uk_stock">£5,000</span></div>
-      <div class="rr"><span class="rl">Total Gross</span><span class="rv hi" id="uk_gross">£78,000</span></div>
+      <div class="rr"><span class="rl">Bonus</span><span class="rv" id="uk_bonus">£0</span></div>
+      <div class="rr"><span class="rl">RSU / Stock Awards</span><span class="rv" id="uk_stock">£0</span></div>
+      <div class="rr"><span class="rl">Overtime</span><span class="rv" id="uk_overtime">£0</span></div>
+      <div class="rr"><span class="rl">Taxable Benefits</span><span class="rv" id="uk_taxbens">£0</span></div>
+      <div class="rr"><span class="rl">Total Gross</span><span class="rv hi" id="uk_gross">£65,000</span></div>
       <div class="rsec">Deductions</div>
-      <div class="rr"><span class="rl">Income Tax</span><span class="rv dn" id="uk_tax">−£24,432</span></div>
-      <div class="rr"><span class="rl">National Insurance</span><span class="rv dn" id="uk_ni">−£4,284</span></div>
+      <div class="rr"><span class="rl">Income Tax</span><span class="rv dn" id="uk_tax">−£17,432</span></div>
+      <div class="rr"><span class="rl">National Insurance</span><span class="rv dn" id="uk_ni">−£3,764</span></div>
       <div class="rr"><span class="rl">Employee Pension</span><span class="rv dn" id="uk_eep">−£3,250</span></div>
       <div class="rr"><span class="rl">Student Loan</span><span class="rv dn" id="uk_sl">−£0</span></div>
       <div class="rr"><span class="rl">Salary Sacrifice</span><span class="rv dn" id="uk_sac">−£0</span></div>
+      <div class="rr" id="uk_ni_emp_row" style="display:none"><span class="rl">Employer NI</span><span class="rv dn" id="uk_ni_emp">−£0</span></div>
       <div class="rsec">Summary</div>
-      <div class="rr"><span class="rl">💰 Take-Home Pay</span><span class="rv hi" id="uk_th">£46,034</span></div>
+      <div class="rr"><span class="rl">💰 Take-Home Pay</span><span class="rv hi" id="uk_th">£40,554</span></div>
       <div class="rr"><span class="rl">+ Employer Pension</span><span class="rv up" id="uk_empp">+£1,950</span></div>
-      <div class="rr"><span class="rl">Effective Tax Rate</span><span class="rv" id="uk_eff">37%</span></div>
+      <div class="rr" id="uk_adjnet_row" style="display:none"><span class="rl">Adjusted Net Income</span><span class="rv" id="uk_adjnet">£0</span></div>
+      <div class="rr"><span class="rl">Effective Tax Rate</span><span class="rv" id="uk_eff">32%</span></div>
       <div class="rr"><span class="rl">Marginal Rate</span><span class="rv" id="uk_marg">40%</span></div>
       <div class="rsec">Tax-Free Headroom</div>
       <div class="rr"><span class="rl">ISA Remaining</span><span class="rv up" id="uk_isa_l">£20,000/yr</span></div>
       <div class="rr"><span class="rl">SIPP Headroom</span><span class="rv up" id="uk_sipp_l">£55,000/yr</span></div>
+      <!-- Multi-period breakdown table -->
+      <div class="rsec" id="uk_periods_sec">Period Breakdown</div>
+      <div id="uk_periods_tbl" style="font-size:10px"></div>
     </div>
   </div>
 
@@ -796,6 +1015,294 @@ canvas{width:100%!important;max-height:250px;}
   </div>
 </div>
 
+<!-- ═══ QUESTIONNAIRE / PROFILE ═══ -->
+<div class="tpane" id="tab-questionnaire">
+  <div style="font-family:'Playfair Display',serif;font-size:18px;margin-bottom:4px">📋 Financial Profile Questionnaire</div>
+  <p style="font-size:11.5px;color:rgba(15,14,13,.58);margin-bottom:14px">Fill in as much as you can — even rough figures help. All data stays in your browser and is used to personalise the AI Advisor's guidance. Nothing is stored or sent anywhere.</p>
+
+  <!-- S1: Personal -->
+  <div class="qsec">
+    <div class="qsec-hdr" onclick="toggleQ('q1')"><span>Section 1 — Personal & Family Details</span><span class="arr o" id="qarr-q1">▼</span></div>
+    <div class="qsec-body" id="qbody-q1">
+      <div class="qgrid">
+        <div class="fg"><label>Full Name (optional)</label><input type="text" id="q_name" placeholder="e.g. J. Smith"></div>
+        <div class="fg"><label>Age</label><input type="number" id="q_age" placeholder="e.g. 35" oninput="syncAge(this.value)"></div>
+      </div>
+      <div class="fg"><label>Relationship Status</label>
+        <select id="q_relstatus">
+          <option value="">— select —</option>
+          <option>Single</option><option>Married</option><option>Cohabiting</option><option>Separated</option><option>Divorced</option><option>Widowed</option>
+        </select>
+      </div>
+      <div class="fg"><label>Number of children / dependants and ages</label><input type="text" id="q_children" placeholder="e.g. 2 — ages 3 and 7"></div>
+      <div class="fg"><label>UK tax resident and UK-domiciled?</label>
+        <select id="q_ukdom"><option value="">— select —</option><option>Yes</option><option>No</option><option>Unsure</option></select>
+      </div>
+      <div class="fg"><label>Any health issues affecting work / retirement / insurance? <span style="font-size:10px;font-style:italic;font-weight:400">(optional, brief)</span></label>
+        <input type="text" id="q_health" placeholder="e.g. none / managed condition"></div>
+    </div>
+  </div>
+
+  <!-- S2: Employment -->
+  <div class="qsec">
+    <div class="qsec-hdr" onclick="toggleQ('q2')"><span>Section 2 — Employment, Income & Tax</span><span class="arr o" id="qarr-q2">▼</span></div>
+    <div class="qsec-body" id="qbody-q2">
+      <div class="fg"><label>Employment Status</label>
+        <select id="q_empstatus"><option value="">— select —</option><option>Employee</option><option>Limited Company Contractor</option><option>Umbrella</option><option>Self-employed</option><option>Mixed</option></select>
+      </div>
+      <div class="fg"><label>Job Title & Sector</label><input type="text" id="q_jobtitle" placeholder="e.g. Senior Data Engineer, financial services"></div>
+      <div class="qgrid">
+        <div class="fg"><label>Gross Basic Salary (£/yr)</label><input type="number" id="q_grosssal" placeholder="e.g. 100000" oninput="syncQSalary(this.value)"></div>
+        <div class="fg"><label>Typical Bonus (£/yr)</label><input type="number" id="q_bonus" placeholder="e.g. 15000"></div>
+      </div>
+      <div class="fg"><label>RSUs / Equity (£/yr approx)</label><input type="number" id="q_rsu" placeholder="e.g. 20000"></div>
+      <div class="fg"><label>Pay Frequency</label>
+        <select id="q_payfreq"><option value="">— select —</option><option>Monthly</option><option>Weekly</option><option>4-weekly</option><option>Other</option></select>
+      </div>
+      <div class="fg"><label>Do you use salary sacrifice for pension?</label>
+        <select id="q_pensac"><option value="">— select —</option><option>Yes</option><option>No</option><option>Unsure</option></select>
+      </div>
+      <div class="fg" id="q_pensac_amt_row"><label>If yes — what % or £ per month?</label><input type="text" id="q_pensac_amt" placeholder="e.g. 5% or £400/mo"></div>
+      <div class="fg"><label>Other salary sacrifice benefits</label><input type="text" id="q_othersac" placeholder="e.g. EV scheme, cycle to work, childcare"></div>
+      <div class="fg"><label>Do you complete a Self-Assessment tax return?</label>
+        <select id="q_selfass"><option value="">— select —</option><option>Yes</option><option>No</option></select>
+      </div>
+      <div class="fg"><label>Other income (type and approx £/yr)</label><input type="text" id="q_otherinc" placeholder="e.g. rental £12,000 · dividends £5,000 · freelance"></div>
+    </div>
+  </div>
+
+  <!-- S3: Spending -->
+  <div class="qsec">
+    <div class="qsec-hdr" onclick="toggleQ('q3')"><span>Section 3 — Spending & Cash-Flow</span><span class="arr o" id="qarr-q3">▼</span></div>
+    <div class="qsec-body" id="qbody-q3">
+      <div class="qgrid">
+        <div class="fg"><label>Monthly take-home (approx £)</label><input type="number" id="q_takehome" placeholder="e.g. 4500"></div>
+        <div class="fg"><label>Monthly essential spending (£)</label><input type="number" id="q_essential" placeholder="e.g. 2800"></div>
+      </div>
+      <div class="fg"><label>Monthly discretionary spending (£)</label><input type="number" id="q_discretionary" placeholder="e.g. 800"></div>
+      <p style="font-size:11px;font-weight:600;margin:8px 0 4px">Regular fixed commitments (amounts optional):</p>
+      <div class="qgrid">
+        <div class="fg"><label>Rent / Mortgage (£/mo)</label><input type="number" id="q_mortgage" placeholder="e.g. 1500"></div>
+        <div class="fg"><label>Childcare / School fees (£/mo)</label><input type="number" id="q_childcarecost" placeholder="e.g. 1200"></div>
+      </div>
+      <div class="qgrid">
+        <div class="fg"><label>Loans / HP / Finance (£/mo)</label><input type="number" id="q_loanpmt" placeholder="e.g. 350"></div>
+        <div class="fg"><label>Subscriptions (£/mo)</label><input type="number" id="q_subs" placeholder="e.g. 80"></div>
+      </div>
+      <div class="fg"><label>Monthly savings / investments and where</label><input type="text" id="q_monthsav" placeholder="e.g. £500 ISA, £300 pension, £200 cash"></div>
+      <div class="fg"><label>Known big changes in next 1–3 years</label><input type="text" id="q_bigchanges" placeholder="e.g. house move, career break, school fees starting"></div>
+    </div>
+  </div>
+
+  <!-- S4a: Cash -->
+  <div class="qsec">
+    <div class="qsec-hdr" onclick="toggleQ('q4a')"><span>Section 4a — Assets: Cash</span><span class="arr o" id="qarr-q4a">▼</span></div>
+    <div class="qsec-body" id="qbody-q4a">
+      <div class="qgrid">
+        <div class="fg"><label>Current account(s) — total £</label><input type="number" id="q_current" placeholder="e.g. 3000"></div>
+        <div class="fg"><label>Easy-access savings — total £</label><input type="number" id="q_easyaccess" placeholder="e.g. 15000"></div>
+      </div>
+      <div class="qgrid">
+        <div class="fg"><label>Fixed-term savings — total £</label><input type="number" id="q_fixedterm" placeholder="e.g. 10000"></div>
+        <div class="fg"><label>Premium Bonds or similar — total £</label><input type="number" id="q_premiumbonds" placeholder="e.g. 5000"></div>
+      </div>
+      <div class="fg"><label>Emergency fund — how many months of expenses?</label>
+        <select id="q_emfund"><option value="">— select —</option><option>Less than 1</option><option>1–2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>9</option><option>12+</option></select>
+      </div>
+    </div>
+  </div>
+
+  <!-- S4b: Investments -->
+  <div class="qsec">
+    <div class="qsec-hdr" onclick="toggleQ('q4b')"><span>Section 4b — Assets: Investments (outside pensions)</span><span class="arr o" id="qarr-q4b">▼</span></div>
+    <div class="qsec-body" id="qbody-q4b">
+      <div class="qgrid">
+        <div class="fg"><label>Stocks & Shares ISA — current value £</label><input type="number" id="q_ssisa_val" placeholder="e.g. 30000"></div>
+        <div class="fg"><label>S&S ISA — monthly contribution £</label><input type="number" id="q_ssisa_mo" placeholder="e.g. 500"></div>
+      </div>
+      <div class="qgrid">
+        <div class="fg"><label>Cash ISA — current value £</label><input type="number" id="q_cashisa_val" placeholder="e.g. 10000"></div>
+        <div class="fg"><label>Cash ISA — monthly contribution £</label><input type="number" id="q_cashisa_mo" placeholder="e.g. 200"></div>
+      </div>
+      <div class="fg"><label>General investment / taxable brokerage — value £</label><input type="number" id="q_brokerage" placeholder="e.g. 20000"></div>
+      <div class="fg"><label>Company shares / RSUs / options (type & approx value)</label><input type="text" id="q_rsu_val" placeholder="e.g. Snowflake RSUs, ~£15,000 unvested"></div>
+      <div class="fg"><label>Crypto or other investments (type & approx value)</label><input type="text" id="q_crypto" placeholder="e.g. Bitcoin £5,000"></div>
+    </div>
+  </div>
+
+  <!-- S4c: Pensions -->
+  <div class="qsec">
+    <div class="qsec-hdr" onclick="toggleQ('q4c')"><span>Section 4c — Assets: Pensions</span><span class="arr o" id="qarr-q4c">▼</span></div>
+    <div class="qsec-body" id="qbody-q4c">
+      <p style="font-size:11px;font-weight:600;margin-bottom:6px">Current workplace pension:</p>
+      <div class="qgrid">
+        <div class="fg"><label>Provider</label><input type="text" id="q_pen_provider" placeholder="e.g. Scottish Widows"></div>
+        <div class="fg"><label>Approx pot value £</label><input type="number" id="q_pen_val" placeholder="e.g. 50000"></div>
+      </div>
+      <div class="qgrid">
+        <div class="fg"><label>Your contribution (% salary)</label><input type="number" id="q_pen_ee" placeholder="e.g. 5" min="0" max="100"></div>
+        <div class="fg"><label>Employer contribution (% salary)</label><input type="number" id="q_pen_er" placeholder="e.g. 8" min="0" max="100"></div>
+      </div>
+      <div class="fg"><label>Is it salary sacrifice?</label>
+        <select id="q_pen_salsac"><option value="">— select —</option><option>Yes</option><option>No</option><option>Unsure</option></select>
+      </div>
+      <div class="fg"><label>Previous workplace pensions (provider and approx value)</label><input type="text" id="q_prev_pens" placeholder="e.g. Aviva £18,000 · Nest £7,000"></div>
+      <div class="fg"><label>Personal pension / SIPP (provider and approx value)</label><input type="text" id="q_sipp_val" placeholder="e.g. Vanguard SIPP £25,000"></div>
+    </div>
+  </div>
+
+  <!-- S4d: Property -->
+  <div class="qsec">
+    <div class="qsec-hdr" onclick="toggleQ('q4d')"><span>Section 4d — Assets: Property</span><span class="arr o" id="qarr-q4d">▼</span></div>
+    <div class="qsec-body" id="qbody-q4d">
+      <p style="font-size:11px;font-weight:600;margin-bottom:6px">Main residence:</p>
+      <div class="qgrid">
+        <div class="fg"><label>Estimated value £</label><input type="number" id="q_propval" placeholder="e.g. 450000"></div>
+        <div class="fg"><label>Outstanding mortgage £</label><input type="number" id="q_mortgagebal" placeholder="e.g. 250000"></div>
+      </div>
+      <div class="fg"><label>Interest rate, type and fix end date</label><input type="text" id="q_mortgagerate" placeholder="e.g. 4.2% fixed, ends Mar 2027"></div>
+      <div class="fg"><label>Years remaining on mortgage</label><input type="number" id="q_mortgageyrs" placeholder="e.g. 22"></div>
+      <div class="fg"><label>Buy-to-let / other properties (value, mortgage, rent received)</label><input type="text" id="q_btl" placeholder="e.g. flat worth £220,000 · mortgage £90,000 · rent £1,100/mo"></div>
+    </div>
+  </div>
+
+  <!-- S4e: Other assets -->
+  <div class="qsec">
+    <div class="qsec-hdr" onclick="toggleQ('q4e')"><span>Section 4e — Other Assets</span><span class="arr o" id="qarr-q4e">▼</span></div>
+    <div class="qsec-body" id="qbody-q4e">
+      <div class="fg"><label>Business interests (e.g. limited company ownership)</label><input type="text" id="q_bizint" placeholder="e.g. sole director of Ltd Co, retained profit £40,000"></div>
+      <div class="fg"><label>VCT / EIS investments</label><input type="text" id="q_vct" placeholder="e.g. EIS £10,000 in 2024/25"></div>
+      <div class="fg"><label>Any other notable assets</label><input type="text" id="q_otherassets" placeholder="e.g. inheritance expected, art, collectibles"></div>
+    </div>
+  </div>
+
+  <!-- S5: Liabilities -->
+  <div class="qsec">
+    <div class="qsec-hdr" onclick="toggleQ('q5')"><span>Section 5 — Liabilities</span><span class="arr o" id="qarr-q5">▼</span></div>
+    <div class="qsec-body" id="qbody-q5">
+      <div class="fg"><label>Personal loans (outstanding amount & interest rate)</label><input type="text" id="q_persloan" placeholder="e.g. £5,000 at 6.9% — car loan"></div>
+      <div class="fg"><label>Car finance / HP / PCP (outstanding & monthly payment)</label><input type="text" id="q_carfin" placeholder="e.g. £8,000 outstanding, £280/mo"></div>
+      <div class="fg"><label>Student loan (plan type & approx balance)</label><input type="text" id="q_studloan" placeholder="e.g. Plan 2 — ~£28,000"></div>
+      <div class="qgrid">
+        <div class="fg"><label>Credit card total balance £</label><input type="number" id="q_ccbal" placeholder="e.g. 2000"></div>
+        <div class="fg"><label>Clear in full each month?</label>
+          <select id="q_ccfull"><option value="">— select —</option><option>Yes</option><option>No</option></select>
+        </div>
+      </div>
+      <div class="fg"><label>Other significant debts or obligations</label><input type="text" id="q_otherdebts" placeholder="e.g. HMRC payment plan £3,000"></div>
+    </div>
+  </div>
+
+  <!-- S6: Goals -->
+  <div class="qsec">
+    <div class="qsec-hdr" onclick="toggleQ('q6')"><span>Section 6 — Goals & Time Horizons</span><span class="arr o" id="qarr-q6">▼</span></div>
+    <div class="qsec-body" id="qbody-q6">
+      <div class="fg"><label>Short-term goals (0–3 years)</label><input type="text" id="q_stgoals" placeholder="e.g. 6-month emergency fund, remortgage, save for wedding"></div>
+      <div class="fg"><label>Medium-term goals (3–10 years)</label><input type="text" id="q_mtgoals" placeholder="e.g. upgrade house, school fees, pay off car loan"></div>
+      <div class="fg"><label>Long-term goals (10+ years, incl. desired retirement age & lifestyle)</label><input type="text" id="q_ltgoals" placeholder="e.g. retire at 57, mortgage-free, travel 3mo/year"></div>
+      <div class="fg"><label>Maximising monthly take-home (importance)</label>
+        <select id="q_imp_takehome"><option value="">— select —</option><option>Low</option><option>Medium</option><option>High</option></select>
+      </div>
+      <div class="fg"><label>Maximising long-term wealth / financial independence (importance)</label>
+        <select id="q_imp_wealth"><option value="">— select —</option><option>Low</option><option>Medium</option><option>High</option></select>
+      </div>
+      <div class="fg"><label>Which best describes your priority right now?</label>
+        <select id="q_priority">
+          <option value="">— select —</option>
+          <option value="A">A) Today's take-home matters more</option>
+          <option value="B">B) Long-term wealth matters more</option>
+          <option value="C">C) Balanced between A and B</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- S7: Risk -->
+  <div class="qsec">
+    <div class="qsec-hdr" onclick="toggleQ('q7')"><span>Section 7 — Risk Tolerance & Investment Preferences</span><span class="arr o" id="qarr-q7">▼</span></div>
+    <div class="qsec-body" id="qbody-q7">
+      <div class="fg"><label>Investment risk attitude</label>
+        <select id="q_risk"><option value="">— select —</option><option>Very cautious</option><option>Cautious</option><option>Balanced</option><option>Growth-oriented</option><option>Aggressive</option></select>
+      </div>
+      <div class="fg"><label>How did you react during big market falls (e.g. 2020 COVID crash)?</label>
+        <select id="q_mktreact"><option value="">— select —</option><option>Sold</option><option>Held</option><option>Bought more</option><option>Not sure / wasn't invested</option></select>
+      </div>
+      <div class="fg"><label>Investment style preferences (select all that apply)</label>
+        <div style="display:flex;flex-direction:column;gap:5px;margin-top:4px">
+          <label style="font-size:12px;display:flex;align-items:center;gap:7px;cursor:pointer"><input type="checkbox" id="q_passive"> Passive index funds</label>
+          <label style="font-size:12px;display:flex;align-items:center;gap:7px;cursor:pointer"><input type="checkbox" id="q_active"> Active funds</label>
+          <label style="font-size:12px;display:flex;align-items:center;gap:7px;cursor:pointer"><input type="checkbox" id="q_esg"> ESG / sustainable focus</label>
+        </div>
+      </div>
+      <div class="fg"><label>Sectors or types you want to avoid</label><input type="text" id="q_avoid" placeholder="e.g. tobacco, arms, fossil fuels"></div>
+      <div class="fg"><label>Liquidity preference</label>
+        <select id="q_liquidity"><option value="">— select —</option><option>More accessible (cash/ISA)</option><option>Comfortable locking into pensions</option><option>Balanced</option></select>
+      </div>
+    </div>
+  </div>
+
+  <!-- S8: Protections -->
+  <div class="qsec">
+    <div class="qsec-hdr" onclick="toggleQ('q8')"><span>Section 8 — Protections & Benefits</span><span class="arr o" id="qarr-q8">▼</span></div>
+    <div class="qsec-body" id="qbody-q8">
+      <p style="font-size:11px;font-weight:600;margin-bottom:6px">Employer benefits you currently have:</p>
+      <div class="qgrid">
+        <div class="fg"><label>Death in service (life cover)</label><input type="text" id="q_dis" placeholder="e.g. 4× salary"></div>
+        <div class="fg"><label>Income protection</label><input type="text" id="q_ip_emp" placeholder="e.g. 75% salary to 65"></div>
+      </div>
+      <div class="qgrid">
+        <div class="fg"><label>Critical illness cover</label><input type="text" id="q_ci_emp" placeholder="e.g. 2× salary"></div>
+        <div class="fg"><label>Private medical insurance</label><input type="text" id="q_pmi_emp" placeholder="e.g. AXA family cover"></div>
+      </div>
+      <div class="fg"><label>Other employer benefits</label><input type="text" id="q_otherbens" placeholder="e.g. share schemes, discounts, EV"></div>
+      <p style="font-size:11px;font-weight:600;margin:8px 0 6px">Personal policies:</p>
+      <div class="qgrid">
+        <div class="fg"><label>Life insurance</label><input type="text" id="q_li_pers" placeholder="e.g. level term £500K to 2045"></div>
+        <div class="fg"><label>Income protection</label><input type="text" id="q_ip_pers" placeholder="e.g. £2,500/mo to 60"></div>
+      </div>
+      <div class="qgrid">
+        <div class="fg"><label>Critical illness (personal)</label><input type="text" id="q_ci_pers" placeholder="e.g. £150,000 lump sum"></div>
+        <div class="fg"><label>Private medical (personal)</label><input type="text" id="q_pmi_pers" placeholder="e.g. Bupa self-pay"></div>
+      </div>
+      <p style="font-size:11px;font-weight:600;margin:8px 0 6px">Legal / estate planning:</p>
+      <div class="qgrid">
+        <div class="fg"><label>Do you have a will?</label><select id="q_will"><option value="">— select —</option><option>Yes</option><option>No</option></select></div>
+        <div class="fg"><label>Lasting Power of Attorney?</label><select id="q_lpa"><option value="">— select —</option><option>Yes</option><option>No</option></select></div>
+      </div>
+      <div class="fg"><label>Pension nomination / expression of wish forms up to date?</label>
+        <select id="q_nominat"><option value="">— select —</option><option>Yes</option><option>No</option><option>Unsure</option></select>
+      </div>
+    </div>
+  </div>
+
+  <!-- S9: Tax allowances -->
+  <div class="qsec">
+    <div class="qsec-hdr" onclick="toggleQ('q9')"><span>Section 9 — Tax Allowances & Current Usage</span><span class="arr o" id="qarr-q9">▼</span></div>
+    <div class="qsec-body" id="qbody-q9">
+      <div class="fg"><label>Do you usually use your full ISA allowance (£20,000)?</label>
+        <select id="q_fullisa"><option value="">— select —</option><option>Yes</option><option>No</option><option>Varies</option></select>
+      </div>
+      <div class="fg"><label>Approx annual ISA contributions £</label><input type="number" id="q_isaamt" placeholder="e.g. 12000"></div>
+      <div class="fg"><label>Approx total annual pension contributions (you + employer + personal/SIPP) £</label><input type="number" id="q_totalpen" placeholder="e.g. 20000"></div>
+      <div class="fg"><label>Large one-off pension contributions or "carry forward" recently?</label>
+        <select id="q_carryforward"><option value="">— select —</option><option>Yes</option><option>No</option><option>Unsure</option></select>
+      </div>
+      <div class="fg"><label>Affected by High Income Child Benefit Charge?</label>
+        <select id="q_hicbc"><option value="">— select —</option><option>Yes</option><option>No</option><option>Unsure</option></select>
+      </div>
+      <div class="fg"><label>Affected by Tapered Annual Allowance?</label>
+        <select id="q_taa"><option value="">— select —</option><option>Yes</option><option>No</option><option>Unsure</option></select>
+      </div>
+      <div class="fg"><label>VCT, EIS, SEIS or other tax-advantaged investments?</label><input type="text" id="q_taxadv" placeholder="e.g. EIS £5,000 in 2024/25"></div>
+    </div>
+  </div>
+
+  <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+    <button onclick="sendProfileToAdvisor()" style="padding:11px 22px;background:var(--ink);color:var(--cream);border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:background .18s" onmouseover="this.style.background='var(--india)'" onmouseout="this.style.background='var(--ink)'">📤 Send Profile to AI Advisor →</button>
+    <button onclick="clearProfile()" style="padding:11px 18px;background:transparent;border:1.5px solid var(--bd);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;color:rgba(15,14,13,.55)">🗑 Clear All</button>
+  </div>
+</div>
+
 <!-- ═══ AI ADVISOR ═══ -->
 <div class="tpane" id="tab-advisor">
   <div class="ai-wrap">
@@ -904,42 +1411,252 @@ function updTotals(){
   set('inTot','₹'+(nv('inRent')+nv('inDiv')+nv('inFD')+nv('inCG')).toLocaleString());
 }
 
+// ── UK TAB & PERIOD HELPERS ──────────────────────────
+function switchUKTab(id,btn){
+  document.querySelectorAll('.uk-tab-pane').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.uk-tab').forEach(b=>b.classList.remove('active'));
+  const pane=document.getElementById('ukt-'+id);
+  if(pane)pane.classList.add('active');
+  if(btn)btn.classList.add('active');
+}
+function switchPenMode(mode){
+  const isPct=mode==='pct';
+  el('penPctDiv').style.display=isPct?'block':'none';
+  el('penAmtDiv').style.display=isPct?'none':'block';
+  el('penPctBtn').classList.toggle('active',isPct);
+  el('penAmtBtn').classList.toggle('active',!isPct);
+  calcUK();
+}
+function setUKPeriods(){calcUK();}
+function toggleQ(id){
+  const body=el('qbody-'+id),arr=el('qarr-'+id);
+  if(!body)return;
+  const open=body.style.display!=='none';
+  body.style.display=open?'none':'block';
+  if(arr)arr.classList.toggle('o',!open);
+}
+function syncAge(v){const a=parseInt(v);if(!isNaN(a)){const ag=el('age');if(ag)ag.value=a;}}
+function syncQSalary(v){const n=parseFloat(v);if(!isNaN(n)){const f=el('su_base');if(f)f.value=n;calcUK();}}
+
 // ── UK SALARY CALCULATOR ─────────────────────────────
 function calcUK(){
-  const base=nv('su_base'),bonus=nv('su_bonus'),stock=nv('su_stock');
-  const eePct=nv('su_eep'),empPct=nv('su_emp');
-  const slPlan=sv('su_sl'),scot=sv('su_scot')==='yes',sac=nv('su_sac')*12;
-  const gross=base+bonus+stock;
-  const eePen=base*eePct/100,empPen=base*empPct/100;
-  const netPen=gross-eePen-sac;
-  let pa=12570;
-  if(netPen>100000)pa=Math.max(0,12570-Math.floor((netPen-100000)/2));
-  const taxable=Math.max(0,netPen-pa);
+  const base=nv('su_base');
+  const bonus=nv('su_bonus');
+  const su_stock=nv('su_stock')||0;
+  const isPct=el('penPctDiv')&&el('penPctDiv').style.display!=='none';
+  const eePct=isPct?nv('su_eep'):0;
+  const eePctAmt=isPct?0:nv('su_eep_amt');
+  const empPct=nv('su_emp');
+  const scot=el('su_scot')&&el('su_scot').checked;
+  // Salary sacrifice
+  const sacTaxExempt=(nv('su_sac')*(sv('su_sac_per')==='year'?1:12));
+  const sacNIOnly=(nv('su_sac_ni')*(sv('su_sac_ni_per')==='year'?1:12));
+  // Bonus
+  const bonusAnn=bonus;
+  // Overtime
+  const daysWk=parseInt(sv('su_daysperweek')||'5');
+  const weeksYr=parseInt(sv('su_weeksyr')||'52');
+  const wkHrs=nv('su_wkhrs')||37.5;
+  const hourlyRate=wkHrs>0?base/(wkHrs*weeksYr):0;
+  const ot1h=nv('su_ot1h'),ot1r=nv('su_ot1r')||1.5;
+  const ot2h=nv('su_ot2h'),ot2r=nv('su_ot2r')||2;
+  const otCash=nv('su_otcash')*(sv('su_otperiod')==='week'?weeksYr:12);
+  const overtimeAnn=otCash>0?otCash:(ot1h*ot1r*hourlyRate+ot2h*ot2r*hourlyRate)*12;
+  // Taxable benefits
+  const taxBensAnn=nv('su_taxbens')*(sv('su_taxbens_per')==='year'?1:12);
+  const cashAlwAnn=nv('su_cashalw')*(sv('su_cashalw_per')==='year'?1:12);
+  const gayeAnn=nv('su_gayet')*12;
+  // Childcare vouchers (up to £243/mo basic rate, £124/mo higher rate)
+  const childcareAnn=nv('su_childcare')*12;
+  // Student loan
+  const sl1=el('su_sl1')&&el('su_sl1').checked;
+  const sl2=el('su_sl2')&&el('su_sl2').checked;
+  const sl4=el('su_sl4')&&el('su_sl4').checked;
+  const sl5=el('su_sl5')&&el('su_sl5').checked;
+  const slpg=el('su_slpg')&&el('su_slpg').checked;
+  // Tax code personal allowance override
+  const taxCodeRaw=(el('su_taxcode')?.value||'').toUpperCase().trim();
+  let taxCodePA=12570;
+  const tcMatch=taxCodeRaw.match(/^(\d+)[LMNTWY]?$/);
+  if(tcMatch)taxCodePA=parseInt(tcMatch[1])*10;
+  else if(taxCodeRaw==='NT')taxCodePA=99999;
+  else if(taxCodeRaw==='0T')taxCodePA=0;
+  // Blind persons
+  const blind=el('su_blind')&&el('su_blind').checked;
+  if(blind)taxCodePA+=2870;
+  // Married allowance (1935 born)
+  const married=el('su_married')&&el('su_married').checked;
+  if(married)taxCodePA+=4010;
+  // Gross income
+  const gross=base+bonusAnn+su_stock+overtimeAnn+taxBensAnn+cashAlwAnn;
+  // Pension
+  let eePenAnn=isPct?base*eePct/100:eePctAmt*12;
+  const penType=document.querySelector('input[name="pentype"]:checked')?.value||'autoenrol';
+  const isSalSac=penType==='salsac';
+  const empPenAnn=base*empPct/100;
+  // Net of sacrifice for tax purposes
+  const totalSac=sacTaxExempt+(isSalSac?eePenAnn:0);
+  const totalSacNIOnly=sacNIOnly;
+  const netForTax=Math.max(0,gross-totalSac-gayeAnn);
+  // Personal allowance (taper above 100K)
+  let pa=taxCodePA;
+  if(netForTax>100000)pa=Math.max(0,taxCodePA-Math.floor((netForTax-100000)/2));
+  const taxable=Math.max(0,netForTax-pa);
+  // Income tax
   let tax=0;
   if(scot){
     const bands=[[2306,.19],[13991,.20],[31092,.21],[62430,.42],[1e9,.48]];
     let r=taxable;for(const[w,rt]of bands){const a=Math.min(r,w);tax+=a*rt;r-=a;if(r<=0)break;}
   } else {
-    tax=Math.min(taxable,37700)*.20+Math.min(Math.max(0,taxable-37700),112570-37700)*.40+Math.max(0,taxable-112570)*.45;
+    tax=Math.min(taxable,37700)*.20+Math.min(Math.max(0,taxable-37700),125140-37700)*.40+Math.max(0,taxable-125140)*.45;
   }
+  // NI
+  const noNI=el('su_noni')&&el('su_noni').checked;
+  const niBase=Math.max(0,gross-totalSac-totalSacNIOnly);
   let ni=0;
-  if(netPen>12570){ni=Math.min(netPen-12570,50270-12570)*.08+Math.max(0,netPen-50270)*.02;}
-  const slT={plan1:24990,plan2:27295,plan5:25000};
-  const slAmt=slPlan!=='none'&&slT[slPlan]?Math.max(0,netPen-slT[slPlan])*.09:0;
-  const th=netPen-tax-ni-slAmt;
-  const p=pers.uk;
-  const f=(x,sym='£')=>sym+Math.round(Math.abs(x)/({annual:1,monthly:12,weekly:52}[p]||1)).toLocaleString();
-  set('uk_base',f(base));set('uk_bonus',f(bonus));set('uk_stock',f(stock));set('uk_gross',f(gross));
-  set('uk_tax','−'+f(tax));set('uk_ni','−'+f(ni));set('uk_eep','−'+f(eePen));
-  set('uk_sl',slAmt>0?'−'+f(slAmt):'−£0');set('uk_sac',sac>0?'−'+f(sac):'−£0');
-  set('uk_th',f(th));set('uk_empp','+'+f(empPen));
-  set('uk_eff',netPen>0?Math.round((tax+ni)/netPen*100)+'%':'0%');
-  set('uk_marg',netPen>125140?'45%':netPen>50270?'40%':'20%');
+  if(!noNI&&niBase>12570){ni=Math.min(niBase-12570,50270-12570)*.08+Math.max(0,niBase-50270)*.02;}
+  // Employer NI
+  let empNI=0;
+  if(niBase>9100){empNI=Math.min(niBase-9100,50270-9100)*.138+Math.max(0,niBase-50270)*.138;}
+  // Student loan
+  const slT={sl1:24990,sl2:27295,sl4:27660,sl5:25000};
+  let slAmt=0;
+  if(sl1&&netForTax>slT.sl1)slAmt+=Math.max(0,netForTax-slT.sl1)*.09;
+  if(sl2&&netForTax>slT.sl2)slAmt+=Math.max(0,netForTax-slT.sl2)*.09;
+  if(sl4&&netForTax>slT.sl4)slAmt+=Math.max(0,netForTax-slT.sl4)*.09;
+  if(sl5&&netForTax>slT.sl5)slAmt+=Math.max(0,netForTax-slT.sl5)*.09;
+  if(slpg&&netForTax>21000)slAmt+=Math.max(0,netForTax-21000)*.06;
+  // Pension (non salsac) from take-home
+  const eePenPost=isSalSac?0:eePenAnn;
+  const th=gross-tax-ni-eePenPost-slAmt-totalSac;
+  // Adjusted net income
+  const adjNetInc=netForTax-eePenAnn;
+
+  // Period divisors
+  const getPer=()=>pers.uk;
+  const divs={annual:1,monthly:12,weekly:52,daily:daysWk*weeksYr,'4weekly':13,'2weekly':26};
+  const d=divs[getPer()]||1;
+  const f=(x)=>'£'+Math.round(Math.abs(x)/d).toLocaleString();
+
+  set('uk_base',f(base));set('uk_bonus',f(bonusAnn));set('uk_stock',f(su_stock));
+  set('uk_overtime',f(overtimeAnn));set('uk_taxbens',f(taxBensAnn+cashAlwAnn));
+  set('uk_gross',f(gross));
+  set('uk_tax','−'+f(tax));set('uk_ni','−'+f(ni));
+  set('uk_eep','−'+f(eePenPost||eePenAnn));
+  set('uk_sl',slAmt>0?'−'+f(slAmt):'−£0');
+  set('uk_sac',totalSac>0?'−'+f(totalSac):'−£0');
+  set('uk_th',f(th));set('uk_empp','+'+f(empPenAnn));
+  set('uk_eff',gross>0?Math.round((tax+ni)/gross*100)+'%':'0%');
+  set('uk_marg',taxable>125140?'45%':taxable>37700?'40%':taxable>0?'20%':'0%');
+  // Employer NI row
+  const showNI=el('su_showni')&&el('su_showni').checked;
+  if(el('uk_ni_emp_row'))el('uk_ni_emp_row').style.display=showNI?'flex':'none';
+  set('uk_ni_emp','−'+f(empNI));
+  // Adjusted net income row
+  const showAdj=el('su_adjnet')&&el('su_adjnet').checked;
+  if(el('uk_adjnet_row'))el('uk_adjnet_row').style.display=showAdj?'flex':'none';
+  set('uk_adjnet',f(adjNetInc));
   const isaUsed=Math.min(20000,nv('isa')*12);
   set('uk_isa_l','£'+(20000-isaUsed).toLocaleString()+'/yr');
   set('uk_sipp_l','£'+Math.min(60000,Math.max(0,gross-nv('sipp')*12)).toLocaleString()+'/yr');
-  return{gross,th,tax,ni,eePen,empPen};
+
+  // Multi-period breakdown
+  const periods=[
+    {label:'Yearly',key:'annual',id:'per_yearly',div:1},
+    {label:'Monthly',key:'monthly',id:'per_monthly',div:12},
+    {label:'4-Weekly',key:'4weekly',id:'per_4weekly',div:13},
+    {label:'2-Weekly',key:'2weekly',id:'per_2weekly',div:26},
+    {label:'Weekly',key:'weekly',id:'per_weekly',div:52},
+    {label:'Daily',key:'daily',id:'per_daily',div:daysWk*weeksYr},
+  ].filter(p=>el(p.id)&&el(p.id).checked);
+  const fP=(x,dv)=>'£'+Math.round(Math.abs(x)/dv).toLocaleString();
+  let ptbl='<table style="width:100%;border-collapse:collapse;font-size:10px"><thead><tr style="background:rgba(15,14,13,.06)">';
+  ptbl+='<th style="padding:4px 6px;text-align:left;border-bottom:1px solid var(--bd)">Period</th>';
+  ptbl+='<th style="padding:4px 6px;text-align:right;border-bottom:1px solid var(--bd)">Gross</th>';
+  ptbl+='<th style="padding:4px 6px;text-align:right;border-bottom:1px solid var(--bd)">Tax</th>';
+  ptbl+='<th style="padding:4px 6px;text-align:right;border-bottom:1px solid var(--bd)">NI</th>';
+  ptbl+='<th style="padding:4px 6px;text-align:right;border-bottom:1px solid var(--bd);color:#7fd4a8">Take-Home</th>';
+  ptbl+='</tr></thead><tbody>';
+  periods.forEach(p=>{
+    ptbl+=`<tr style="border-bottom:1px solid var(--bd)">
+      <td style="padding:4px 6px">${p.label}</td>
+      <td style="padding:4px 6px;text-align:right;font-family:'DM Mono',monospace">${fP(gross,p.div)}</td>
+      <td style="padding:4px 6px;text-align:right;font-family:'DM Mono',monospace;color:#f4a07a">${fP(tax,p.div)}</td>
+      <td style="padding:4px 6px;text-align:right;font-family:'DM Mono',monospace;color:#f4a07a">${fP(ni,p.div)}</td>
+      <td style="padding:4px 6px;text-align:right;font-family:'DM Mono',monospace;color:#7fd4a8;font-weight:700">${fP(th,p.div)}</td>
+    </tr>`;
+  });
+  ptbl+='</tbody></table>';
+  if(el('uk_periods_tbl'))el('uk_periods_tbl').innerHTML=ptbl;
+
+  return{gross,th,tax,ni,eePenAnn,empPenAnn};
 }
+
+// ── QUESTIONNAIRE HELPERS ─────────────────────────────
+function sendProfileToAdvisor(){
+  const g=id=>el(id)?.value||'';
+  const lines=[];
+  const add=(label,val)=>{if(val&&val.trim()&&val!=='— select —')lines.push(`${label}: ${val}`);};
+  add('Name',g('q_name'));add('Age',g('q_age'));add('Relationship',g('q_relstatus'));
+  add('Dependants',g('q_children'));add('UK resident/domiciled',g('q_ukdom'));
+  add('Health notes',g('q_health'));add('Employment',g('q_empstatus'));
+  add('Job title',g('q_jobtitle'));add('Gross salary',g('q_grosssal')?' £'+parseInt(g('q_grosssal')).toLocaleString():'');
+  add('Bonus',g('q_bonus')?'£'+parseInt(g('q_bonus')).toLocaleString():'');
+  add('RSU/Equity',g('q_rsu')?'£'+parseInt(g('q_rsu')).toLocaleString():'');
+  add('Pay frequency',g('q_payfreq'));add('Pension salary sacrifice',g('q_pensac'));
+  add('Pension sac amount',g('q_pensac_amt'));add('Other sacrifice',g('q_othersac'));
+  add('Self-assessment',g('q_selfass'));add('Other income',g('q_otherinc'));
+  add('Take-home',g('q_takehome')?'~£'+parseInt(g('q_takehome')).toLocaleString()+'/mo':'');
+  add('Essential spend',g('q_essential')?'£'+parseInt(g('q_essential')).toLocaleString()+'/mo':'');
+  add('Discretionary spend',g('q_discretionary')?'£'+parseInt(g('q_discretionary')).toLocaleString()+'/mo':'');
+  add('Mortgage/rent',g('q_mortgage')?'£'+g('q_mortgage')+'/mo':'');
+  add('Childcare cost',g('q_childcarecost')?'£'+g('q_childcarecost')+'/mo':'');
+  add('Monthly savings',g('q_monthsav'));add('Big changes expected',g('q_bigchanges'));
+  add('Cash savings',g('q_easyaccess')?'£'+parseInt(g('q_easyaccess')).toLocaleString():'');
+  add('Emergency fund',g('q_emfund')+' months');
+  add('S&S ISA value',g('q_ssisa_val')?'£'+parseInt(g('q_ssisa_val')).toLocaleString():'');
+  add('Cash ISA value',g('q_cashisa_val')?'£'+parseInt(g('q_cashisa_val')).toLocaleString():'');
+  add('Brokerage',g('q_brokerage')?'£'+parseInt(g('q_brokerage')).toLocaleString():'');
+  add('RSU unvested',g('q_rsu_val'));
+  add('Pension provider',g('q_pen_provider'));add('Pension value',g('q_pen_val')?'£'+parseInt(g('q_pen_val')).toLocaleString():'');
+  add('Pension contribution',g('q_pen_ee')?g('q_pen_ee')+'% employee, '+g('q_pen_er')+'% employer':'');
+  add('Prev. pensions',g('q_prev_pens'));add('SIPP',g('q_sipp_val'));
+  add('Property value',g('q_propval')?'£'+parseInt(g('q_propval')).toLocaleString():'');
+  add('Mortgage balance',g('q_mortgagebal')?'£'+parseInt(g('q_mortgagebal')).toLocaleString():'');
+  add('Mortgage rate/type',g('q_mortgagerate'));
+  add('Student loan',g('q_studloan'));add('Credit card balance',g('q_ccbal')?'£'+g('q_ccbal'):'');
+  add('CC cleared monthly',g('q_ccfull'));
+  add('Short-term goals',g('q_stgoals'));add('Medium-term goals',g('q_mtgoals'));
+  add('Long-term goals',g('q_ltgoals'));
+  add('Priority',g('q_priority'));add('Risk attitude',g('q_risk'));
+  add('Market reaction',g('q_mktreact'));add('Liquidity preference',g('q_liquidity'));
+  const prefs=[];
+  if(el('q_passive')?.checked)prefs.push('passive index');
+  if(el('q_active')?.checked)prefs.push('active funds');
+  if(el('q_esg')?.checked)prefs.push('ESG');
+  if(prefs.length)lines.push('Investment style: '+prefs.join(', '));
+  add('Sectors to avoid',g('q_avoid'));
+  add('Death in service',g('q_dis'));add('Income protection',g('q_ip_emp'));
+  add('Will',g('q_will'));add('LPA',g('q_lpa'));add('Pension nominations',g('q_nominat'));
+  add('Full ISA used',g('q_fullisa'));add('ISA contributions',g('q_isaamt')?'£'+parseInt(g('q_isaamt')).toLocaleString():'');
+  add('Total pension contributions',g('q_totalpen')?'£'+parseInt(g('q_totalpen')).toLocaleString():'');
+  add('HICBC',g('q_hicbc'));add('Tapered allowance',g('q_taa'));
+  add('VCT/EIS',g('q_taxadv'));
+
+  if(lines.length===0){alert('Please fill in some profile details first.');return;}
+
+  const msg='Here is my full financial profile. Based on this, please provide a personalised plan to maximise my take-home pay and build long-term wealth through pensions, ISAs and other suitable instruments under current UK rules.\n\n--- PROFILE ---\n'+lines.join('\n');
+  if(el('chatIn'))el('chatIn').value=msg;
+  switchTab('advisor',document.querySelector('.tbtn[onclick*="advisor"]'));
+  setTimeout(()=>{sendMsg();},100);
+}
+function clearProfile(){
+  document.querySelectorAll('#tab-questionnaire input, #tab-questionnaire select, #tab-questionnaire textarea').forEach(f=>{
+    if(f.type==='checkbox'||f.type==='radio')f.checked=false;
+    else f.value='';
+  });
+}
+
 
 // ── USA SALARY CALCULATOR ────────────────────────────
 function calcUSA(){
